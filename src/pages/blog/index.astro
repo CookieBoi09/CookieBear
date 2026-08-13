@@ -99,7 +99,16 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
       );
       const postItems = document.querySelectorAll<HTMLElement>('#blog-posts li');
       const noResults = document.querySelector<HTMLElement>('.no-results');
-      let selectedCategory = '';
+      const selectedCategories = new Set<string>();
+
+      const updateCategoryButtons = () => {
+        categoryButtons.forEach((button) => {
+          const category = button.dataset.filterCategory ?? '';
+          const isSelected =
+            category === '' ? selectedCategories.size === 0 : selectedCategories.has(category);
+          button.setAttribute('aria-pressed', String(isSelected));
+        });
+      };
 
       const filterPosts = () => {
         const query = searchInput?.value.trim().toLowerCase() ?? '';
@@ -108,7 +117,8 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
         postItems.forEach((post) => {
           const matchesSearch = post.dataset.search?.includes(query) ?? false;
           const matchesCategory =
-            selectedCategory === '' || post.dataset.category === selectedCategory;
+            selectedCategories.size === 0 ||
+            (post.dataset.category !== undefined && selectedCategories.has(post.dataset.category));
           const isVisible = matchesSearch && matchesCategory;
 
           post.hidden = !isVisible;
@@ -121,10 +131,17 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
       searchInput?.addEventListener('input', filterPosts);
       categoryButtons.forEach((button) => {
         button.addEventListener('click', () => {
-          selectedCategory = button.dataset.filterCategory ?? '';
-          categoryButtons.forEach((option) => {
-            option.setAttribute('aria-pressed', String(option === button));
-          });
+          const category = button.dataset.filterCategory ?? '';
+
+          if (category === '') {
+            selectedCategories.clear();
+          } else if (selectedCategories.has(category)) {
+            selectedCategories.delete(category);
+          } else {
+            selectedCategories.add(category);
+          }
+
+          updateCategoryButtons();
           filterPosts();
         });
       });
