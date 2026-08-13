@@ -41,13 +41,19 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
             />
           </div>
 
-          <div class="filter-field category-filter">
-            <label for="category-filter">Category</label>
-            <select id="category-filter" aria-controls="blog-posts">
-              <option value="">All categories</option>
-              {categories.map((category) => <option value={category}>{category}</option>)}
-            </select>
-          </div>
+          <fieldset class="category-filter">
+            <legend>Category</legend>
+            <div class="category-options" aria-controls="blog-posts">
+              <button type="button" data-filter-category="" aria-pressed="true">All</button>
+              {
+                categories.map((category) => (
+                  <button type="button" data-filter-category={category} aria-pressed="false">
+                    {category}
+                  </button>
+                ))
+              }
+            </div>
+          </fieldset>
         </div>
 
         <p class="no-results" hidden>No posts match your search.</p>
@@ -88,19 +94,31 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
 
     <script>
       const searchInput = document.querySelector<HTMLInputElement>('#blog-search');
-      const categoryFilter = document.querySelector<HTMLSelectElement>('#category-filter');
+      const categoryButtons = document.querySelectorAll<HTMLButtonElement>(
+        '[data-filter-category]'
+      );
       const postItems = document.querySelectorAll<HTMLElement>('#blog-posts li');
       const noResults = document.querySelector<HTMLElement>('.no-results');
+      const selectedCategories = new Set<string>();
+
+      const updateCategoryButtons = () => {
+        categoryButtons.forEach((button) => {
+          const category = button.dataset.filterCategory ?? '';
+          const isSelected =
+            category === '' ? selectedCategories.size === 0 : selectedCategories.has(category);
+          button.setAttribute('aria-pressed', String(isSelected));
+        });
+      };
 
       const filterPosts = () => {
         const query = searchInput?.value.trim().toLowerCase() ?? '';
-        const selectedCategory = categoryFilter?.value ?? '';
         let visiblePosts = 0;
 
         postItems.forEach((post) => {
           const matchesSearch = post.dataset.search?.includes(query) ?? false;
           const matchesCategory =
-            selectedCategory === '' || post.dataset.category === selectedCategory;
+            selectedCategories.size === 0 ||
+            (post.dataset.category !== undefined && selectedCategories.has(post.dataset.category));
           const isVisible = matchesSearch && matchesCategory;
 
           post.hidden = !isVisible;
@@ -111,7 +129,22 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
       };
 
       searchInput?.addEventListener('input', filterPosts);
-      categoryFilter?.addEventListener('change', filterPosts);
+      categoryButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const category = button.dataset.filterCategory ?? '';
+
+          if (category === '') {
+            selectedCategories.clear();
+          } else if (selectedCategories.has(category)) {
+            selectedCategories.delete(category);
+          } else {
+            selectedCategories.add(category);
+          }
+
+          updateCategoryButtons();
+          filterPosts();
+        });
+      });
     </script>
   </body>
 </html>
@@ -122,9 +155,6 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
   }
 
   .filters {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(12rem, auto);
-    gap: 1rem;
     margin-bottom: 2rem;
   }
 
@@ -135,8 +165,7 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
     font-weight: 700;
   }
 
-  .filter-field input,
-  .filter-field select {
+  .filter-field input {
     box-sizing: border-box;
     width: 100%;
     padding: 0.75rem 1rem;
@@ -148,10 +177,61 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
     box-shadow: 0 2px 6px rgba(var(--gray), 12%);
   }
 
-  .filter-field input:focus,
-  .filter-field select:focus {
+  .filter-field input:focus {
     border-color: rgb(var(--accent));
     outline: 3px solid rgba(var(--accent), 15%);
+  }
+
+  .category-filter {
+    margin: 1rem 0 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .category-filter legend {
+    margin-bottom: 0.35rem;
+    color: rgb(var(--black));
+    font-weight: 700;
+  }
+
+  .category-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .category-options button {
+    padding: 0.4rem 0.85rem;
+    border: 1px solid rgb(var(--gray-light));
+    border-radius: 999px;
+    background: #fff;
+    color: rgb(var(--gray-dark));
+    font: inherit;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .category-options button:hover {
+    border-color: rgb(var(--accent));
+    color: rgb(var(--accent));
+  }
+
+  .category-options button[aria-pressed='true'] {
+    border-color: rgb(var(--gray));
+    background: rgb(var(--gray-light));
+    color: rgb(var(--gray-dark));
+    box-shadow: 0 2px 6px rgba(var(--gray), 18%);
+  }
+
+  .category-options button:focus-visible {
+    outline: 3px solid rgba(var(--accent), 15%);
+    outline-offset: 2px;
   }
 
   .no-results {
@@ -221,10 +301,6 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
   }
 
   @media (max-width: 720px) {
-    .filters {
-      grid-template-columns: 1fr;
-    }
-
     ul {
       grid-template-columns: 1fr;
       gap: 1.5rem;
