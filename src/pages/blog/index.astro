@@ -14,6 +14,8 @@ const posts = (
     return data.draft !== true;
   })
 ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = [...new Set(posts.map((post) => post.data.category))].sort();
 ---
 
 <!doctype html>
@@ -27,15 +29,25 @@ const posts = (
 
     <main>
       <section>
-        <div class="search">
-          <label for="blog-search">Search posts</label>
-          <input
-            id="blog-search"
-            type="search"
-            placeholder="Search blog posts..."
-            autocomplete="off"
-            aria-controls="blog-posts"
-          />
+        <div class="filters">
+          <div class="filter-field search">
+            <label for="blog-search">Search posts</label>
+            <input
+              id="blog-search"
+              type="search"
+              placeholder="Search blog posts..."
+              autocomplete="off"
+              aria-controls="blog-posts"
+            />
+          </div>
+
+          <div class="filter-field category-filter">
+            <label for="category-filter">Category</label>
+            <select id="category-filter" aria-controls="blog-posts">
+              <option value="">All categories</option>
+              {categories.map((category) => <option value={category}>{category}</option>)}
+            </select>
+          </div>
         </div>
 
         <p class="no-results" hidden>No posts match your search.</p>
@@ -45,6 +57,7 @@ const posts = (
             posts.map((post) => (
               <li
                 data-search={`${post.data.title} ${post.data.description} ${post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}`.toLowerCase()}
+                data-category={post.data.category}
               >
                 <a href={`/blog/${post.id}/`}>
                   {post.data.heroImage && (
@@ -55,6 +68,8 @@ const posts = (
                       alt=""
                     />
                   )}
+
+                  <p class="category">{post.data.category}</p>
 
                   <h4 class="title">{post.data.title}</h4>
 
@@ -73,21 +88,30 @@ const posts = (
 
     <script>
       const searchInput = document.querySelector<HTMLInputElement>('#blog-search');
+      const categoryFilter = document.querySelector<HTMLSelectElement>('#category-filter');
       const postItems = document.querySelectorAll<HTMLElement>('#blog-posts li');
       const noResults = document.querySelector<HTMLElement>('.no-results');
 
-      searchInput?.addEventListener('input', () => {
-        const query = searchInput.value.trim().toLowerCase();
+      const filterPosts = () => {
+        const query = searchInput?.value.trim().toLowerCase() ?? '';
+        const selectedCategory = categoryFilter?.value ?? '';
         let visiblePosts = 0;
 
         postItems.forEach((post) => {
-          const matches = post.dataset.search?.includes(query) ?? false;
-          post.hidden = !matches;
-          if (matches) visiblePosts += 1;
+          const matchesSearch = post.dataset.search?.includes(query) ?? false;
+          const matchesCategory =
+            selectedCategory === '' || post.dataset.category === selectedCategory;
+          const isVisible = matchesSearch && matchesCategory;
+
+          post.hidden = !isVisible;
+          if (isVisible) visiblePosts += 1;
         });
 
         if (noResults) noResults.hidden = visiblePosts !== 0;
-      });
+      };
+
+      searchInput?.addEventListener('input', filterPosts);
+      categoryFilter?.addEventListener('change', filterPosts);
     </script>
   </body>
 </html>
@@ -97,18 +121,22 @@ const posts = (
     width: 960px;
   }
 
-  .search {
+  .filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, auto);
+    gap: 1rem;
     margin-bottom: 2rem;
   }
 
-  .search label {
+  .filter-field label {
     display: block;
     margin-bottom: 0.35rem;
     color: rgb(var(--black));
     font-weight: 700;
   }
 
-  .search input {
+  .filter-field input,
+  .filter-field select {
     box-sizing: border-box;
     width: 100%;
     padding: 0.75rem 1rem;
@@ -120,7 +148,8 @@ const posts = (
     box-shadow: 0 2px 6px rgba(var(--gray), 12%);
   }
 
-  .search input:focus {
+  .filter-field input:focus,
+  .filter-field select:focus {
     border-color: rgb(var(--accent));
     outline: 3px solid rgba(var(--accent), 15%);
   }
@@ -159,6 +188,18 @@ const posts = (
     display: block;
   }
 
+  .category {
+    display: inline-block;
+    margin: 0 0 0.5rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: rgb(var(--gray-light));
+    color: rgb(var(--gray-dark));
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
   .title {
     margin: 0;
     color: rgb(var(--black));
@@ -180,6 +221,10 @@ const posts = (
   }
 
   @media (max-width: 720px) {
+    .filters {
+      grid-template-columns: 1fr;
+    }
+
     ul {
       grid-template-columns: 1fr;
       gap: 1.5rem;
