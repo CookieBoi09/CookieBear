@@ -27,10 +27,25 @@ const posts = (
 
     <main>
       <section>
-        <ul>
+        <div class="search">
+          <label for="blog-search">Search posts</label>
+          <input
+            id="blog-search"
+            type="search"
+            placeholder="Search blog posts..."
+            autocomplete="off"
+            aria-controls="blog-posts"
+          />
+        </div>
+
+        <p class="no-results" hidden>No posts match your search.</p>
+
+        <ul id="blog-posts">
           {
             posts.map((post) => (
-              <li>
+              <li
+                data-search={`${post.data.title} ${post.data.description} ${post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}`.toLowerCase()}
+              >
                 <a href={`/blog/${post.id}/`}>
                   {post.data.heroImage && (
                     <Image
@@ -55,6 +70,25 @@ const posts = (
     </main>
 
     <Footer />
+
+    <script>
+      const searchInput = document.querySelector<HTMLInputElement>('#blog-search');
+      const postItems = document.querySelectorAll<HTMLElement>('#blog-posts li');
+      const noResults = document.querySelector<HTMLElement>('.no-results');
+
+      searchInput?.addEventListener('input', () => {
+        const query = searchInput.value.trim().toLowerCase();
+        let visiblePosts = 0;
+
+        postItems.forEach((post) => {
+          const matches = post.dataset.search?.includes(query) ?? false;
+          post.hidden = !matches;
+          if (matches) visiblePosts += 1;
+        });
+
+        if (noResults) noResults.hidden = visiblePosts !== 0;
+      });
+    </script>
   </body>
 </html>
 
@@ -63,9 +97,43 @@ const posts = (
     width: 960px;
   }
 
+  .search {
+    margin-bottom: 2rem;
+  }
+
+  .search label {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: rgb(var(--black));
+    font-weight: 700;
+  }
+
+  .search input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgb(var(--gray-light));
+    border-radius: 12px;
+    background: #fff;
+    color: rgb(var(--gray-dark));
+    font: inherit;
+    box-shadow: 0 2px 6px rgba(var(--gray), 12%);
+  }
+
+  .search input:focus {
+    border-color: rgb(var(--accent));
+    outline: 3px solid rgba(var(--accent), 15%);
+  }
+
+  .no-results {
+    margin: 0;
+    color: rgb(var(--gray));
+    text-align: center;
+  }
+
   ul {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
     list-style-type: none;
     margin: 0;
@@ -73,7 +141,7 @@ const posts = (
   }
 
   ul li {
-    width: calc(50% - 1rem);
+    min-width: 0;
   }
 
   ul li * {
@@ -81,21 +149,8 @@ const posts = (
     transition: 0.2s ease;
   }
 
-  ul li:first-child {
-    width: 100%;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-
-  ul li:first-child img {
-    width: 100%;
-  }
-
-  ul li:first-child .title {
-    font-size: 2.369rem;
-  }
-
   ul li img {
+    width: 100%;
     margin-bottom: 0.5rem;
     border-radius: 12px;
   }
@@ -126,20 +181,12 @@ const posts = (
 
   @media (max-width: 720px) {
     ul {
-      gap: 0.5em;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
     }
 
     ul li {
-      width: 100%;
       text-align: center;
-    }
-
-    ul li:first-child {
-      margin-bottom: 0;
-    }
-
-    ul li:first-child .title {
-      font-size: 1.563em;
     }
   }
 </style>
