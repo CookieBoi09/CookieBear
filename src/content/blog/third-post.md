@@ -1,6 +1,7 @@
 ---
 title: 'My Personal Take on College Admissions'
 description: 'Journal 3'
+category: 'College Admissions'
 pubDate: 'Aug 9 2026'
 heroImage: '../../assets/blog-placeholder-2.jpg'
 draft: false

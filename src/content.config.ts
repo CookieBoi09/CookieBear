@@ -10,6 +10,7 @@ const blog = defineCollection({
     z.object({
       title: z.string(),
       description: z.string(),
+      category: z.string(),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       heroImage: image().optional(),

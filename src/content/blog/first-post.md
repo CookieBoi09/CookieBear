@@ -1,6 +1,7 @@
 ---
 title: 'Why Think in the First Place Without Writing?'
 description: 'Journal 1'
+category: 'AI & Writing'
 pubDate: 'Aug 9 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 draft: false
