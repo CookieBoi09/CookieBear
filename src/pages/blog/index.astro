@@ -9,11 +9,22 @@ import Header from '../../components/Header.astro';
 
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
+const getJournalNumber = (description: string) => {
+  const match = description.match(/\bJournal\s+(\d+)\b/i);
+  return match ? Number(match[1]) : -1;
+};
+
 const posts = (
   await getCollection('blog', ({ data }) => {
     return data.draft !== true;
   })
-).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+).sort((a, b) => {
+  const dateDifference = b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+
+  if (dateDifference !== 0) return dateDifference;
+
+  return getJournalNumber(b.data.description) - getJournalNumber(a.data.description);
+});
 
 const categories = [...new Set(posts.map((post) => post.data.category))].sort();
 ---
