@@ -1,7 +1,7 @@
 ---
 title: 'What is the Difference Between a Dreamer and a Doer?'
 description: 'Journal 2'
-category: 'Personal Growth'
+category: 'Life'
 pubDate: 'Aug 9 2026'
 heroImage: '../../assets/blog-placeholder-4.jpg'
 draft: false
