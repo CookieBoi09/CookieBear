@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
@@ -12,6 +13,11 @@ const posts = await getCollection('blog', ({ data }) => {
 const recentPosts = posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
+
+const projects = await getCollection('projects');
+const recentProject = projects.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+)[0];
 ---
 
 <!doctype html>
@@ -61,28 +67,28 @@ const recentPosts = posts
       </section>
 
       <section class="project-section">
-        <p class="eyebrow">Current Project</p>
-        <div class="project-card">
-          <div>
-            <h2>CookieBear Blog</h2>
-            <p>
-              A personal corner of the web for writing about life, college,
-              Berkeley classes, and the ideas I am exploring along the way.
-            </p>
-          </div>
-
-          <div class="project-links">
-            <a class="primary-link" href="/blog">Read the blog</a>
-            <a
-              class="secondary-link"
-              href="https://github.com/CookieBoi09/CookieBear"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </a>
-          </div>
+        <div class="section-heading project-heading">
+          <h2>Latest Project</h2>
+          <a href="/projects">View all projects</a>
         </div>
+
+        {
+          recentProject && (
+            <article class="project-card">
+              <div class="project-meta">
+                <p class:list={['project-status', recentProject.data.status]}>
+                  {recentProject.data.status}
+                </p>
+                <p class="project-date">
+                  <FormattedDate date={recentProject.data.date} />
+                </p>
+              </div>
+
+              <h3>{recentProject.data.title}</h3>
+              <p class="project-description">{recentProject.data.description}</p>
+            </article>
+          )
+        }
       </section>
     </main>
 
@@ -203,60 +209,68 @@ const recentPosts = posts
     text-decoration: none;
   }
 
-  .eyebrow {
-    margin: 0 0 0.5rem;
-    color: rgb(var(--gray));
-    font-size: 0.85rem;
+  .project-heading {
+    margin-bottom: 1rem;
+  }
+
+  .project-heading a {
+    font-size: 0.9rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    text-decoration: none;
   }
 
   .project-card {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 2rem;
-    padding: 2rem;
+    padding: 1.5rem;
     border: 1px solid rgb(var(--gray-light));
     border-radius: 12px;
     background: #fff;
     box-shadow: 0 2px 8px rgba(var(--gray), 12%);
   }
 
-  .project-card h2 {
-    margin-bottom: 0.5rem;
+  .project-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
   }
 
-  .project-card p {
-    max-width: 34rem;
+  .project-status {
+    margin: 0;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .project-status.ongoing {
+    background: rgba(35, 55, 255, 10%);
+    color: var(--accent);
+  }
+
+  .project-status.past {
+    background: rgb(var(--gray-light));
+    color: rgb(var(--gray-dark));
+  }
+
+  .project-date {
     margin: 0;
     color: rgb(var(--gray));
+    font-size: 0.85rem;
   }
 
-  .project-links {
-    display: flex;
-    flex-shrink: 0;
-    gap: 0.75rem;
+  .project-card h3 {
+    margin-bottom: 0.6rem;
+    font-size: 1.563rem;
   }
 
-  .project-links a {
-    padding: 0.55rem 0.9rem;
-    border: 1px solid rgb(var(--gray-light));
-    border-radius: 999px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .project-links .primary-link {
-    border-color: rgb(var(--accent));
-    background: rgb(var(--accent));
-    color: #fff;
-  }
-
-  .project-links .secondary-link {
-    color: rgb(var(--gray-dark));
+  .project-description {
+    max-width: 40rem;
+    margin: 0;
+    color: rgb(var(--gray));
   }
 
   @media (max-width: 720px) {
@@ -289,14 +303,6 @@ const recentPosts = posts
       scroll-snap-stop: always;
     }
 
-    .project-card {
-      align-items: start;
-      flex-direction: column;
-    }
-
-    .project-links {
-      flex-wrap: wrap;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
