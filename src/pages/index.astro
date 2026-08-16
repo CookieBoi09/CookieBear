@@ -25,9 +25,19 @@ const recentPosts = posts
 
     <main>
       <section class="latest-section">
-        <h2>Latest Posts</h2>
+        <div class="section-heading">
+          <h2>Latest Posts</h2>
+          <div class="carousel-controls" aria-label="Latest post navigation">
+            <button class="carousel-button previous" type="button" aria-label="Previous post">
+              <span aria-hidden="true">←</span>
+            </button>
+            <button class="carousel-button next" type="button" aria-label="Next post">
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
 
-        <div class="post-grid">
+        <div class="post-grid" id="latest-posts">
           {
             recentPosts.map((post) => (
               <article class="post-card">
@@ -77,6 +87,40 @@ const recentPosts = posts
     </main>
 
     <Footer />
+
+    <script>
+      const carousel = document.querySelector<HTMLElement>('#latest-posts');
+      const previousButton = document.querySelector<HTMLButtonElement>('.carousel-button.previous');
+      const nextButton = document.querySelector<HTMLButtonElement>('.carousel-button.next');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      const updateCarouselButtons = () => {
+        if (!carousel || !previousButton || !nextButton) return;
+
+        const scrollEnd = carousel.scrollWidth - carousel.clientWidth;
+        previousButton.disabled = carousel.scrollLeft <= 1;
+        nextButton.disabled = carousel.scrollLeft >= scrollEnd - 1;
+      };
+
+      const slidePosts = (direction: -1 | 1) => {
+        if (!carousel) return;
+
+        const card = carousel.querySelector<HTMLElement>('.post-card');
+        const gap = Number.parseFloat(getComputedStyle(carousel).gap) || 0;
+        const distance = card ? card.offsetWidth + gap : carousel.clientWidth;
+
+        carousel.scrollBy({
+          left: direction * distance,
+          behavior: reducedMotion.matches ? 'auto' : 'smooth',
+        });
+      };
+
+      previousButton?.addEventListener('click', () => slidePosts(-1));
+      nextButton?.addEventListener('click', () => slidePosts(1));
+      carousel?.addEventListener('scroll', updateCarouselButtons, { passive: true });
+      window.addEventListener('resize', updateCarouselButtons);
+      updateCarouselButtons();
+    </script>
   </body>
 </html>
 
@@ -84,6 +128,47 @@ const recentPosts = posts
   .latest-section,
   .project-section {
     margin-bottom: 4rem;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .carousel-controls {
+    display: none;
+    gap: 0.5rem;
+  }
+
+  .carousel-button {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 1px solid rgb(var(--gray-light));
+    border-radius: 50%;
+    background: #fff;
+    color: rgb(var(--gray-dark));
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .carousel-button:hover:not(:disabled) {
+    border-color: rgb(var(--accent));
+    color: rgb(var(--accent));
+  }
+
+  .carousel-button:focus-visible {
+    outline: 3px solid rgba(var(--accent), 15%);
+    outline-offset: 2px;
+  }
+
+  .carousel-button:disabled {
+    opacity: 0.35;
+    cursor: default;
   }
 
   .post-grid {
@@ -175,8 +260,33 @@ const recentPosts = posts
   }
 
   @media (max-width: 720px) {
+    .carousel-controls {
+      display: flex;
+    }
+
     .post-grid {
-      grid-template-columns: 1fr;
+      display: flex;
+      justify-content: start;
+      gap: 1rem;
+      margin-inline: -1rem;
+      padding: 0.25rem 1rem 1rem;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-behavior: smooth;
+      scroll-padding-inline: 1rem;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      touch-action: pan-x;
+    }
+
+    .post-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .post-card {
+      flex: 0 0 88%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
     }
 
     .project-card {
@@ -186,6 +296,12 @@ const recentPosts = posts
 
     .project-links {
       flex-wrap: wrap;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post-grid {
+      scroll-behavior: auto;
     }
   }
 </style>
