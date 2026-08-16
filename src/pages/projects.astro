@@ -1,0 +1,159 @@
+---
+import { getCollection } from 'astro:content';
+
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const projects = (await getCollection('projects')).sort((a, b) => {
+  if (a.data.status !== b.data.status) return a.data.status === 'ongoing' ? -1 : 1;
+  return b.data.date.valueOf() - a.data.date.valueOf();
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`Projects | ${SITE_TITLE}`}
+      description="Current and past projects by Jerry Fan."
+    />
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <section class="projects-intro">
+        <p class="eyebrow">What I am building</p>
+        <h1>Projects</h1>
+        <p>
+          A collection of projects I am currently working on and work I have
+          completed in the past.
+        </p>
+      </section>
+
+      <section aria-label="Project list">
+        <div class="project-grid">
+          {
+            projects.map((project) => (
+              <article class="project-card">
+                <div class="card-heading">
+                  <p class:list={['status', project.data.status]}>{project.data.status}</p>
+                  <p class="date">
+                    <FormattedDate date={project.data.date} />
+                  </p>
+                </div>
+
+                <h2>{project.data.title}</h2>
+                <p class="description">{project.data.description}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  main {
+    width: 960px;
+  }
+
+  .projects-intro {
+    margin-bottom: 2.5rem;
+  }
+
+  .projects-intro h1 {
+    margin-bottom: 0.75rem;
+  }
+
+  .projects-intro > p:last-child {
+    max-width: 38rem;
+    margin: 0;
+    color: rgb(var(--gray));
+  }
+
+  .eyebrow {
+    margin: 0 0 0.4rem;
+    color: rgb(var(--gray));
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    padding: 1.5rem;
+    border: 1px solid rgb(var(--gray-light));
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(var(--gray), 12%);
+  }
+
+  .card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .status {
+    margin: 0;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .status.ongoing {
+    background: rgba(35, 55, 255, 10%);
+    color: var(--accent);
+  }
+
+  .status.past {
+    background: rgb(var(--gray-light));
+    color: rgb(var(--gray-dark));
+  }
+
+  .date {
+    margin: 0;
+    color: rgb(var(--gray));
+    font-size: 0.85rem;
+  }
+
+  .project-card h2 {
+    margin-bottom: 0.6rem;
+    font-size: 1.563rem;
+  }
+
+  .description {
+    margin: 0;
+    color: rgb(var(--gray));
+  }
+
+  @media (max-width: 720px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project-card {
+      padding: 1.25rem;
+    }
+  }
+</style>
