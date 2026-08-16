@@ -6,11 +6,23 @@ import HeaderLink from './HeaderLink.astro';
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
-			<HeaderLink href="/contact">Contact</HeaderLink>
+		<div class="nav-menu">
+			<button
+				class="nav-menu-button"
+				type="button"
+				aria-expanded="false"
+				aria-controls="navigation-dropdown"
+			>
+				<span class="menu-icon" aria-hidden="true">☰</span>
+				<span class="sr-only">Open navigation menu</span>
+			</button>
+
+			<div class="internal-links" id="navigation-dropdown">
+				<HeaderLink href="/">Home</HeaderLink>
+				<HeaderLink href="/blog">Blog</HeaderLink>
+				<HeaderLink href="/about">About</HeaderLink>
+				<HeaderLink href="/contact">Contact</HeaderLink>
+			</div>
 		</div>
 		<div class="social-links">
 			<a href="https://m.webtoo.ls/@astro" target="_blank">
@@ -43,6 +55,35 @@ import HeaderLink from './HeaderLink.astro';
 		</div>
 	</nav>
 </header>
+
+<script>
+	const navMenu = document.querySelector<HTMLElement>('.nav-menu');
+	const navMenuButton = document.querySelector<HTMLButtonElement>('.nav-menu-button');
+
+	const setNavMenuOpen = (isOpen: boolean) => {
+		if (!navMenuButton) return;
+		navMenuButton.setAttribute('aria-expanded', String(isOpen));
+		const label = navMenuButton.querySelector<HTMLElement>('.sr-only');
+		if (label) label.textContent = isOpen ? 'Close navigation menu' : 'Open navigation menu';
+	};
+
+	navMenuButton?.addEventListener('click', () => {
+		setNavMenuOpen(navMenuButton.getAttribute('aria-expanded') !== 'true');
+	});
+
+	document.addEventListener('click', (event) => {
+		if (event.target instanceof Node && !navMenu?.contains(event.target)) {
+			setNavMenuOpen(false);
+		}
+	});
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key !== 'Escape' || navMenuButton?.getAttribute('aria-expanded') !== 'true') return;
+		setNavMenuOpen(false);
+		navMenuButton.focus();
+	});
+</script>
+
 <style>
 	header {
 		margin: 0;
@@ -74,11 +115,76 @@ import HeaderLink from './HeaderLink.astro';
 		text-decoration: none;
 		border-bottom-color: var(--accent);
 	}
+	.internal-links,
+	.nav-menu {
+		display: flex;
+		align-items: stretch;
+	}
+	.nav-menu {
+		position: relative;
+	}
+	.nav-menu-button {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		padding: 0;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		background: #fff;
+		color: rgb(var(--black));
+		font: inherit;
+		cursor: pointer;
+	}
+	.nav-menu-button:hover,
+	.nav-menu-button[aria-expanded='true'] {
+		border-color: rgb(var(--accent));
+		color: rgb(var(--accent));
+	}
+	.nav-menu-button:focus-visible {
+		outline: 3px solid rgba(var(--accent), 15%);
+		outline-offset: 2px;
+	}
+	.menu-icon {
+		font-size: 1.4rem;
+		line-height: 1;
+	}
 	.social-links,
 	.social-links a {
 		display: flex;
 	}
 	@media (max-width: 720px) {
+		.nav-menu-button {
+			display: flex;
+		}
+		.internal-links {
+			position: absolute;
+			top: calc(100% + 0.5rem);
+			right: 0;
+			z-index: 10;
+			display: none;
+			width: min(14rem, calc(100vw - 2rem));
+			padding: 0.5rem;
+			border: 1px solid rgb(var(--gray-light));
+			border-radius: 12px;
+			background: #fff;
+			box-shadow: var(--box-shadow);
+		}
+		.nav-menu-button[aria-expanded='true'] + .internal-links {
+			display: flex;
+			flex-direction: column;
+		}
+		.internal-links a {
+			padding: 0.65rem 0.75rem;
+			border: 0;
+			border-radius: 8px;
+		}
+		.internal-links a:hover,
+		.internal-links a:focus-visible {
+			background: rgb(var(--gray-light));
+			outline: none;
+		}
 		.social-links {
 			display: none;
 		}
