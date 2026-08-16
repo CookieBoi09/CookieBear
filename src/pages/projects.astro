@@ -8,7 +8,8 @@ import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
 
 const projects = (await getCollection('projects')).sort((a, b) => {
-  if (a.data.status !== b.data.status) return a.data.status === 'ongoing' ? -1 : 1;
+  if (a.data.status !== b.data.status)
+    return a.data.status === 'ongoing' ? -1 : 1;
   return b.data.date.valueOf() - a.data.date.valueOf();
 });
 ---
@@ -41,7 +42,9 @@ const projects = (await getCollection('projects')).sort((a, b) => {
             projects.map((project) => (
               <article class="project-card">
                 <div class="card-heading">
-                  <p class:list={['status', project.data.status]}>{project.data.status}</p>
+                  <p class:list={['status', project.data.status]}>
+                    {project.data.status}
+                  </p>
                   <p class="date">
                     <FormattedDate date={project.data.date} />
                   </p>
