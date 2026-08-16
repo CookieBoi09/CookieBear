@@ -1,0 +1,184 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`Contact | ${SITE_TITLE}`}
+      description="Send Jerry a message through the CookieBear Blog contact form."
+    />
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <section class="contact-intro">
+        <p class="eyebrow">Get in touch</p>
+        <h1>Contact Me</h1>
+        <p>
+          Have a question, an idea, or just want to say hello? Fill out the form
+          and your message will be sent directly to my inbox.
+        </p>
+      </section>
+
+      <form action="https://formsubmit.co/cookiebloginquiry@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="New CookieBear Blog inquiry" />
+        <input type="hidden" name="_template" value="table" />
+
+        <div class="honeypot" aria-hidden="true">
+          <label for="company">Company</label>
+          <input id="company" type="text" name="_honey" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" type="text" name="name" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" autocomplete="email" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="subject">Subject</label>
+          <input id="subject" type="text" name="subject" required />
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="7" required></textarea>
+        </div>
+
+        <button type="submit">Send message</button>
+      </form>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  main {
+    width: 720px;
+  }
+
+  .contact-intro {
+    margin-bottom: 2rem;
+  }
+
+  .contact-intro h1 {
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-intro > p:last-child {
+    max-width: 36rem;
+    margin: 0;
+    color: rgb(var(--gray));
+  }
+
+  .eyebrow {
+    margin: 0 0 0.4rem;
+    color: rgb(var(--gray));
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  form {
+    position: relative;
+    padding: 2rem;
+    border: 1px solid rgb(var(--gray-light));
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(var(--gray), 12%);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .field {
+    margin-bottom: 1.25rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: rgb(var(--black));
+    font-weight: 700;
+  }
+
+  input,
+  textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid rgb(var(--gray-light));
+    border-radius: 8px;
+    background: #fff;
+    color: rgb(var(--gray-dark));
+    font: inherit;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: rgb(var(--accent));
+    outline: 3px solid rgba(var(--accent), 15%);
+  }
+
+  button {
+    padding: 0.65rem 1.1rem;
+    border: 1px solid rgb(var(--accent));
+    border-radius: 999px;
+    background: rgb(var(--accent));
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: rgb(var(--accent-dark));
+  }
+
+  button:focus-visible {
+    outline: 3px solid rgba(var(--accent), 20%);
+    outline-offset: 3px;
+  }
+
+  .honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 720px) {
+    form {
+      padding: 1.25rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>
