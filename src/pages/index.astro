@@ -67,27 +67,11 @@ const recentProject = projects.sort(
       </section>
 
       <section class="project-section">
-        <p class="eyebrow">Current Project</p>
-        <div class="project-card">
-          <div>
-            <h2>CookieBear Blog</h2>
-            <p>
-              A personal project I've started out of my willingness to share
-              wisdom I have gained throughout my life
-            </p>
-          </div>
-
-          <div class="project-links">
-            <a class="primary-link" href="/blog">Read the blog</a>
-            <a
-              class="secondary-link"
-              href="https://github.com/CookieBoi09/CookieBear"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </a>
-          </div>
+        <div class="project-heading">
+          <p class="eyebrow">Current Project</p>
+        </div>
+        <div class="project-actions">
+          <a class="view-all-projects" href="/projects">View all projects</a>
         </div>
 
         {
@@ -228,13 +212,41 @@ const recentProject = projects.sort(
   }
 
   .project-heading {
+    margin-bottom: 0.75rem;
+  }
+
+  .project-heading .eyebrow {
+    margin: 0;
+  }
+
+  .project-actions {
+    display: flex;
+    justify-content: flex-end;
     margin-bottom: 1rem;
   }
 
-  .project-heading a {
-    font-size: 0.9rem;
+  .view-all-projects {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1rem;
+    border: 1px solid rgb(var(--accent));
+    border-radius: 999px;
+    background: rgb(var(--accent));
+    color: #fff;
+    font-size: 0.85rem;
     font-weight: 700;
     text-decoration: none;
+  }
+
+  .view-all-projects:hover {
+    background: rgb(var(--accent-dark));
+    border-color: rgb(var(--accent-dark));
+  }
+
+  .view-all-projects:focus-visible {
+    outline: 3px solid rgba(var(--accent), 15%);
+    outline-offset: 2px;
   }
 
   .project-card {
