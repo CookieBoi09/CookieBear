@@ -93,7 +93,7 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 
   .project-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
   }
 
@@ -151,10 +151,6 @@ const projects = (await getCollection('projects')).sort((a, b) => {
   }
 
   @media (max-width: 720px) {
-    .project-grid {
-      grid-template-columns: 1fr;
-    }
-
     .project-card {
       padding: 1.25rem;
     }
