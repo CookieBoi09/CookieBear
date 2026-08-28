@@ -1,5 +1,5 @@
 ---
-title: 'A Word about Grades'
+title: 'A Word About Grades'
 description: 'Journal 6'
 category: 'Life'
 pubDate: 'Aug 13 2026'
