@@ -80,7 +80,7 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
                   {post.data.heroImage && (
                     <Image
                       width={720}
-                      height={360}
+                      height={405}
                       src={post.data.heroImage}
                       alt=""
                     />
@@ -270,7 +270,11 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
   }
 
   ul li img {
+    display: block;
     width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
     margin-bottom: 0.5rem;
     border-radius: 12px;
   }
