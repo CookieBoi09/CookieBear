@@ -23,7 +23,9 @@ const posts = (
 
   if (dateDifference !== 0) return dateDifference;
 
-  return getJournalNumber(b.data.description) - getJournalNumber(a.data.description);
+  return (
+    getJournalNumber(b.data.description) - getJournalNumber(a.data.description)
+  );
 });
 
 const categories = [...new Set(posts.map((post) => post.data.category))].sort();
@@ -39,7 +41,14 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
     <Header />
 
     <main id="main-content" class="blog-page">
-      <div class="page-intro"><p class="eyebrow">The journal / Thoughts worth sharing</p><h1>Notes on life.<br /><em>And learning it.</em></h1><p>Ideas, experiences, and lessons from along the way. Find something that speaks to you.</p></div>
+      <div class="page-intro">
+        <p class="eyebrow">My journal / Extensions of My Thoughts</p><h1>
+          Collection of Journals
+        </h1><p>
+          Here are flushed out journals inspired by my "shower thoughts". Feel
+          free to read through the articles that pique your interest.
+        </p>
+      </div>
       <section>
         <div class="filters">
           <div class="filter-field search">
@@ -56,10 +65,16 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
           <fieldset class="category-filter">
             <legend>Category</legend>
             <div class="category-options" aria-controls="blog-posts">
-              <button type="button" data-filter-category="" aria-pressed="true">All</button>
+              <button type="button" data-filter-category="" aria-pressed="true"
+                >All</button
+              >
               {
                 categories.map((category) => (
-                  <button type="button" data-filter-category={category} aria-pressed="false">
+                  <button
+                    type="button"
+                    data-filter-category={category}
+                    aria-pressed="false"
+                  >
                     {category}
                   </button>
                 ))
@@ -105,11 +120,13 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
     <Footer />
 
     <script>
-      const searchInput = document.querySelector<HTMLInputElement>('#blog-search');
+      const searchInput =
+        document.querySelector<HTMLInputElement>('#blog-search');
       const categoryButtons = document.querySelectorAll<HTMLButtonElement>(
-        '[data-filter-category]'
+        '[data-filter-category]',
       );
-      const postItems = document.querySelectorAll<HTMLElement>('#blog-posts li');
+      const postItems =
+        document.querySelectorAll<HTMLElement>('#blog-posts li');
       const noResults = document.querySelector<HTMLElement>('.no-results');
       const selectedCategories = new Set<string>();
 
@@ -117,7 +134,9 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
         categoryButtons.forEach((button) => {
           const category = button.dataset.filterCategory ?? '';
           const isSelected =
-            category === '' ? selectedCategories.size === 0 : selectedCategories.has(category);
+            category === ''
+              ? selectedCategories.size === 0
+              : selectedCategories.has(category);
           button.setAttribute('aria-pressed', String(isSelected));
         });
       };
@@ -130,7 +149,8 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
           const matchesSearch = post.dataset.search?.includes(query) ?? false;
           const matchesCategory =
             selectedCategories.size === 0 ||
-            (post.dataset.category !== undefined && selectedCategories.has(post.dataset.category));
+            (post.dataset.category !== undefined &&
+              selectedCategories.has(post.dataset.category));
           const isVisible = matchesSearch && matchesCategory;
 
           post.hidden = !isVisible;
@@ -163,169 +183,169 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
 
 <style>
   @layer original {
-  main {
-    width: 960px;
-  }
+    main {
+      width: 960px;
+    }
 
-  .filters {
-    margin-bottom: 2rem;
-  }
+    .filters {
+      margin-bottom: 2rem;
+    }
 
-  .filter-field label {
-    display: block;
-    margin-bottom: 0.35rem;
-    color: rgb(var(--black));
-    font-weight: 700;
-  }
+    .filter-field label {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: rgb(var(--black));
+      font-weight: 700;
+    }
 
-  .filter-field input {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid rgb(var(--gray-light));
-    border-radius: 12px;
-    background: #fff;
-    color: rgb(var(--gray-dark));
-    font: inherit;
-    box-shadow: 0 2px 6px rgba(var(--gray), 12%);
-  }
+    .filter-field input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgb(var(--gray-light));
+      border-radius: 12px;
+      background: #fff;
+      color: rgb(var(--gray-dark));
+      font: inherit;
+      box-shadow: 0 2px 6px rgba(var(--gray), 12%);
+    }
 
-  .filter-field input:focus {
-    border-color: rgb(var(--accent));
-    outline: 3px solid rgba(var(--accent), 15%);
-  }
+    .filter-field input:focus {
+      border-color: rgb(var(--accent));
+      outline: 3px solid rgba(var(--accent), 15%);
+    }
 
-  .category-filter {
-    margin: 1rem 0 0;
-    padding: 0;
-    border: 0;
-  }
+    .category-filter {
+      margin: 1rem 0 0;
+      padding: 0;
+      border: 0;
+    }
 
-  .category-filter legend {
-    margin-bottom: 0.35rem;
-    color: rgb(var(--black));
-    font-weight: 700;
-  }
+    .category-filter legend {
+      margin-bottom: 0.35rem;
+      color: rgb(var(--black));
+      font-weight: 700;
+    }
 
-  .category-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
+    .category-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
 
-  .category-options button {
-    padding: 0.4rem 0.85rem;
-    border: 1px solid rgb(var(--gray-light));
-    border-radius: 999px;
-    background: #fff;
-    color: rgb(var(--gray-dark));
-    font: inherit;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    cursor: pointer;
-    transition:
-      color 0.2s ease,
-      background-color 0.2s ease,
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
-  }
+    .category-options button {
+      padding: 0.4rem 0.85rem;
+      border: 1px solid rgb(var(--gray-light));
+      border-radius: 999px;
+      background: #fff;
+      color: rgb(var(--gray-dark));
+      font: inherit;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      cursor: pointer;
+      transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
 
-  .category-options button:hover {
-    border-color: rgb(var(--accent));
-    color: rgb(var(--accent));
-  }
+    .category-options button:hover {
+      border-color: rgb(var(--accent));
+      color: rgb(var(--accent));
+    }
 
-  .category-options button[aria-pressed='true'] {
-    border-color: rgb(var(--gray));
-    background: rgb(var(--gray-light));
-    color: rgb(var(--gray-dark));
-    box-shadow: 0 2px 6px rgba(var(--gray), 18%);
-  }
+    .category-options button[aria-pressed='true'] {
+      border-color: rgb(var(--gray));
+      background: rgb(var(--gray-light));
+      color: rgb(var(--gray-dark));
+      box-shadow: 0 2px 6px rgba(var(--gray), 18%);
+    }
 
-  .category-options button:focus-visible {
-    outline: 3px solid rgba(var(--accent), 15%);
-    outline-offset: 2px;
-  }
+    .category-options button:focus-visible {
+      outline: 3px solid rgba(var(--accent), 15%);
+      outline-offset: 2px;
+    }
 
-  .no-results {
-    margin: 0;
-    color: rgb(var(--gray));
-    text-align: center;
-  }
+    .no-results {
+      margin: 0;
+      color: rgb(var(--gray));
+      text-align: center;
+    }
 
-  ul {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul li {
-    min-width: 0;
-  }
-
-  ul li * {
-    text-decoration: none;
-    transition: 0.2s ease;
-  }
-
-  ul li img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    margin-bottom: 0.5rem;
-    border-radius: 12px;
-  }
-
-  ul li a {
-    display: block;
-  }
-
-  .category {
-    display: inline-block;
-    margin: 0 0 0.5rem;
-    padding: 0.15rem 0.55rem;
-    border-radius: 999px;
-    background: rgb(var(--gray-light));
-    color: rgb(var(--gray-dark));
-    font-size: 0.8rem;
-    font-weight: 700;
-    line-height: 1.5;
-  }
-
-  .title {
-    margin: 0;
-    color: rgb(var(--black));
-    line-height: 1;
-  }
-
-  .date {
-    margin: 0;
-    color: rgb(var(--gray));
-  }
-
-  ul li a:hover h4,
-  ul li a:hover .date {
-    color: rgb(var(--accent));
-  }
-
-  ul a:hover img {
-    box-shadow: var(--box-shadow);
-  }
-
-  @media (max-width: 720px) {
     ul {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
     }
 
     ul li {
-      text-align: center;
+      min-width: 0;
     }
-  }
+
+    ul li * {
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    ul li img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      margin-bottom: 0.5rem;
+      border-radius: 12px;
+    }
+
+    ul li a {
+      display: block;
+    }
+
+    .category {
+      display: inline-block;
+      margin: 0 0 0.5rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background: rgb(var(--gray-light));
+      color: rgb(var(--gray-dark));
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .title {
+      margin: 0;
+      color: rgb(var(--black));
+      line-height: 1;
+    }
+
+    .date {
+      margin: 0;
+      color: rgb(var(--gray));
+    }
+
+    ul li a:hover h4,
+    ul li a:hover .date {
+      color: rgb(var(--accent));
+    }
+
+    ul a:hover img {
+      box-shadow: var(--box-shadow);
+    }
+
+    @media (max-width: 720px) {
+      ul {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      ul li {
+        text-align: center;
+      }
+    }
   }
 </style>

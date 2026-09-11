@@ -19,10 +19,11 @@ import { SITE_TITLE } from '../consts';
 
     <main id="main-content" class="contact-page">
       <section class="contact-intro">
-        <p class="eyebrow">Get in touch</p>
-        <h1>Good things start<br /><em>with a hello.</em></h1>
+        <p class="eyebrow">Contact Page</p>
+        <h1>Got Questions?</h1>
         <p>
-          Have a question, an idea, or something you want to share? Send me a message below.
+          If you have any questions, comments, or concerns, feel free to send me
+          a message below :)
         </p>
       </section>
 
@@ -92,119 +93,119 @@ import { SITE_TITLE } from '../consts';
 
 <style>
   @layer original {
-  main {
-    width: 720px;
-  }
+    main {
+      width: 720px;
+    }
 
-  .contact-intro {
-    margin-bottom: 2rem;
-  }
+    .contact-intro {
+      margin-bottom: 2rem;
+    }
 
-  .contact-intro h1 {
-    margin-bottom: 0.75rem;
-  }
+    .contact-intro h1 {
+      margin-bottom: 0.75rem;
+    }
 
-  .contact-intro > p:last-child {
-    max-width: 36rem;
-    margin: 0;
-    color: rgb(var(--gray));
-  }
+    .contact-intro > p:last-child {
+      max-width: 36rem;
+      margin: 0;
+      color: rgb(var(--gray));
+    }
 
-  .eyebrow {
-    margin: 0 0 0.4rem;
-    color: rgb(var(--gray));
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+    .eyebrow {
+      margin: 0 0 0.4rem;
+      color: rgb(var(--gray));
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
 
-  form {
-    position: relative;
-    padding: 2rem;
-    border: 1px solid rgb(var(--gray-light));
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(var(--gray), 12%);
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  .field {
-    margin-bottom: 1.25rem;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.35rem;
-    color: rgb(var(--black));
-    font-weight: 700;
-  }
-
-  input,
-  textarea {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0.7rem 0.85rem;
-    border: 1px solid rgb(var(--gray-light));
-    border-radius: 8px;
-    background: #fff;
-    color: rgb(var(--gray-dark));
-    font: inherit;
-  }
-
-  textarea {
-    resize: vertical;
-  }
-
-  input:focus,
-  textarea:focus {
-    border-color: rgb(var(--accent));
-    outline: 3px solid rgba(var(--accent), 15%);
-  }
-
-  button {
-    padding: 0.65rem 1.1rem;
-    border: 1px solid rgb(var(--accent));
-    border-radius: 999px;
-    background: rgb(var(--accent));
-    color: #fff;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background: rgb(var(--accent-dark));
-  }
-
-  button:focus-visible {
-    outline: 3px solid rgba(var(--accent), 20%);
-    outline-offset: 3px;
-  }
-
-  .honeypot {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  @media (max-width: 720px) {
     form {
-      padding: 1.25rem;
+      position: relative;
+      padding: 2rem;
+      border: 1px solid rgb(var(--gray-light));
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(var(--gray), 12%);
     }
 
     .form-row {
-      grid-template-columns: 1fr;
-      gap: 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
     }
-  }
+
+    .field {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: rgb(var(--black));
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      border: 1px solid rgb(var(--gray-light));
+      border-radius: 8px;
+      background: #fff;
+      color: rgb(var(--gray-dark));
+      font: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgb(var(--accent));
+      outline: 3px solid rgba(var(--accent), 15%);
+    }
+
+    button {
+      padding: 0.65rem 1.1rem;
+      border: 1px solid rgb(var(--accent));
+      border-radius: 999px;
+      background: rgb(var(--accent));
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: rgb(var(--accent-dark));
+    }
+
+    button:focus-visible {
+      outline: 3px solid rgba(var(--accent), 20%);
+      outline-offset: 3px;
+    }
+
+    .honeypot {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 720px) {
+      form {
+        padding: 1.25rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
   }
 </style>
