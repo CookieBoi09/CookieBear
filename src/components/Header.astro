@@ -4,8 +4,9 @@ import HeaderLink from './HeaderLink.astro';
 ---
 
 <header>
-	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+	<a class="skip-link" href="#main-content">Skip to content</a>
+	<nav aria-label="Main navigation">
+		<h2><a href="/"><span class="brand-mark" aria-hidden="true">✳</span>{SITE_TITLE}</a></h2>
 		<div class="nav-menu">
 			<button
 				class="nav-menu-button"
@@ -57,6 +58,7 @@ import HeaderLink from './HeaderLink.astro';
 </script>
 
 <style>
+  @layer original {
 	header {
 		margin: 0;
 		padding: 0 1em;
@@ -163,4 +165,5 @@ import HeaderLink from './HeaderLink.astro';
 			outline: none;
 		}
 	}
+  }
 </style>
