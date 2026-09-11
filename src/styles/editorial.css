@@ -32,7 +32,8 @@ body > header { background: var(--paper); border-bottom: 1px solid rgb(var(--gra
 body header nav { min-height: 88px; max-width: 1280px; margin: auto; grid-template-columns: minmax(220px, 1fr) auto minmax(0, 1fr); }
 body header h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.04em; }
 body header h2 a { display: flex; align-items: center; gap: 12px; padding: 0; border: 0; color: var(--ink); }
-.brand-mark { display: grid; place-items: center; width: 32px; height: 32px; background: var(--ink); color: var(--lime); font-size: 24px; }
+/* Multiply blends the photo's white backdrop into the header's paper color. */
+.brand-mark { display: block; width: 40px; height: 40px; flex-shrink: 0; object-fit: contain; border-radius: 0; mix-blend-mode: multiply; }
 body header .internal-links { gap: 20px; }
 body header .internal-links a { font-size: 14px; padding: 8px 0; border-bottom-width: 1px; color: var(--ink); }
 body header .internal-links a:hover { color: var(--accent); }
