@@ -185,6 +185,12 @@ const recentProject = projects.sort(
       margin-bottom: 4rem;
     }
 
+    .latest-section {
+      width: 1160px;
+      max-width: calc(100% - 64px);
+      margin-inline: auto;
+    }
+
     .section-heading {
       display: flex;
       align-items: center;
@@ -228,9 +234,9 @@ const recentProject = projects.sort(
 
     .post-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(220px, 300px));
+      grid-template-columns: repeat(3, minmax(0, 300px));
       gap: 2rem;
-      justify-content: end;
+      justify-content: center;
     }
 
     .post-card img {
@@ -323,6 +329,9 @@ const recentProject = projects.sort(
     }
 
     @media (max-width: 720px) {
+      .latest-section {
+        max-width: calc(100% - 36px);
+      }
       .carousel-controls {
         display: flex;
       }
