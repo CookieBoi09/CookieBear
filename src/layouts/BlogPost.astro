@@ -20,7 +20,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   <body>
     <Header />
 
-    <main>
+    <main id="main-content" class="article-page">
       <article>
         {
           heroImage && (
@@ -59,6 +59,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 </html>
 
 <style>
+  @layer original {
   main {
     width: 100%;
     margin: 0;
@@ -105,5 +106,6 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 
   .last-updated-on {
     font-style: italic;
+  }
   }
 </style>

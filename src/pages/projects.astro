@@ -26,10 +26,10 @@ const projects = (await getCollection('projects')).sort((a, b) => {
   <body>
     <Header />
 
-    <main>
+    <main id="main-content" class="projects-page">
       <section class="projects-intro">
         <p class="eyebrow">What I am building</p>
-        <h1>Projects</h1>
+        <h1>Ideas into<br /><em>something real.</em></h1>
         <p>
           A collection of projects I am currently working on or have completed
           in the past.
@@ -64,6 +64,7 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 </html>
 
 <style>
+  @layer original {
   main {
     width: 960px;
   }
@@ -154,5 +155,6 @@ const projects = (await getCollection('projects')).sort((a, b) => {
     .project-card {
       padding: 1.25rem;
     }
+  }
   }
 </style>

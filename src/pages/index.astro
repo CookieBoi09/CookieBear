@@ -5,6 +5,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
+import UniversityImage from '../assets/blog-placeholder-uni.jpg';
 
 const posts = await getCollection('blog', ({ data }) => {
   return data.draft !== true;
@@ -29,10 +30,25 @@ const recentProject = projects.sort(
   <body>
     <Header />
 
-    <main>
+    <main id="main-content" class="home-page">
+      <section class="home-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Jerry Fan / A personal journal</p>
+          <h1>Stay curious.<br /><em>Keep becoming.</em></h1>
+          <p class="hero-description">Thoughts on life, learning, and everything in between. A little corner of the internet to share what I discover along the way.</p>
+          <div class="hero-actions"><a class="button" href="/blog">Explore the journal <span aria-hidden="true">↗</span></a><a class="text-link" href="/about">A little about me <span aria-hidden="true">↗</span></a></div>
+        </div>
+        <figure class="hero-photo">
+          <img src={UniversityImage.src} width={UniversityImage.width} height={UniversityImage.height} alt="University campus" fetchpriority="high" />
+          <figcaption><span>FIELD NOTES / BERKELEY</span><span>Always learning <span aria-hidden="true">↗</span></span></figcaption>
+        </figure>
+      </section>
+      <div class="topic-strip"><span>A work in progress</span><span>Life</span><span>College</span><span>Ideas</span><span>Things I build</span></div>
       <section class="latest-section">
+        <p class="eyebrow">01 / From the journal</p>
         <div class="section-heading">
           <h2>Latest Posts</h2>
+          <a class="text-link" href="/blog">View all posts ↗</a>
           <div class="carousel-controls" aria-label="Latest post navigation">
             <button class="carousel-button previous" type="button" aria-label="Previous post">
               <span aria-hidden="true">←</span>
@@ -67,6 +83,7 @@ const recentProject = projects.sort(
       </section>
 
       <section class="project-section">
+        <p class="eyebrow">02 / In the works</p>
         <div class="section-heading project-heading">
           <h2>Latest Project</h2>
           <a href="/projects">View all projects</a>
@@ -131,6 +148,7 @@ const recentProject = projects.sort(
 </html>
 
 <style>
+  @layer original {
   .latest-section,
   .project-section {
     margin-bottom: 4rem;
@@ -309,5 +327,6 @@ const recentProject = projects.sort(
     .post-grid {
       scroll-behavior: auto;
     }
+  }
   }
 </style>

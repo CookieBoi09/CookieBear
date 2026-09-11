@@ -38,7 +38,8 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
   <body>
     <Header />
 
-    <main>
+    <main id="main-content" class="blog-page">
+      <div class="page-intro"><p class="eyebrow">The journal / Thoughts worth sharing</p><h1>Notes on life.<br /><em>And learning it.</em></h1><p>Ideas, experiences, and lessons from along the way. Find something that speaks to you.</p></div>
       <section>
         <div class="filters">
           <div class="filter-field search">
@@ -161,6 +162,7 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
 </html>
 
 <style>
+  @layer original {
   main {
     width: 960px;
   }
@@ -324,5 +326,6 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
     ul li {
       text-align: center;
     }
+  }
   }
 </style>

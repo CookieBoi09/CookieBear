@@ -3,13 +3,16 @@ const today = new Date();
 ---
 
 <footer>
-  &copy; {today.getFullYear()} Jerry Fan. All rights reserved.
+  <div class="footer-invitation"><div><p class="eyebrow">Keep the conversation going</p><h2>Something on<br /><em>your mind?</em></h2></div><a class="button" href="/contact">Say hello <span aria-hidden="true">↗</span></a></div>
+  <div class="footer-bottom"><a href="/">CookieBear Blog</a><span>&copy; {today.getFullYear()} Jerry Fan. All rights reserved.</span><a href="/rss.xml">RSS ↗</a></div>
 </footer>
 <style>
+  @layer original {
   footer {
     padding: 2em 1em 6em 1em;
     background: linear-gradient(var(--gray-gradient)) no-repeat;
     color: rgb(var(--gray));
     text-align: center;
+  }
   }
 </style>
