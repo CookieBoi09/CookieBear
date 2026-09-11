@@ -1,9 +1,9 @@
 ---
-title: 'A Word About Grades'
+title: 'A Word About Grade Deflation'
 description: 'Journal 6'
 category: 'Life'
 pubDate: 'Aug 13 2026'
-heroImage: '../../assets/blog-placeholder-2.jpg'
+heroImage: '../../assets/blog-placeholder-life.jpg'
 draft: false
 ---
 

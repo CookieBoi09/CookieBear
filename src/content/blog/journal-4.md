@@ -3,7 +3,7 @@ title: 'CS 61A Quick Peek'
 description: 'Journal 4'
 category: 'Berkeley Classes'
 pubDate: 'Aug 12 2026'
-heroImage: '../../assets/blog-placeholder-2.jpg'
+heroImage: '../../assets/blog-placeholder-class.jpg'
 draft: false
 ---
 
