@@ -28,7 +28,9 @@ const posts = (
   );
 });
 
-const categories = [...new Set(posts.map((post) => post.data.category))].sort();
+const categories = [
+  ...new Set(['Series 1', ...posts.map((post) => post.data.category)]),
+].sort();
 ---
 
 <!doctype html>
