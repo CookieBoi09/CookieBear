@@ -7,9 +7,9 @@ heroImage: '../../assets/blog-placeholder-class.jpg'
 draft: false
 ---
 
-CS 61A is one of those classes that will stretch your brain a lot, especially if you don’t have much programming experience. I personally took this class with CS61B. Quite frankly, these two classes contain a lot of content by themselves. I personally wouldn’t recommend taking both unless you have done projects in python and java. To give you some context, I completed PoDS class (Principles of Data Science) at Stanford the semester before, took college-level statistics class in high school where I used python to do statistical analysis, and occasionally did leetcode and hackerrank problems for fun. CS 61A is a problem-solving heavy class, and you will solve a lot of computer science problems on paper and on code. And no, AP CS A is not even close to CS 61A level of difficulty.
+&emsp;CS 61A is one of those classes that will stretch your brain a lot, especially if you don’t have much programming experience. I personally took this class with CS61B. Quite frankly, these two classes contain a lot of content by themselves. I personally wouldn’t recommend taking both unless you have done projects in python and java. To give you some context, I completed PoDS class (Principles of Data Science) at Stanford the semester before, took college-level statistics class in high school where I used python to do statistical analysis, and occasionally did leetcode and hackerrank problems for fun. CS 61A is a problem-solving heavy class, and you will solve a lot of computer science problems on paper and on code. And no, AP CS A is not even close to CS 61A level of difficulty.
 
-Note: As of Fall 2026, the new coding language used for the class I’ve heard is called gleam. Scheme is discontinued after the summer semester I took CS 61A.
+###### Note: As of Fall 2026, the new coding language used for the class I’ve heard is called gleam. Scheme is discontinued after the summer semester I took CS 61A.
 
 Here are some things I believe are very helpful for developing your ability to solve problems:
 
