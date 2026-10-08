@@ -89,8 +89,13 @@ symlinks, and non-image files are omitted from the gallery. Everything in `publi
 is publicly served, so keep only material intended for publication there.
 Empty folders need a `.gitkeep` file for Git to preserve them.
 
-Restart the development server after changing the folder structure if new routes
-do not appear. Run `npm run build` and redeploy to update the published galleries;
+The development server automatically refreshes gallery discovery when folders or
+images are added, renamed, changed, or removed. After pulling this update, restart
+your existing development server once to enable the watcher.
+
+For the published site, commit and push your images as well as your folders
+(VS Code's `U` marker means a file is still untracked). Run `npm run build` and
+redeploy to update the published galleries;
 the website cannot read folders on your computer after deployment.
 
 Run the folder discovery checks with `node --test tests/memes.test.js`.

@@ -3,11 +3,13 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
+import { watchMemes } from './src/lib/watch-memes.js';
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://example.com',
 	integrations: [mdx(), sitemap()],
+	vite: { plugins: [watchMemes()] },
 	fonts: [
 		{
 			provider: fontProviders.local(),
