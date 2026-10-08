@@ -61,3 +61,36 @@ Check out [our documentation](https://docs.astro.build) or jump into our [Discor
 ## Credit
 
 This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+
+## Memes
+
+Open `/memes/` or choose **Memes** in the navigation. Manage the galleries in VS Code by adding folders and images under `public/Memes folder/`:
+
+```text
+public/
+└── Memes folder/
+    ├── Cats/
+    │   ├── sleepy-cat.jpg
+    │   └── Reactions/
+    │       └── surprised.gif
+    └── Programming/
+        └── works-on-my-machine.png
+```
+
+Each directory becomes a folder card using its exact name. Opening it shows its
+images and any subfolders; breadcrumbs and a back link let visitors move up the
+hierarchy. Images directly in `Memes folder` appear on the main Memes page.
+Selecting an image opens the original full-size file. No gallery list or code
+changes are needed when adding, renaming, or removing folders.
+
+Supported formats: JPG/JPEG, PNG, GIF (including animation), WebP, AVIF, and SVG.
+Names with spaces, Unicode, and URL punctuation are supported. Hidden entries,
+symlinks, and non-image files are omitted from the gallery. Everything in `public/`
+is publicly served, so keep only material intended for publication there.
+Empty folders need a `.gitkeep` file for Git to preserve them.
+
+Restart the development server after changing the folder structure if new routes
+do not appear. Run `npm run build` and redeploy to update the published galleries;
+the website cannot read folders on your computer after deployment.
+
+Run the folder discovery checks with `node --test tests/memes.test.js`.

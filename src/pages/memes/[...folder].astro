@@ -1,0 +1,82 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+import { folderUrl, readMemeFolders } from '../../lib/memes.js';
+
+export async function getStaticPaths() {
+  return (await readMemeFolders()).map((folder) => ({
+    params: { folder: folder.parts.length ? folder.url.slice('/memes/'.length, -1) : undefined },
+    props: { folder },
+  }));
+}
+const { folder } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head><BaseHead title={`${folder.name} | ${SITE_TITLE}`} description="A little collection of things that make me laugh. Open a folder and explore the memes inside." /></head>
+  <body>
+    <Header />
+    <main id="main-content">
+      <div class="page-intro">
+        <p class="eyebrow">The unserious side</p>
+        <h1>{folder.parts.length ? folder.name : 'Memes'}</h1>
+        <p>A little collection of things that make me laugh. Pick a folder and have a look around.</p>
+      </div>
+      <nav class="breadcrumbs" aria-label="Meme folders">
+        <a href="/memes/" aria-current={!folder.parts.length ? 'page' : undefined}>Memes</a>
+        {folder.parts.map((part, index) => <><span aria-hidden="true">/</span><a href={folderUrl(folder.parts.slice(0, index + 1))} aria-current={index === folder.parts.length - 1 ? 'page' : undefined}>{part}</a></>)}
+      </nav>
+      {folder.children.length > 0 && <section aria-labelledby="folders-heading">
+        <h2 id="folders-heading">Folders <span class="count">{folder.children.length}</span></h2>
+        <ul class="folders">
+          {folder.children.map((child) => <li><a class="folder-card" href={child.url}>
+            <svg width="44" height="36" viewBox="0 0 44 36" fill="none" aria-hidden="true"><path d="M2 9V3h15l5 6h20v25H2V9Z" fill="currentColor" fill-opacity=".16" stroke="currentColor" stroke-width="1.5"/><path d="M2 12h40" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="folder-name">{child.name}</span>
+            <span class="folder-meta">{child.imageCount} {child.imageCount === 1 ? 'image' : 'images'}{child.folderCount > 0 ? ` · ${child.folderCount} ${child.folderCount === 1 ? 'folder' : 'folders'}` : ''}</span>
+            <span class="folder-arrow" aria-hidden="true">↗</span>
+          </a></li>)}
+        </ul>
+      </section>}
+      {folder.images.length > 0 && <section class="gallery-section" aria-labelledby="gallery-heading">
+        <h2 id="gallery-heading">Gallery <span class="count">{folder.images.length}</span></h2>
+        <p class="gallery-hint">Select an image to view it full size.</p>
+        <ul class="gallery">
+          {folder.images.map((image) => <li><a href={image.src} aria-label={`View ${image.name} full size`}><figure><img src={image.src} alt={image.name} loading="lazy" decoding="async" /><figcaption>{image.name}</figcaption></figure></a></li>)}
+        </ul>
+      </section>}
+      {folder.images.length === 0 && <div class="empty-state"><p>{folder.children.length ? 'Open a folder above to explore its gallery.' : 'No memes here yet. Check back soon for a few laughs.'}</p></div>}
+      {folder.parts.length > 0 && <a class="back-link" href={folderUrl(folder.parts.slice(0, -1))}>← Back to {folder.parts.length > 1 ? folder.parts.at(-2) : 'all memes'}</a>}
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  h1, .folder-name, figcaption { overflow-wrap: anywhere; }
+  h2 { font-size: 1.6rem; margin-bottom: 1.5rem; }
+  .count { color: rgb(var(--gray)); font: 0.85rem var(--font-lora); margin-left: 0.5rem; }
+  .breadcrumbs { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; font-size: 0.85rem; overflow-wrap: anywhere; }
+  .breadcrumbs a { min-width: 0; }
+  .breadcrumbs [aria-current='page'] { color: var(--ink); text-decoration: none; font-weight: 700; }
+  ul { padding: 0; margin: 0; list-style: none; }
+  .folders { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 1.5rem; }
+  .folder-card { position: relative; display: flex; flex-direction: column; gap: 0.6rem; height: 100%; padding: 1.6rem; border: 1px solid #b9c1b1; background: #e9ecdf; color: var(--accent); text-decoration: none; }
+  .folder-card:hover { background: #dce6ca; border-color: var(--accent); }
+  .folder-name { margin-top: 0.7rem; color: var(--ink); font-size: 1.25rem; }
+  .folder-meta, .gallery-hint { color: rgb(var(--gray)); font-size: 0.85rem; }
+  .folder-arrow { position: absolute; top: 1rem; right: 1.2rem; }
+  .gallery-section { margin-top: 3rem; }
+  .gallery-hint { margin-top: -0.8rem; }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1.5rem; align-items: start; }
+  .gallery a { display: block; color: var(--ink); text-decoration: none; border: 1px solid rgb(var(--gray-light)); background: #fbfaf4; }
+  .gallery a:hover { border-color: var(--accent); }
+  figure { margin: 0; }
+  .gallery img { display: block; width: 100%; height: auto; border-radius: 0; }
+  figcaption { padding: 0.8rem 1rem; font-size: 0.85rem; }
+  .empty-state { padding: 2rem; border: 1px dashed #b9c1b1; color: rgb(var(--gray)); margin-top: 2rem; }
+  .empty-state p { margin: 0; }
+  .back-link { display: inline-block; margin-top: 2rem; }
+</style>
