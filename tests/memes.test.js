@@ -24,7 +24,7 @@ test('discovers nested and empty folders with direct images, safe URLs and natur
     const cats = folders.find((folder) => folder.name === name);
     assert.deepEqual(cats.images.map((image) => image.name), ['2', '10']);
     assert.equal(cats.children[0].imageCount, 1);
-    assert.equal(decodeURIComponent(cats.images[0].src), `/Meme's folder/${name}/2.png`);
+    assert.equal(decodeURIComponent(cats.images[0].src), `/Memes folder/${name}/2.png`);
     assert.match(cats.url, /^\/memes\/cats-dog-s-1-[a-f0-9]{12}\/$/);
     assert.notEqual(folderUrl(['Cats']), folderUrl(['cats']));
     assert(!cats.url.includes('#'));

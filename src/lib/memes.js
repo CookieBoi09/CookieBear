@@ -2,7 +2,7 @@ import { readdir } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 
-const defaultRoot = resolve("public/Meme's folder");
+const defaultRoot = resolve("public/Memes folder");
 const imageExtension = /\.(avif|gif|jpe?g|png|webp|svg)$/i;
 const encode = (part) => encodeURIComponent(part).replace(/'/g, '%27');
 // Stable safe route segments avoid reserved URL characters and duplicate slugs.
@@ -23,7 +23,7 @@ export async function readMemeFolders(root = defaultRoot) {
       children: [],
       images: entries.filter((entry) => entry.isFile() && imageExtension.test(entry.name)).map((entry) => ({
         name: entry.name.replace(imageExtension, '').replace(/[-_]/g, ' '),
-        src: `/${["Meme's folder", ...parts, entry.name].map(encode).join('/')}`,
+        src: `/${["Memes folder", ...parts, entry.name].map(encode).join('/')}`,
       })),
     };
     folders.push(folder);

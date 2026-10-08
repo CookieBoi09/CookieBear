@@ -11,21 +11,21 @@ export default defineConfig({
 	fonts: [
 		{
 			provider: fontProviders.local(),
-			name: 'Atkinson',
-			cssVariable: '--font-atkinson',
-			fallbacks: ['sans-serif'],
+			name: 'Lora',
+			cssVariable: '--font-lora',
+			fallbacks: ['serif'],
 			options: {
 				variants: [
 					{
-						src: ['./src/assets/fonts/atkinson-regular.woff'],
-						weight: 400,
+						src: ['./src/assets/fonts/lora-regular.ttf'],
+						weight: '400 700',
 						style: 'normal',
 						display: 'swap',
 					},
 					{
-						src: ['./src/assets/fonts/atkinson-bold.woff'],
-						weight: 700,
-						style: 'normal',
+						src: ['./src/assets/fonts/lora-italic.ttf'],
+						weight: '400 700',
+						style: 'italic',
 						display: 'swap',
 					},
 				],

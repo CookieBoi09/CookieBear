@@ -64,11 +64,11 @@ This theme is based off of the lovely [Bear Blog](https://github.com/HermanMarti
 
 ## Memes
 
-Open `/memes/` or choose **Memes** in the navigation. Manage the galleries in VS Code by adding folders and images under `public/Meme's folder/`:
+Open `/memes/` or choose **Memes** in the navigation. Manage the galleries in VS Code by adding folders and images under `public/Memes folder/`:
 
 ```text
 public/
-└── Meme's folder/
+└── Memes folder/
     ├── Cats/
     │   ├── sleepy-cat.jpg
     │   └── Reactions/
@@ -79,7 +79,7 @@ public/
 
 Each directory becomes a folder card using its exact name. Opening it shows its
 images and any subfolders; breadcrumbs and a back link let visitors move up the
-hierarchy. Images directly in `Meme's folder` appear on the main Memes page.
+hierarchy. Images directly in `Memes folder` appear on the main Memes page.
 Selecting an image opens the original full-size file. No gallery list or code
 changes are needed when adding, renaming, or removing folders.
 
