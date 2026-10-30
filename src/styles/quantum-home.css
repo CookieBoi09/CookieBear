@@ -1,17 +1,3 @@
-@font-face {
-  font-family:'Space Grotesk';
-  src:url('/fonts/space-grotesk.ttf') format('truetype');
-  font-weight:300 700;
-  font-display:swap;
-}
-
-@font-face {
-  font-family:'IBM Plex Mono';
-  src:url('/fonts/ibm-plex-mono.ttf') format('truetype');
-  font-weight:400;
-  font-display:swap;
-}
-
 body.quantum-home {
   --q-bg:#080d12;
   --q-panel:#0e171f;
@@ -23,7 +9,7 @@ body.quantum-home {
   --accent:var(--q-cyan);
   background:var(--q-bg);
   color:var(--q-text);
-  font-family:'Space Grotesk',sans-serif;
+  font-family:var(--font-lora),serif;
   font-size:16px;
   line-height:1.5;
 }
@@ -74,7 +60,7 @@ body.quantum-home {
 }
 
 .quantum-home .q-label {
-  font:12px/1.5 'IBM Plex Mono',monospace;
+  font:12px/1.5 var(--font-lora),serif;
   letter-spacing:.06em;
   color:var(--q-cyan);
 }
@@ -94,7 +80,7 @@ body.quantum-home>header {
 }
 
 .quantum-home header h2 {
-  font-family:'Space Grotesk',sans-serif;
+  font-family:var(--font-lora),serif;
   font-size:23px;
   letter-spacing:-.04em;
 }
@@ -108,17 +94,17 @@ body.quantum-home>header {
   width:40px;
   height:40px;
   border-radius:50%;
-  border:2px solid var(--q-blue);
+  border:2px solid var(--q-cyan);
   object-fit:cover;
   padding:2px;
-  background:#fff;
-  box-shadow:0 0 15px #55a7ff25;
+  background:#000;
+  box-shadow:0 0 15px #64f6d225;
   transition:transform .4s,box-shadow .4s;
 }
 
 .quantum-home .footer-brand:hover img,.quantum-home header h2 a:hover img {
   transform:rotate(-12deg);
-  box-shadow:0 0 24px #55a7ff60;
+  box-shadow:0 0 24px #64f6d260;
 }
 
 .quantum-home header .nav-menu {
@@ -138,7 +124,7 @@ body.quantum-home>header {
 
 .quantum-home header .nav-menu-button::before {
   content:'Menu';
-  font:13px 'IBM Plex Mono',monospace;
+  font:13px var(--font-lora),serif;
   color:var(--q-text);
 }
 
@@ -171,7 +157,7 @@ body.quantum-home>header {
   color:var(--q-text);
   padding:11px 16px;
   border:0;
-  font:13px 'IBM Plex Mono',monospace;
+  font:13px var(--font-lora),serif;
   border-radius:4px;
 }
 
@@ -279,7 +265,7 @@ body.quantum-home>header {
   min-height:52px;
   padding:0 25px;
   border-radius:5px;
-  font:13px 'IBM Plex Mono',monospace;
+  font:13px var(--font-lora),serif;
   transition:transform .25s,box-shadow .25s,background .25s;
 }
 
@@ -333,7 +319,7 @@ body.quantum-home>header {
   background:transparent;
   border:1px solid #21333f;
   color:var(--q-muted);
-  font:11px 'IBM Plex Mono',monospace;
+  font:11px var(--font-lora),serif;
   padding:8px 12px;
   border-radius:4px;
   cursor:pointer;
@@ -401,7 +387,7 @@ body.quantum-home>header {
 }
 
 .quantum-home .interests {
-  font:11px/1.8 'IBM Plex Mono',monospace;
+  font:11px/1.8 var(--font-lora),serif;
   color:var(--q-cyan);
   margin-top:22px;
 }
@@ -413,7 +399,7 @@ body.quantum-home>header {
 
 .quantum-home .quiet-link {
   display:inline-block;
-  font:11px 'IBM Plex Mono',monospace;
+  font:11px var(--font-lora),serif;
   color:var(--q-cyan);
   border-bottom:1px solid transparent;
   padding-bottom:4px;
@@ -469,7 +455,7 @@ body.quantum-home>header {
   display:flex;
   justify-content:space-between;
   padding:17px 18px;
-  font:10px 'IBM Plex Mono',monospace;
+  font:10px var(--font-lora),serif;
   color:var(--q-muted);
 }
 
@@ -529,7 +515,7 @@ body.quantum-home>header {
   align-items:center;
   padding-bottom:20px;
   border-bottom:1px solid #2b404c;
-  font:10px 'IBM Plex Mono',monospace;
+  font:10px var(--font-lora),serif;
   color:var(--q-cyan);
 }
 
@@ -538,7 +524,7 @@ body.quantum-home>header {
 }
 
 .quantum-home .terminal {
-  font:clamp(16px,1.7vw,25px)/1.5 'IBM Plex Mono',monospace;
+  font:clamp(16px,1.7vw,25px)/1.5 var(--font-lora),serif;
   color:var(--q-cyan);
   margin:22px 0;
   background:repeating-linear-gradient(transparent 0 3px,#64f6d207 3px 4px);
@@ -566,7 +552,7 @@ body.quantum-home>header {
 }
 
 .quantum-home .oled-card time {
-  font:10px 'IBM Plex Mono',monospace;
+  font:10px var(--font-lora),serif;
   color:var(--q-muted);
 }
 
@@ -601,7 +587,7 @@ body.quantum-home>header {
   align-items:center;
   gap:24px;
   border-top:1px solid #21333f;
-  font:10px 'IBM Plex Mono',monospace;
+  font:10px var(--font-lora),serif;
   color:var(--q-muted);
 }
 
@@ -609,7 +595,7 @@ body.quantum-home>header {
   display:flex;
   align-items:center;
   gap:12px;
-  font:700 17px 'Space Grotesk',sans-serif;
+  font:700 17px var(--font-lora),serif;
   color:var(--q-text);
 }
 
@@ -948,4 +934,22 @@ body.quantum-home>header {
 @media (prefers-reduced-motion: reduce) {
   .quantum-home .ising-signals [data-qubit],
   .quantum-home .ising-signals [data-branch-trails] { display: none; }
+}
+
+/* Every project title uses the same terminal treatment as its build line. */
+.quantum-home .oled-card h3.project-terminal {
+  font:clamp(16px,1.7vw,25px)/1.5 var(--font-lora),serif;
+  letter-spacing:normal;
+  color:var(--q-cyan);
+  margin:22px 0 12px;
+}
+@media(max-width:600px) {
+  .quantum-home .oled-card h3.project-terminal { font-size:18px; }
+}
+
+/* Restore the circuit boundary between the hero and project cards. */
+.quantum-home .home-section-divider {
+  position:relative;
+  top:auto;
+  margin-top:-40px;
 }
