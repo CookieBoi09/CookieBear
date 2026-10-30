@@ -204,7 +204,7 @@ body.quantum-home>header {
   transform:translateX(-50%);
   top:0;
   border-radius:0;
-  animation:circuit-breathe 6s ease-in-out infinite;
+
 }
 
 .quantum-home .quantum-dots {
