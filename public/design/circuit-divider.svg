@@ -14,4 +14,11 @@
   <g stroke="#E6BC68" fill="#0C171D" stroke-width="1.4">
     <circle cx="110" cy="40" r="3"/><circle cx="332" cy="40" r="3"/><circle cx="546" cy="40" r="3"/><circle cx="894" cy="40" r="3"/><circle cx="1108" cy="40" r="3"/><circle cx="1330" cy="40" r="3"/>
   </g>
+  <style>
+    .divider-pulse { stroke-dasharray:60 1740; animation:divider-flow 8s linear infinite; }
+    @keyframes divider-flow { from { stroke-dashoffset:60; } to { stroke-dashoffset:-1740; } }
+    @media(prefers-reduced-motion:reduce) { .divider-pulse { display:none; } }
+  </style>
+  <!-- Disconnected subpaths illuminate both capacitor plates without bridging the dielectric gap. -->
+  <path class="divider-pulse" d="M0 40H107A3 3 0 0 1 113 40H174L180 29L190 51L200 29L210 51L220 29L230 40H329A3 3 0 0 1 335 40H390V26L418 40H543A3 3 0 0 1 549 40H604L610 29L620 51L630 29L640 51L650 29L660 40H710V20V60 M730 20V60V40H780L790 29L800 51L810 29L820 51L830 29L836 40H891A3 3 0 0 1 897 40H1010V26L1038 40H1105A3 3 0 0 1 1111 40H1210L1220 29L1230 51L1240 29L1250 51L1260 29L1266 40H1327A3 3 0 0 1 1333 40H1440" pathLength="1600" stroke="#E6BC68" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
