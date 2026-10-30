@@ -20,3 +20,5 @@ draft: false
 &emsp;This is all I am currently going for as of today. I might change plans due to shift in priority, but we’ll see in the subsequent days what might happen.
 
 &emsp;I have not decided on how often I will make an entry, but most likely I will post them on a weekly basis which means that there will be lots of stories to tell :)
+
+&emsp;Also credit to Aayush (insta handle: yush.xxvii) for this idea, and I can’t wait to see what this journey will entail.
