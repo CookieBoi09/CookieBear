@@ -1,0 +1,31 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1440" height="80" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Circuit divider / Hero&#226;&#128;&#147;About boundary">
+<g id="Group">
+<path id="Vector" d="M0 40H1440" stroke="#367678"/>
+<path id="Vector_2" d="M80 40H260L280 20H510L530 40H696" stroke="#367678"/>
+<path id="Vector_3" d="M160 40H330L350 62H570L592 40H696" stroke="#367678"/>
+<path id="Vector_4" d="M1360 40H1180L1160 20H930L910 40H744" stroke="#367678"/>
+<path id="Vector_5" d="M1280 40H1110L1090 62H870L848 40H744" stroke="#367678"/>
+</g>
+<g id="Group_2" opacity="0.9375">
+<path id="Vector_6" d="M390 20H510L530 40H696" stroke-width="1.4" stroke="#64F6D2"/>
+<path id="Vector_7" d="M510 62H570L592 40H696" stroke-width="1.4" stroke="#64F6D2"/>
+<path id="Vector_8" d="M1050 20H930L910 40H744" stroke-width="1.4" stroke="#64F6D2"/>
+<path id="Vector_9" d="M930 62H870L848 40H744" stroke-width="1.4" stroke="#64F6D2"/>
+</g>
+<g id="Group_3">
+<path id="Vector_10" d="M260 43C261.657 43 263 41.6569 263 40C263 38.3431 261.657 37 260 37C258.343 37 257 38.3431 257 40C257 41.6569 258.343 43 260 43Z" fill="#0C171D" stroke-width="1.2" stroke="#64F6D2"/>
+<path id="Vector_11" d="M390 23C391.657 23 393 21.6569 393 20C393 18.3431 391.657 17 390 17C388.343 17 387 18.3431 387 20C387 21.6569 388.343 23 390 23Z" fill="#0C171D" stroke-width="1.2" stroke="#64F6D2"/>
+<path id="Vector_12" d="M510 65C511.657 65 513 63.6569 513 62C513 60.3431 511.657 59 510 59C508.343 59 507 60.3431 507 62C507 63.6569 508.343 65 510 65Z" fill="#0C171D" stroke-width="1.2" stroke="#64F6D2"/>
+<path id="Vector_13" d="M1180 43C1181.66 43 1183 41.6569 1183 40C1183 38.3431 1181.66 37 1180 37C1178.34 37 1177 38.3431 1177 40C1177 41.6569 1178.34 43 1180 43Z" fill="#0C171D" stroke-width="1.2" stroke="#64F6D2"/>
+<path id="Vector_14" d="M1050 23C1051.66 23 1053 21.6569 1053 20C1053 18.3431 1051.66 17 1050 17C1048.34 17 1047 18.3431 1047 20C1047 21.6569 1048.34 23 1050 23Z" fill="#0C171D" stroke-width="1.2" stroke="#64F6D2"/>
+<path id="Vector_15" d="M930 65C931.657 65 933 63.6569 933 62C933 60.3431 931.657 59 930 59C928.343 59 927 60.3431 927 62C927 63.6569 928.343 65 930 65Z" fill="#0C171D" stroke-width="1.2" stroke="#64F6D2"/>
+<path id="Vector_16" d="M739 22H701C698.239 22 696 24.2386 696 27V53C696 55.7614 698.239 58 701 58H739C741.761 58 744 55.7614 744 53V27C744 24.2386 741.761 22 739 22Z" fill="#0C171D" stroke-width="1.2" stroke="#64F6D2"/>
+</g>
+<g id="Group_4">
+<path id="Vector_17" d="M707 22V15M720 22V15M733 22V15M707 58V65M720 58V65M733 58V65" stroke="#64F6D2"/>
+<path id="Vector_18" d="M711 31H729C730.105 31 731 31.8954 731 33V47C731 48.1046 730.105 49 729 49H711C709.895 49 709 48.1046 709 47V33C709 31.8954 709.895 31 711 31Z" stroke="#64F6D2"/>
+</g>
+<path id="Vector_19" d="M720 42.5C721.381 42.5 722.5 41.3807 722.5 40C722.5 38.6193 721.381 37.5 720 37.5C718.619 37.5 717.5 38.6193 717.5 40C717.5 41.3807 718.619 42.5 720 42.5Z" fill="#64F6D2"/>
+</g>
+</svg>
