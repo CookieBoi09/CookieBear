@@ -15,4 +15,11 @@
   <g stroke="#E6BC68" stroke-width="1.5" fill="#0C171D">
     <circle cx="154" cy="40" r="4"/><circle cx="460" cy="40" r="4"/><circle cx="980" cy="40" r="4"/><circle cx="1286" cy="40" r="4"/>
   </g>
+  <style>
+    .signal-trace { stroke-dasharray: 48 1552; animation: trace-circuit 8s linear infinite; }
+    @keyframes trace-circuit { from { stroke-dashoffset: 48; } to { stroke-dashoffset: -1552; } }
+    @media (prefers-reduced-motion: reduce) { .signal-trace { display: none; } }
+  </style>
+  <!-- The gold pulse follows the connected lower branch and resistor perimeter. -->
+  <path class="signal-trace" d="M0 40H180L206 16H380L406 40H456A4 4 0 0 0 460 44V64H694V59Q694 58 695 58H745Q746 58 746 59V64H980V44A4 4 0 0 1 984 40H1034L1060 64H1234L1260 40H1282A4 4 0 0 1 1290 40H1440" pathLength="1500" stroke="#E6BC68" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
