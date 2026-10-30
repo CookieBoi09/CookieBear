@@ -68,8 +68,7 @@ const projects = (await getCollection('projects'))
           </article>)}
           <article class="oled-card journal-card reveal">
             <div class="card-meta"><span>THE JOURNAL</span><a href="/blog" class="gold">ALL ENTRIES</a></div>
-            <div class="terminal" aria-hidden="true">&gt; thoughts into words<span class="cursor">_</span></div>
-            <h3>Recent Blog Posts</h3>
+            <h3 class="terminal project-terminal"><span aria-hidden="true">&gt; </span>Recent Blog Posts<span class="cursor" aria-hidden="true">_</span></h3>
             <ul>{posts.map(post => <li><a href={`/blog/${post.id}/`}>{post.data.title}</a><FormattedDate date={post.data.pubDate} /></li>)}</ul>
           </article>
         </div>
