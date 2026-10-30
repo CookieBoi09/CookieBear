@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import { PROJECT_STATUS_LABELS } from '../lib/project-status';
 import { SITE_TITLE } from '../consts';
 import '../styles/quantum-home.css';
 import '../styles/project-library.css';
@@ -14,7 +15,8 @@ const shelfRank = (id: string) => {
 const projects = (await getCollection('projects')).sort((a, b) => {
   const order = shelfRank(a.id) - shelfRank(b.id);
   if (order) return order;
-  return a.data.status !== b.data.status ? (a.data.status === 'ongoing' ? -1 : 1) : b.data.date.valueOf() - a.data.date.valueOf();
+  const completedOrder = Number(a.data.status === 'past') - Number(b.data.status === 'past');
+  return completedOrder || b.data.date.valueOf() - a.data.date.valueOf();
 });
 const books = await Promise.all(projects.map(async project => ({ project, ...(await render(project)) })));
 ---
@@ -42,7 +44,7 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
                 <span class="book-index">VOL. {String(index + 1).padStart(2, '0')}</span>
                 <span class="book-circuit" aria-hidden="true"><span></span></span>
                 <span class="book-title">{project.data.title}</span>
-                <span class="book-status">{project.data.status === 'ongoing' ? 'IN PROGRESS' : 'COMPLETED'}</span>
+                <span class="book-status">{PROJECT_STATUS_LABELS[project.data.status]}</span>
                 <span class="book-open">OPEN PROJECT</span>
               </span>
             </button>)}
@@ -62,7 +64,7 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
             <span class="book-status">COOKIEBEAR / PROJECT ARCHIVE</span>
           </div>
           <article class="project-page">
-            <div class="project-meta"><span>{project.data.status === 'ongoing' ? 'IN PROGRESS' : 'COMPLETED'}</span><FormattedDate date={project.data.date} /></div>
+            <div class="project-meta"><span>{PROJECT_STATUS_LABELS[project.data.status]}</span><FormattedDate date={project.data.date} /></div>
             <h2 id={`book-title-${index}`}>{project.data.title}</h2>
             <p class="project-summary">{project.data.description}</p>
             <div class="project-prose"><Content /></div>

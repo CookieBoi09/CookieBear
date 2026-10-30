@@ -25,7 +25,7 @@ const projects = defineCollection({
 		title: z.string(),
 		description: z.string(),
 		date: z.coerce.date(),
-		status: z.enum(['ongoing', 'past']),
+		status: z.enum(['ongoing', 'in-development', 'beta-testing', 'past']),
 	}),
 });
 

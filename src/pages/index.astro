@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
+import { PROJECT_STATUS_LABELS } from '../lib/project-status';
 import IsingSignals from '../components/IsingSignals.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
@@ -43,7 +44,7 @@ const projects = (await getCollection('projects'))
         <div class="reveal section-title"><p class="q-label">02 / ON THE WORKBENCH</p><h2 id="projects-title">Currently in development.</h2></div>
         <div class="quantum-card-row">
           {projects.map((project, i) => <article class="oled-card reveal">
-            <div class="card-meta"><span>PROJECT_0{i + 1}</span><span class="gold"><i aria-hidden="true"></i>{project.data.status === 'ongoing' ? 'IN PROGRESS' : 'COMPLETED'}</span></div>
+            <div class="card-meta"><span>PROJECT_0{i + 1}</span><span class="gold"><i aria-hidden="true"></i>{PROJECT_STATUS_LABELS[project.data.status]}</span></div>
             <div class="terminal" aria-hidden="true">&gt; build. test. repeat<span class="cursor">_</span></div>
             <h3><a href="/projects">{project.data.title}</a></h3>
             <p>{project.data.description}</p>
