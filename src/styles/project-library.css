@@ -2,9 +2,11 @@
 .project-library .library-content h1 { font-size:clamp(42px,5vw,70px); line-height:1.13; margin:0 0 64px; max-width:1000px; }
 .project-library .loading-dots { color:var(--q-cyan); background:none; animation:none; }
 .project-library .electronic-shelf { position:relative; padding:20px 38px 0; border-inline:1px solid #203943; background:radial-gradient(ellipse at 25% 95%,#163b3c60,transparent 65%),radial-gradient(#3d696a38 1px,transparent 1px); background-size:auto,24px 24px; }
-.project-library .shelf-books { display:flex; align-items:flex-end; gap:42px; flex-wrap:wrap; padding:10px 8px 0; perspective:1400px; }
-.project-library .project-book { position:relative; flex:0 0 228px; height:310px; border:0; padding:0; background:none; color:var(--q-text); cursor:pointer; text-align:left; perspective:1000px; margin:0 0 12px; transform:rotateY(-9deg); transition:transform .35s; }
-.project-library .project-book:hover,.project-library .project-book:focus-visible { transform:translateY(-14px) rotateY(-16deg); }
+.project-library .shelf-books { display:flex; align-items:flex-end; gap:0; flex-wrap:nowrap; padding:36px 18px 0 8px; overflow-x:auto; scrollbar-width:thin; scrollbar-color:#35515e transparent; perspective:1400px; }
+.project-library .project-book { position:relative; flex:0 0 228px; height:310px; border:0; padding:0; background:none; color:var(--q-text); cursor:pointer; text-align:left; perspective:1000px; margin:0 -114px 12px 0; transform:rotateY(-9deg); transition:transform .35s; }
+.project-library .project-book:hover,.project-library .project-book:focus-visible { z-index:10; transform:translateY(-24px) rotateY(0deg); }
+.project-library .project-book:last-child { margin-right:0; }
+.project-library .project-book:hover .book-cover,.project-library .project-book:focus-visible .book-cover { border-color:var(--q-cyan); box-shadow:inset 4px 0 5px #0008,12px 16px 30px #000b,0 0 18px #64f6d218; }
 .project-library .book-pages { position:absolute; inset:8px -9px 3px 8px; border:1px solid #496364; border-radius:2px 7px 7px 2px; background:repeating-linear-gradient(0deg,#7e9390 0 1px,#243738 1px 3px); }
 .project-library .book-cover { position:absolute; inset:0; display:flex; flex-direction:column; padding:25px 23px 22px 32px; border:1px solid #60d9c17a; border-left:8px solid #28545a; border-radius:3px 8px 8px 3px; background:linear-gradient(110deg,#243b43,#102127 20%,#142d34); box-shadow:inset 4px 0 5px #0008,10px 12px 24px #0008; }
 .project-library .book-index,.project-library .book-status,.project-library .book-open,.project-library .project-meta,.project-library .page-number { font:10px 'IBM Plex Mono',monospace; letter-spacing:.09em; }
@@ -44,8 +46,8 @@
  .project-library .library-content h1 { margin-bottom:40px; font-size:42px; }
  .project-library .electronic-shelf { padding-inline:20px; }
  .project-library .shelf-rail { margin-inline:-20px; }
- .project-library .shelf-books { justify-content:center; }
- .project-library .project-book { flex-basis:210px; height:300px; }
+ .project-library .shelf-books { justify-content:flex-start; }
+ .project-library .project-book { flex-basis:210px; height:300px; margin-right:-105px; }
  .project-library .open-book { grid-template-columns:1fr; min-height:400px; }
  .project-library .inside-cover { display:none; }
  .project-library .project-page { border-radius:6px; padding:28px 24px 65px; }
