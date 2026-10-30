@@ -7,7 +7,17 @@ import { PROJECT_STATUS_LABELS } from '../lib/project-status';
 import { SITE_TITLE } from '../consts';
 import '../styles/quantum-home.css';
 import '../styles/project-library.css';
-const projects = (await getCollection('projects')).sort((a, b) => Number(a.data.status === 'past') - Number(b.data.status === 'past') || b.data.date.valueOf() - a.data.date.valueOf());
+const shelfOrder = ['cookiebear-blog', 'lint', 'sploom'];
+const shelfRank = (id: string) => {
+  const index = shelfOrder.indexOf(id);
+  return index < 0 ? shelfOrder.length : index;
+};
+const projects = (await getCollection('projects')).sort((a, b) => {
+  const order = shelfRank(a.id) - shelfRank(b.id);
+  if (order) return order;
+  const completedOrder = Number(a.data.status === 'past') - Number(b.data.status === 'past');
+  return completedOrder || b.data.date.valueOf() - a.data.date.valueOf();
+});
 const books = await Promise.all(projects.map(async project => ({ project, ...(await render(project)) })));
 ---
 <!doctype html>
@@ -17,7 +27,14 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
     <Header />
     <main id="main-content" class="quantum-main">
       <div class="quantum-container library-content">
-        <h1>Loading<span class="loading-dots">…</span><br /><span>my current projects</span></h1>
+        <section class="library-heading" aria-labelledby="library-title">
+          <div class="binary-field" aria-hidden="true">
+            {Array.from({length: 6}, (_, row) => <div class="binary-row" style={`--row:${row};--duration:${22 + row * 3}s;--delay:-${row * 4}s`}>
+              {[0, 1].map(() => <span>{Array.from({length: 12}, (_, i) => ((i + row) % 3 === 0 ? '01001001' : (i + row) % 3 === 1 ? '10110100' : '00101110')).join('   ')}   </span>)}
+            </div>)}
+          </div>
+          <h1 id="library-title">Loading<span class="loading-dots">…</span><br />my current <span>projects</span></h1>
+        </section>
         <section class="electronic-shelf" aria-label="Project bookshelf">
           <div class="shelf-books">
             {books.map(({project}, index) => <button class="project-book" type="button" data-open-book={`book-${index}`} aria-haspopup="dialog" aria-label={`Open ${project.data.title}`}>

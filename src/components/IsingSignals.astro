@@ -1,5 +1,11 @@
 ---
 import { stages, gatePaths, QUBITS } from '../lib/ising-animation.js';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+const stateLabels = [
+  { x: 28, tex: String.raw`\lvert\psi_0\rangle` },
+  { x: 1418, tex: String.raw`\lvert\psi(t)\rangle` },
+];
 const sequence = stages();
 ---
 <svg class="ising-signals" width="1440" height="700" viewBox="0 0 1540 700" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
@@ -9,10 +15,9 @@ const sequence = stages();
       return ['approach', 'upper', 'lower', 'exit'].map(part => <path id={`qubit-path-${index}-${q}-${part}`} d={paths[part]} />);
     }))}
   </defs>
-  <g class="circuit-notation" fill="#91dccd" font-family="Georgia, serif" font-size="23">
-    <text x="28" y="610">|ψ₀⟩</text>
-    <text x="1418" y="610">|ψ(t)⟩</text>
-  </g>
+  {stateLabels.map(({x, tex}) => <foreignObject x={x} y="585" width="110" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="circuit-notation" style="color:#91dccd;font-size:21px;line-height:1.5;white-space:nowrap" set:html={katex.renderToString(tex, {output: 'html', throwOnError: true})} />
+  </foreignObject>)}
   {Array.from({length: QUBITS}, (_, q) => <g transform={`translate(1480 ${150 + q * 78})`} class="circuit-measurement" stroke="#64F6D2" stroke-width="1.5" fill="none">
     <rect x="-16" y="-16" width="32" height="32" rx="3" fill="#0d181e" />
     <path d="M-10 7 A10 10 0 0 1 10 7 M0 7 L7 -7" />
