@@ -108,17 +108,17 @@ body.quantum-home>header {
   width:40px;
   height:40px;
   border-radius:50%;
-  border:2px solid var(--q-blue);
+  border:2px solid var(--q-cyan);
   object-fit:cover;
   padding:2px;
-  background:#fff;
-  box-shadow:0 0 15px #55a7ff25;
+  background:#000;
+  box-shadow:0 0 15px #64f6d225;
   transition:transform .4s,box-shadow .4s;
 }
 
 .quantum-home .footer-brand:hover img,.quantum-home header h2 a:hover img {
   transform:rotate(-12deg);
-  box-shadow:0 0 24px #55a7ff60;
+  box-shadow:0 0 24px #64f6d260;
 }
 
 .quantum-home header .nav-menu {

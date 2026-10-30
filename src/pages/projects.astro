@@ -73,7 +73,7 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
       </dialog>)}
       <noscript><div class="quantum-container">{books.map(({project, Content}) => <article><h2>{project.data.title}</h2><p>{project.data.description}</p><Content /></article>)}</div></noscript>
     </main>
-    <footer class="quantum-footer quantum-container"><a class="footer-brand" href="/"><img src="/cookie-icon.png" width="389" height="396" alt="" />{SITE_TITLE}</a><a href="/">BACK TO HOME</a></footer>
+    <footer class="quantum-footer quantum-container"><a class="footer-brand" href="/"><img src="/cookie-icon-transparent.png" width="389" height="396" alt="" />{SITE_TITLE}</a><a href="/">BACK TO HOME</a></footer>
     <script>
       let opener: HTMLButtonElement | null = null;
       let previousOverflow = '';
