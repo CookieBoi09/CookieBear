@@ -1,0 +1,83 @@
+/* Shared homepage visual language for reading, galleries, and contact. */
+body.quantum-content {
+  --paper:#080d12;
+  --ink:#edf5f6;
+  --lime:#64f6d2;
+  --black:237,245,246;
+  --gray:145,165,177;
+  --gray-light:42,62,74;
+  --gray-dark:196,211,220;
+  --accent-dark:#173e43;
+  color-scheme:dark;
+}
+.quantum-content main {
+  width:min(1280px,calc(100% - 112px));
+  max-width:none;
+  padding:76px 0 90px;
+  min-height:60vh;
+  background:radial-gradient(#64f6d20c 1px,transparent 1px) top right / 26px 26px;
+}
+.quantum-content main h1 { font-size:clamp(42px,5.28vw,76px); line-height:1.15; margin:20px 0 24px; max-width:1050px; }
+.quantum-content main h2 { font-size:clamp(28px,3vw,42px); line-height:1.2; }
+.quantum-content main :is(h3,h4,h5,h6) { color:var(--q-text); font-family:'Space Grotesk',sans-serif; }
+.quantum-content :is(.eyebrow,.post-meta,.date,.category,.count,.folder-meta,.breadcrumbs,.filter-field label,.category-filter legend,.field label) { font-family:'IBM Plex Mono',monospace; }
+.quantum-content .eyebrow { color:var(--q-gold); font-size:11px; letter-spacing:.12em; }
+.quantum-content :is(.page-intro,.projects-intro) { border-color:#29414a; padding-bottom:38px; margin-bottom:36px; }
+.quantum-content .page-intro > p:last-child,.quantum-content .contact-intro > p:last-child { color:var(--q-muted); font-size:18px; line-height:1.75; max-width:660px; }
+.quantum-content :is(.filters,.contact-page form,.folder-card) { background:linear-gradient(130deg,#112129,#0d171f); border:1px solid #35515e; border-radius:7px; box-shadow:0 12px 32px #0002; }
+.quantum-content .filters { padding:26px; }
+.quantum-content :is(.filter-field label,.category-filter legend,.field label) { color:var(--q-text); font-size:12px; letter-spacing:.04em; }
+.quantum-content :is(.filter-field input,.contact-page input,.contact-page textarea) { background:#080f15; color:var(--q-text); border:1px solid #3b535f; border-radius:4px; font-family:'Space Grotesk',sans-serif; box-shadow:none; }
+.quantum-content input::placeholder,.quantum-content textarea::placeholder { color:#8297a2; opacity:1; }
+.quantum-content :is(input,textarea):focus-visible { outline:2px solid var(--q-gold); outline-offset:3px; border-color:var(--q-cyan); }
+.quantum-content .category-options button { background:#0c171e; border:1px solid #38525c; border-radius:4px; color:#bed1d8; font-family:'IBM Plex Mono',monospace; font-size:12px; transition:background .2s,border-color .2s; }
+.quantum-content .category-options button:hover { background:#19343b; border-color:var(--q-cyan); }
+.quantum-content .category-options button[aria-pressed='true'] { background:var(--q-cyan); color:#071317; border-color:var(--q-cyan); }
+.quantum-content #blog-posts { gap:28px; }
+.quantum-content #blog-posts li { background:#0e1921; border:1px solid #304956; border-radius:7px; overflow:hidden; transition:transform .25s,border-color .25s; }
+.quantum-content #blog-posts li:hover { transform:translateY(-4px); border-color:#64f6d288; }
+.quantum-content #blog-posts a { display:block; height:100%; padding-bottom:22px; }
+.quantum-content #blog-posts img { width:100%; border-radius:0; }
+.quantum-content #blog-posts :is(.title,.date,.category) { margin-inline:23px; }
+.quantum-content #blog-posts .category { font-family:'IBM Plex Mono',monospace; color:var(--q-gold); margin-top:22px; }
+.quantum-content #blog-posts .title { color:var(--q-text); font-size:25px; font-weight:600; margin-top:12px; margin-bottom:20px; }
+.quantum-content #blog-posts .date { color:var(--q-muted); }
+.quantum-content :is(.no-results,.empty-state,.gallery-hint) { color:var(--q-muted); }
+.quantum-content .folder-card { color:var(--q-cyan); transition:transform .25s,border-color .25s; }
+.quantum-content .folder-card:hover { background:#162c34; border-color:var(--q-cyan); transform:translateY(-3px); }
+.quantum-content .folder-name { color:var(--q-text); font-weight:600; }
+.quantum-content .folder-arrow { color:var(--q-gold); }
+.quantum-content .gallery a { background:#0e1921; color:var(--q-text); border:1px solid #35515e; border-radius:6px; overflow:hidden; }
+.quantum-content .gallery a:hover { border-color:var(--q-cyan); }
+.quantum-content .empty-state { border-color:#35515e; background:#0d171f; border-radius:6px; }
+.quantum-content .breadcrumbs a,.quantum-content .back-link { color:var(--q-cyan); }
+.quantum-content .breadcrumbs [aria-current='page'] { color:var(--q-gold); }
+.quantum-content .contact-page { gap:64px; }
+.quantum-content .contact-intro { padding-top:10px; }
+.quantum-content .contact-page form { padding:30px; border-top:2px solid #64f6d288; }
+.quantum-content .contact-page button,.quantum-content .button { background:var(--q-cyan); color:#081318; border:1px solid var(--q-cyan); border-radius:4px; font-family:'IBM Plex Mono',monospace; font-size:13px; }
+.quantum-content .contact-page button:hover,.quantum-content .button:hover { background:#a1ffe6; color:#081318; }
+.quantum-content .article-page { width:min(1000px,calc(100% - 112px)); background:none; }
+.quantum-content .article-page .hero-image img { background:#101c24; border:1px solid #304956; border-radius:8px; }
+.quantum-content .article-page .prose { color:#c4d3dc; font-size:19px; line-height:1.9; }
+.quantum-content .article-page .prose :is(p,ul,ol) { margin-block:0 1.5em; }
+.quantum-content .article-page .prose :is(h2,h3,h4) { margin:1.6em 0 .6em; }
+.quantum-content .article-page .prose a { color:var(--q-cyan); text-decoration:underline; }
+.quantum-content .article-page .prose blockquote { border-left:3px solid var(--q-gold); color:#b9cdd5; background:#0e1b23; padding:18px 24px; }
+.quantum-content .article-page .prose :is(pre,code) { background:#14242d; color:#c8f7ec; font-family:'IBM Plex Mono',monospace; }
+.quantum-content .article-page .prose pre { overflow-x:auto; padding:20px; border:1px solid #35515e; }
+.quantum-content .article-page .prose hr { border:0; border-top:1px solid #304956; }
+.quantum-content .article-page .prose th,.quantum-content .article-page .prose td { border-color:#35515e; }
+.quantum-content > footer { background:#0c151d; color:var(--q-muted); border-top:1px solid #29434d; }
+.quantum-content footer h2 { font-size:clamp(28px,4vw,48px); line-height:1.2; }
+.quantum-content footer h2 em { color:var(--q-gold); font-family:inherit; font-style:normal; }
+.quantum-content footer .eyebrow { color:var(--q-cyan); margin-bottom:18px; }
+.quantum-content .footer-bottom { border-color:#29434d; font-family:'IBM Plex Mono',monospace; font-size:11px; }
+.quantum-content .footer-bottom a { color:var(--q-text); }
+@media(max-width:720px) {
+ .quantum-content main,.quantum-content .article-page { width:calc(100% - 36px); max-width:none; padding-top:42px; }
+ .quantum-content main h1 { font-size:42px; }
+ .quantum-content .contact-page { gap:24px; }
+ .quantum-content .contact-page form,.quantum-content .filters { padding:20px; }
+ .quantum-content .article-page .prose { font-size:18px; }
+}

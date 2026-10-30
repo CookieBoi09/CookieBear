@@ -1,0 +1,97 @@
+---
+import { stages, gatePaths, QUBITS } from '../lib/ising-animation.js';
+const sequence = stages();
+---
+<svg class="ising-signals" width="1440" height="700" viewBox="0 0 1540 700" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  <defs>
+    {sequence.map((stage, index) => Array.from({length: QUBITS}, (_, q) => {
+      const paths = gatePaths(stage.layer, stage.kind, q);
+      return ['approach', 'upper', 'lower', 'exit'].map(part => <path id={`qubit-path-${index}-${q}-${part}`} d={paths[part]} />);
+    }))}
+  </defs>
+  <g class="circuit-notation" fill="#91dccd" font-family="Georgia, serif" font-size="23">
+    <text x="28" y="610">|ψ₀⟩</text>
+    <text x="1418" y="610">|ψ(t)⟩</text>
+  </g>
+  {Array.from({length: QUBITS}, (_, q) => <g transform={`translate(1480 ${150 + q * 78})`} class="circuit-measurement" stroke="#64F6D2" stroke-width="1.5" fill="none">
+    <rect x="-16" y="-16" width="32" height="32" rx="3" fill="#0d181e" />
+    <path d="M-10 7 A10 10 0 0 1 10 7 M0 7 L7 -7" />
+    <path d="M16 -2 H56 M16 2 H56" opacity=".65" />
+  </g>)}
+  {Array.from({length: QUBITS}, (_, q) => <g data-branch-trails={q} fill="none" stroke="#f4d47b" stroke-width="2.5" stroke-linecap="round">
+    <path data-trail="0" /><path data-trail="1" />
+  </g>)}
+  {Array.from({length: QUBITS}, (_, q) => <g data-qubit={q}>
+    {[0, 1].map(branch => <g data-branch={branch}>
+      <circle class="qubit-halo" r="9" fill="none" stroke="currentColor" stroke-width="1" />
+      <circle class="qubit-core" r="3" fill="currentColor" />
+    </g>)}
+  </g>)}
+</svg>
+<script>
+  import { stages, gatePaths, evolve, localStates } from '../lib/ising-animation.js';
+  const svg = document.querySelector<SVGSVGElement>('.ising-signals');
+  if (svg) {
+    const sequence = stages();
+    const dots = [...svg.querySelectorAll<SVGGElement>('[data-qubit]')].map(group => [...group.querySelectorAll<SVGGElement>('[data-branch]')]);
+    const paths = sequence.map((stage, index) => dots.map((_, q) => ({
+      bypass: gatePaths(stage.layer, stage.kind, q).bypass,
+      parts: ['approach', 'upper', 'lower', 'exit'].map(part => {
+        const path = svg.querySelector<SVGPathElement>(`#qubit-path-${index}-${q}-${part}`)!;
+        return { path, length: path.getTotalLength() };
+      }),
+    })));
+    const trails = [...svg.querySelectorAll('[data-branch-trails]')].map(group => [...group.querySelectorAll<SVGPathElement>('[data-trail]')]);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let elapsed = 0, previous = 0;
+    const phaseDuration = 1900;
+    const smooth = (value: number) => {
+      const t = Math.max(0, Math.min(1, value));
+      return t * t * (3 - 2 * t);
+    };
+    const loopDuration = sequence.length * phaseDuration + 1200;
+    function draw(now: number) {
+      const paused = document.body.classList.contains('motion-paused') || reduced.matches || document.hidden;
+      if (previous && !paused) elapsed += Math.min(now - previous, 80);
+      previous = now;
+      const loopTime = elapsed % loopDuration;
+      const phase = Math.min(sequence.length - 1, Math.floor(loopTime / phaseDuration));
+      const progress = Math.min(1, (loopTime - phase * phaseDuration) / phaseDuration);
+      const gateProgress = Math.max(0, Math.min(1, (progress - .3) / .5));
+      const stage = sequence[phase];
+      // Evaluate partial unitaries, rather than interpolating probabilities.
+      const states = localStates(evolve(stage.input, stage.kind, gateProgress));
+      const fade = loopTime > sequence.length * phaseDuration ? Math.max(0, 1 - (loopTime - sequence.length * phaseDuration) / 1000) : Math.min(1, loopTime / 300);
+      dots.forEach((branches, q) => {
+        const { parts, bypass } = paths[phase][q];
+        const split = !bypass && progress > .3 && progress < .8;
+        const { p1, purity } = states[q];
+        branches.forEach((dot, branch) => {
+          const part = bypass || progress < .3 ? 0 : progress < .8 ? 1 + branch : 3;
+          const fraction = bypass ? progress : part === 0 ? progress / .3 : part === 3 ? (progress - .8) / .2 : gateProgress;
+          const { path, length } = parts[part];
+          const point = path.getPointAtLength(Math.max(0, Math.min(1, fraction)) * length);
+          const size = bypass ? 1 : progress < .3 ? 1 - smooth((progress - .19) / .11) : progress >= .8 ? smooth((progress - .8) / .1) : 0;
+          dot.setAttribute('transform', `translate(${point.x} ${point.y}) scale(${size})`);
+          dot.style.color = 'hsl(44 85% 72%)';
+          dot.querySelector('.qubit-halo')!.setAttribute('r', String(6 + (1 - purity) * 16));
+          // A visible floor keeps both decorative paths legible; brightness
+          // above that floor encodes local |0> / |1> probabilities.
+          const weight = branch === 0 ? 1 - p1 : p1;
+          // No point markers while split: the gold becomes two moving
+          // outline segments, then returns to one dot at the right edge.
+          dot.style.opacity = String(fade * (!split && branch === 0 ? 1 : 0));
+          const trail = trails[q][branch];
+          const branchPath = parts[1 + branch];
+          trail.setAttribute('d', branchPath.path.getAttribute('d')!);
+          trail.setAttribute('stroke-dasharray', `${Math.min(13, branchPath.length)} ${branchPath.length + 13}`);
+          trail.setAttribute('stroke-dashoffset', String(-Math.max(0, gateProgress * (branchPath.length - 13))));
+          const trailFade = smooth(gateProgress / .1) * smooth((1 - gateProgress) / .1);
+          trail.style.opacity = String(split ? fade * trailFade * (.25 + .75 * weight) : 0);
+        });
+      });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  }
+</script>

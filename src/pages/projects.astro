@@ -1,156 +1,79 @@
 ---
-import { getCollection } from 'astro:content';
-
+import { getCollection, render } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
-
-const projects = (await getCollection('projects')).sort((a, b) => {
-  if (a.data.status !== b.data.status)
-    return a.data.status === 'ongoing' ? -1 : 1;
-  return b.data.date.valueOf() - a.data.date.valueOf();
-});
+import '../styles/quantum-home.css';
+import '../styles/project-library.css';
+const projects = (await getCollection('projects')).sort((a, b) => a.data.status !== b.data.status ? (a.data.status === 'ongoing' ? -1 : 1) : b.data.date.valueOf() - a.data.date.valueOf());
+const books = await Promise.all(projects.map(async project => ({ project, ...(await render(project)) })));
 ---
-
 <!doctype html>
 <html lang="en">
-  <head>
-    <BaseHead
-      title={`Projects | ${SITE_TITLE}`}
-      description="Current and past projects by Jerry Fan."
-    />
-  </head>
-
-  <body>
+  <head><BaseHead title={`Projects | ${SITE_TITLE}`} description="Explore Jerry Fan's projects on an electronic bookshelf." /></head>
+  <body class="quantum-home project-library" id="top">
     <Header />
-
-    <main id="main-content" class="projects-page">
-      <section class="projects-intro">
-        <p class="eyebrow">What I am currently up to:</p>
-        <h1>Loading . . .<br />My Current & Past Projects :</h1>
-      </section>
-
-      <section aria-label="Project list">
-        <div class="project-grid">
-          {
-            projects.map((project) => (
-              <article class="project-card">
-                <div class="card-heading">
-                  <p class:list={['status', project.data.status]}>
-                    {project.data.status}
-                  </p>
-                  <p class="date">
-                    <FormattedDate date={project.data.date} />
-                  </p>
-                </div>
-
-                <h2>{project.data.title}</h2>
-                <p class="description">{project.data.description}</p>
-              </article>
-            ))
-          }
+    <main id="main-content" class="quantum-main">
+      <div class="quantum-container library-content">
+        <h1>Loading<span class="loading-dots">…</span><br /><span>my current projects</span></h1>
+        <section class="electronic-shelf" aria-label="Project bookshelf">
+          <div class="shelf-books">
+            {books.map(({project}, index) => <button class="project-book" type="button" data-open-book={`book-${index}`} aria-haspopup="dialog" aria-label={`Open ${project.data.title}`}>
+              <span class="book-pages" aria-hidden="true"></span>
+              <span class="book-cover">
+                <span class="book-index">VOL. {String(index + 1).padStart(2, '0')}</span>
+                <span class="book-circuit" aria-hidden="true"><span></span></span>
+                <span class="book-title">{project.data.title}</span>
+                <span class="book-status">{project.data.status === 'ongoing' ? 'IN PROGRESS' : 'COMPLETED'}</span>
+                <span class="book-open">OPEN PROJECT</span>
+              </span>
+            </button>)}
+            {!books.length && <p class="empty-library">The first project is on its way.</p>}
+          </div>
+          <div class="shelf-rail" aria-hidden="true"><span></span></div>
+          <div class="shelf-reflection" aria-hidden="true"></div>
+        </section>
+      </div>
+      {books.map(({project, Content}, index) => <dialog id={`book-${index}`} class="project-reader" aria-labelledby={`book-title-${index}`}>
+        <button type="button" class="close-book" aria-label="Close project book">Close ×</button>
+        <div class="open-book">
+          <div class="inside-cover" aria-hidden="true">
+            <span class="book-index">VOL. {String(index + 1).padStart(2, '0')}</span>
+            <span class="reader-emblem">{'{ }'}</span>
+            <span class="inside-title">{project.data.title}</span>
+            <span class="book-status">COOKIEBEAR / PROJECT ARCHIVE</span>
+          </div>
+          <article class="project-page">
+            <div class="project-meta"><span>{project.data.status === 'ongoing' ? 'IN PROGRESS' : 'COMPLETED'}</span><FormattedDate date={project.data.date} /></div>
+            <h2 id={`book-title-${index}`}>{project.data.title}</h2>
+            <p class="project-summary">{project.data.description}</p>
+            <div class="project-prose"><Content /></div>
+            <span class="page-number" aria-hidden="true">01 / PROJECT NOTES</span>
+          </article>
+          <div class="turning-cover" aria-hidden="true"><span>{project.data.title}</span></div>
         </div>
-      </section>
+      </dialog>)}
+      <noscript><div class="quantum-container">{books.map(({project, Content}) => <article><h2>{project.data.title}</h2><p>{project.data.description}</p><Content /></article>)}</div></noscript>
     </main>
-
-    <Footer />
+    <footer class="quantum-footer quantum-container"><a class="footer-brand" href="/"><img src="/cookie-icon.png" width="389" height="396" alt="" />{SITE_TITLE}</a><a href="/">BACK TO HOME</a></footer>
+    <script>
+      let opener: HTMLButtonElement | null = null;
+      let previousOverflow = '';
+      document.querySelectorAll<HTMLButtonElement>('[data-open-book]').forEach(button => {
+        button.addEventListener('click', () => {
+          const dialog = document.getElementById(button.dataset.openBook!) as HTMLDialogElement;
+          opener = button;
+          previousOverflow = document.body.style.overflow;
+          document.body.style.overflow = 'hidden';
+          dialog.showModal();
+        });
+      });
+      document.querySelectorAll<HTMLDialogElement>('.project-reader').forEach(dialog => {
+        dialog.querySelector('.close-book')?.addEventListener('click', () => dialog.close());
+        dialog.addEventListener('click', event => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if(event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } });
+        dialog.addEventListener('close', () => { document.body.style.overflow = previousOverflow; opener?.focus(); });
+      });
+    </script>
   </body>
 </html>
-
-<style>
-  @layer original {
-    main {
-      width: 960px;
-    }
-
-    .projects-intro {
-      margin-bottom: 2.5rem;
-    }
-
-    .projects-intro h1 {
-      margin-bottom: 0.75rem;
-    }
-
-    .projects-intro > p:last-child {
-      max-width: 38rem;
-      margin: 0;
-      color: rgb(var(--gray));
-    }
-
-    .eyebrow {
-      margin: 0 0 0.4rem;
-      color: rgb(var(--gray));
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .project-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 1.5rem;
-    }
-
-    .project-card {
-      padding: 1.5rem;
-      border: 1px solid rgb(var(--gray-light));
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(var(--gray), 12%);
-    }
-
-    .card-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .status {
-      margin: 0;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      line-height: 1.5;
-      text-transform: uppercase;
-    }
-
-    .status.ongoing {
-      background: rgba(35, 55, 255, 10%);
-      color: var(--accent);
-    }
-
-    .status.past {
-      background: rgb(var(--gray-light));
-      color: rgb(var(--gray-dark));
-    }
-
-    .date {
-      margin: 0;
-      color: rgb(var(--gray));
-      font-size: 0.85rem;
-    }
-
-    .project-card h2 {
-      margin-bottom: 0.6rem;
-      font-size: 1.563rem;
-    }
-
-    .description {
-      margin: 0;
-      color: rgb(var(--gray));
-    }
-
-    @media (max-width: 720px) {
-      .project-card {
-        padding: 1.25rem;
-      }
-    }
-  }
-</style>
