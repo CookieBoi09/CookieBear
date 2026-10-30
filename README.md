@@ -125,4 +125,5 @@ state evolution and existing repository tests.
 Set `status` in a project’s Markdown frontmatter to `ongoing` (In progress),
 `in-development` (In development), `beta-testing` (Beta testing), or `past`
 (Completed). The same label appears on homepage cards, book covers, and inside
-the project reader. For example: `status: 'beta-testing'`.
+the project reader. For example: `status: 'beta-testing'`. Display-style values such as
+`IN DEVELOPMENT` and `BETA TESTING` are also accepted and normalized.
