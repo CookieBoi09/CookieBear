@@ -2,7 +2,7 @@
 import { stages, gatePaths, QUBITS } from '../lib/ising-animation.js';
 const sequence = stages();
 ---
-<svg class="ising-signals" width="1440" height="700" viewBox="0 0 1540 700" preserveAspectRatio="none" aria-hidden="true">
+<svg class="ising-signals" width="1440" height="700" viewBox="0 0 1540 700" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
   <defs>
     {sequence.map((stage, index) => Array.from({length: QUBITS}, (_, q) => {
       const paths = gatePaths(stage.layer, stage.kind, q);
