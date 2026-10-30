@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="80" viewBox="0 0 1440 80" fill="none">
+  <g stroke="#398080" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M0 40H180L206 16H380L406 40H620 M820 40H1034L1060 64H1234L1260 40H1440"/>
+    <path d="M0 64H130L154 40H220 M1220 40H1286L1310 16H1440"/>
+    <path d="M460 40V64H680 M760 64H980V40"/>
+  </g>
+  <g stroke="#64F6D2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Series inductors -->
+    <path d="M620 40a12 12 0 0 1 24 0a12 12 0 0 1 24 0a12 12 0 0 1 24 0H708 M732 40H748a12 12 0 0 1 24 0a12 12 0 0 1 24 0a12 12 0 0 1 24 0"/>
+    <!-- Capacitor and lower IEC resistor -->
+    <path d="M708 22V54 M732 22V54 M680 64H694 M746 64H760"/>
+    <rect x="694" y="58" width="52" height="12" rx="1"/>
+    <path d="M276 16V34 M288 16V34 M276 25H250 M288 25H314 M1152 46V64 M1164 46V64 M1152 55H1126 M1164 55H1190"/>
+  </g>
+  <g stroke="#E6BC68" stroke-width="1.5" fill="#0C171D">
+    <circle cx="154" cy="40" r="4"/><circle cx="460" cy="40" r="4"/><circle cx="980" cy="40" r="4"/><circle cx="1286" cy="40" r="4"/>
+  </g>
+</svg>
