@@ -1,30 +1,8 @@
 ---
-const today = new Date();
+import { SITE_TITLE } from '../consts';
 ---
-
-<footer>
-  <div class="footer-invitation">
-    <div>
-      <h2>
-        <em> Want More Content?</em>
-      </h2>
-    </div><a class="button" href="/contact"
-      >Contact Me Here :)<span aria-hidden="true">📧</span></a
-    >
-  </div>
-  <div class="footer-bottom">
-    <a href="/">CookieBear Blog</a><span
-      >&copy; {today.getFullYear()} Jerry Fan. All rights reserved.</span
-    >
-  </div>
+<footer class="quantum-footer quantum-container">
+  <a class="footer-brand" href="/"><img src="/cookie-icon-transparent.png" width="389" height="396" alt="" />{SITE_TITLE}</a>
+  <p><span class="gold">Powered by coffee and fruit teas</span></p>
+  <a href="#top">BACK TO TOP</a>
 </footer>
-<style>
-  @layer original {
-    footer {
-      padding: 2em 1em 6em 1em;
-      background: linear-gradient(var(--gray-gradient)) no-repeat;
-      color: rgb(var(--gray));
-      text-align: center;
-    }
-  }
-</style>
