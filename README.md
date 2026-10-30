@@ -103,8 +103,9 @@ Run the folder discovery checks with `node --test tests/memes.test.js`.
 ### Homepage circuit animation
 
 The hero uses the Figma circuit geometry with gold markers tracing each gate's
-perimeter: one marker approaches the left edge, splits along the upper and lower
-outline, and reunites on the right. `src/lib/ising-animation.js` evolves a six-qubit Néel state through
+perimeter: one marker approaches the left edge, disappears into gold segments along the upper and lower
+outline, and reappears on the right. Input and pre-measurement output states
+are labeled |φ₀⟩ and |φ(t)⟩; meter symbols terminate the circuit. `src/lib/ising-animation.js` evolves a six-qubit Néel state through
 five first-order Trotter layers: RX(pi/3) on every qubit, followed by RZZ(pi/4)
 on even and odd nearest-neighbor bonds. This follows the RX/ZZ structure in
 [IBM's transverse-field Ising tutorial](https://quantum.cloud.ibm.com/docs/en/tutorials/time-evolution).

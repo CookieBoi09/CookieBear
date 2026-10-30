@@ -197,7 +197,7 @@ body.quantum-home>header {
 
 .quantum-home .ising-art {
   position:absolute;
-  width:1440px;
+  width:min(1440px, 100%);
   height:700px;
   max-width:none;
   left:50%;
@@ -364,7 +364,7 @@ body.quantum-home>header {
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  width:1440px;
+  width:min(1440px, 100%);
   height:80px;
   max-width:none;
   border-radius:0;
@@ -844,7 +844,7 @@ body.quantum-home>header {
     gap:12px;
   }
   .quantum-home .ising-art {
-    left:35%;
+    left:50%;
     opacity:.65;
   }
   .quantum-home .signal-particle {
@@ -931,7 +931,7 @@ body.quantum-home>header {
 /* Signals share the exact coordinate system of the Figma Ising artwork. */
 .quantum-home .ising-signals {
   position: absolute;
-  width: 1440px;
+  width: min(1440px, 100%);
   height: 700px;
   max-width: none;
   left: 50%;
@@ -943,8 +943,9 @@ body.quantum-home>header {
 .quantum-home .qubit-halo { opacity: .5; }
 .quantum-home .hero-bottom { justify-content: flex-end; }
 @media (max-width: 600px) {
-  .quantum-home .ising-signals { left: 35%; }
+  .quantum-home .ising-signals { left: 50%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .quantum-home .ising-signals { display: none; }
+  .quantum-home .ising-signals [data-qubit],
+  .quantum-home .ising-signals [data-branch-trails] { display: none; }
 }

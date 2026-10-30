@@ -2,13 +2,26 @@
 import { stages, gatePaths, QUBITS } from '../lib/ising-animation.js';
 const sequence = stages();
 ---
-<svg class="ising-signals" width="1440" height="700" viewBox="0 0 1440 700" aria-hidden="true">
+<svg class="ising-signals" width="1440" height="700" viewBox="0 0 1540 700" preserveAspectRatio="none" aria-hidden="true">
   <defs>
     {sequence.map((stage, index) => Array.from({length: QUBITS}, (_, q) => {
       const paths = gatePaths(stage.layer, stage.kind, q);
       return ['approach', 'upper', 'lower', 'exit'].map(part => <path id={`qubit-path-${index}-${q}-${part}`} d={paths[part]} />);
     }))}
   </defs>
+  <g class="circuit-notation" fill="#91dccd" font-family="Georgia, serif" font-size="23">
+    <text x="28" y="80">|φ₀⟩</text>
+    <text x="1418" y="80">|φ(t)⟩</text>
+  </g>
+  {Array.from({length: QUBITS}, (_, q) => <g transform={`translate(1480 ${150 + q * 78})`} class="circuit-measurement" stroke="#91dccd" stroke-width="1.5" fill="none">
+    <path d="M-64 0 H-16" opacity=".65" />
+    <rect x="-16" y="-16" width="32" height="32" rx="3" fill="#0d181e" />
+    <path d="M-10 7 A10 10 0 0 1 10 7 M0 7 L7 -7" />
+    <path d="M16 -2 H56 M16 2 H56" opacity=".65" />
+  </g>)}
+  {Array.from({length: QUBITS}, (_, q) => <g data-branch-trails={q} fill="none" stroke="#f4d47b" stroke-width="2.5" stroke-linecap="round">
+    <path data-trail="0" /><path data-trail="1" />
+  </g>)}
   {Array.from({length: QUBITS}, (_, q) => <g data-qubit={q}>
     {[0, 1].map(branch => <g data-branch={branch}>
       <circle class="qubit-halo" r="9" fill="none" stroke="currentColor" stroke-width="1" />
@@ -29,6 +42,7 @@ const sequence = stages();
         return { path, length: path.getTotalLength() };
       }),
     })));
+    const trails = [...svg.querySelectorAll('[data-branch-trails]')].map(group => [...group.querySelectorAll<SVGPathElement>('[data-trail]')]);
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     let elapsed = 0, previous = 0;
     const phaseDuration = 2400;
@@ -60,7 +74,15 @@ const sequence = stages();
           // A visible floor keeps both decorative paths legible; brightness
           // above that floor encodes local |0> / |1> probabilities.
           const weight = branch === 0 ? 1 - p1 : p1;
-          dot.style.opacity = String(fade * (split ? .25 + .75 * weight : branch === 0 ? 1 : 0));
+          // No point markers while split: the gold becomes two moving
+          // outline segments, then returns to one dot at the right edge.
+          dot.style.opacity = String(fade * (!split && branch === 0 ? 1 : 0));
+          const trail = trails[q][branch];
+          const branchPath = parts[1 + branch];
+          trail.setAttribute('d', branchPath.path.getAttribute('d')!);
+          trail.setAttribute('stroke-dasharray', `${Math.min(13, branchPath.length)} ${branchPath.length + 13}`);
+          trail.setAttribute('stroke-dashoffset', String(-Math.max(0, gateProgress * (branchPath.length - 13))));
+          trail.style.opacity = String(split ? fade * (.25 + .75 * weight) : 0);
         });
       });
       requestAnimationFrame(draw);
