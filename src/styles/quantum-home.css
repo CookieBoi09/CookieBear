@@ -953,3 +953,11 @@ body.quantum-home>header {
   top:auto;
   margin-top:-40px;
 }
+
+/* Give the welcome copy a little more room from the left edge on desktop. */
+@media (min-width:901px) {
+  .quantum-home .hero-content {
+    box-sizing:border-box;
+    padding-inline-start:clamp(40px,6vw,100px);
+  }
+}
