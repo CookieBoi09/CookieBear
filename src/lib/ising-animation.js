@@ -41,28 +41,45 @@ export function localStates(state) {
     return { p1, purity: (1 - p1) ** 2 + p1 ** 2 + 2 * (re * re + im * im) };
   });
 }
+export function evolve(state, kind, fraction) {
+  const result = state.map(value => [...value]);
+  if (kind === 0) for (let q = 0; q < QUBITS; q++) rx(result, q, RX_ANGLE * fraction);
+  else for (let q = kind - 1; q < QUBITS - 1; q += 2) rzz(result, q, q + 1, ZZ_ANGLE * fraction);
+  return result;
+}
 export function stages() {
-  const state = initialState(), result = [];
+  let state = initialState();
+  const result = [];
   for (let layer = 0; layer < LAYERS; layer++) {
     for (let kind = 0; kind < 3; kind++) {
-      const before = localStates(state);
-      if (kind === 0) for (let q = 0; q < QUBITS; q++) rx(state, q, RX_ANGLE);
-      else for (let q = kind - 1; q < QUBITS - 1; q += 2) rzz(state, q, q + 1, ZZ_ANGLE);
-      result.push({ layer, kind, before, after: localStates(state) });
+      const input = state;
+      state = evolve(input, kind, 1);
+      result.push({ layer, kind, input, before: localStates(input), after: localStates(state) });
     }
   }
   return result;
 }
-// Trace the full perimeter before leaving a gate; paired wires meet at ZZ gates.
-export function gatePath(layer, kind, q) {
+// Equal-length branches share a left entry and a right exit. The two dots
+// depict alternative basis amplitudes, not a particle splitting in space.
+export function gatePaths(layer, kind, q) {
   const base = 100 + layer * 278, y = 150 + q * 78;
-  const previousX = kind === 0 ? (layer ? base - 108 : 24) : base + (kind === 1 ? 34 : 90);
-  if (kind === 0) return `M${previousX} ${y} H${base} V${y - 17} H${base + 34} V${y + 17} H${base} V${y} V${y - 17} H${base + 34} V${y}`;
-  const parity = kind - 1, paired = q % 2 === parity ? q : q - 1;
-  const x = base + (kind === 1 ? 90 : 170);
-  if (paired < 0 || paired >= QUBITS - 1) return `M${previousX} ${y} H${x}`;
-  const centerY = 150 + paired * 78 + 39;
-  const entryY = q === paired ? centerY - 10 : centerY + 10;
-  const otherY = q === paired ? centerY + 10 : centerY - 10;
-  return `M${previousX} ${y} H${x} V${entryY} H${x + 10} V${otherY} H${x - 10} V${entryY} H${x} V${y}`;
+  const previousX = kind === 0 ? (layer ? base - 98 : 24) : base + (kind === 1 ? 34 : 100);
+  const paired = q % 2 === kind - 1 ? q : q - 1;
+  const bypass = kind === 2 && (paired < 0 || paired >= QUBITS - 1);
+  const x = kind === 0 ? base + 17 : base + (kind === 1 ? 90 : 170);
+  const cy = kind === 0 ? y : 150 + paired * 78 + 39;
+  const half = kind === 0 ? 17 : 10;
+  const left = x - half, right = x + half;
+  if (bypass) return { approach: `M${previousX} ${y} H${x + 10}`, upper: `M${x + 10} ${y}`, lower: `M${x + 10} ${y}`, exit: `M${x + 10} ${y}`, bypass: true };
+  const branch = direction => {
+    const edge = cy + direction * half;
+    const r = kind === 0 ? 4 : 2;
+    return `M${left} ${cy} V${edge - direction * r} Q${left} ${edge} ${left + r} ${edge} H${right - r} Q${right} ${edge} ${right} ${edge - direction * r} V${cy}`;
+  };
+  return {
+    approach: `M${previousX} ${y} H${left} V${cy}`,
+    upper: branch(-1), lower: branch(1),
+    exit: `M${right} ${cy} V${y}`,
+    bypass: false,
+  };
 }

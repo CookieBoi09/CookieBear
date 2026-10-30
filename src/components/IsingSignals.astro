@@ -1,29 +1,37 @@
 ---
-import { stages, gatePath, QUBITS } from '../lib/ising-animation.js';
+import { stages, gatePaths, QUBITS } from '../lib/ising-animation.js';
 const sequence = stages();
 ---
-<svg class="ising-signals" width="1440" height="700" viewBox="0 0 1440 700" aria-hidden="true" data-state-sequence={JSON.stringify(sequence)}>
+<svg class="ising-signals" width="1440" height="700" viewBox="0 0 1440 700" aria-hidden="true">
   <defs>
-    {sequence.map((stage, index) => Array.from({length: QUBITS}, (_, q) => <path id={`qubit-path-${index}-${q}`} d={gatePath(stage.layer, stage.kind, q)} />))}
+    {sequence.map((stage, index) => Array.from({length: QUBITS}, (_, q) => {
+      const paths = gatePaths(stage.layer, stage.kind, q);
+      return ['approach', 'upper', 'lower', 'exit'].map(part => <path id={`qubit-path-${index}-${q}-${part}`} d={paths[part]} />);
+    }))}
   </defs>
   {Array.from({length: QUBITS}, (_, q) => <g data-qubit={q}>
-    <circle class="qubit-halo" r="9" fill="none" stroke="currentColor" stroke-width="1" />
-    <circle class="qubit-core" r="3" fill="currentColor" />
-    <path class="qubit-phase" d="M0 0L6 0" stroke="currentColor" stroke-width="1.5" />
+    {[0, 1].map(branch => <g data-branch={branch}>
+      <circle class="qubit-halo" r="9" fill="none" stroke="currentColor" stroke-width="1" />
+      <circle class="qubit-core" r="3" fill="currentColor" />
+    </g>)}
   </g>)}
 </svg>
 <script>
+  import { stages, gatePaths, evolve, localStates } from '../lib/ising-animation.js';
   const svg = document.querySelector<SVGSVGElement>('.ising-signals');
   if (svg) {
-    const sequence = JSON.parse(svg.dataset.stateSequence!);
-    const dots = [...svg.querySelectorAll<SVGGElement>('[data-qubit]')];
-    const paths = sequence.map((_: unknown, index: number) => dots.map((_, q) => {
-      const path = svg.querySelector<SVGPathElement>(`#qubit-path-${index}-${q}`)!;
-      return { path, length: path.getTotalLength() };
-    }));
+    const sequence = stages();
+    const dots = [...svg.querySelectorAll<SVGGElement>('[data-qubit]')].map(group => [...group.querySelectorAll<SVGGElement>('[data-branch]')]);
+    const paths = sequence.map((stage, index) => dots.map((_, q) => ({
+      bypass: gatePaths(stage.layer, stage.kind, q).bypass,
+      parts: ['approach', 'upper', 'lower', 'exit'].map(part => {
+        const path = svg.querySelector<SVGPathElement>(`#qubit-path-${index}-${q}-${part}`)!;
+        return { path, length: path.getTotalLength() };
+      }),
+    })));
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     let elapsed = 0, previous = 0;
-    const phaseDuration = 2000;
+    const phaseDuration = 2400;
     const loopDuration = sequence.length * phaseDuration + 1200;
     function draw(now: number) {
       const paused = document.body.classList.contains('motion-paused') || reduced.matches || document.hidden;
@@ -32,20 +40,28 @@ const sequence = stages();
       const loopTime = elapsed % loopDuration;
       const phase = Math.min(sequence.length - 1, Math.floor(loopTime / phaseDuration));
       const progress = Math.min(1, (loopTime - phase * phaseDuration) / phaseDuration);
+      const gateProgress = Math.max(0, Math.min(1, (progress - .3) / .5));
       const stage = sequence[phase];
-      dots.forEach((dot, q) => {
-        const {path, length} = paths[phase][q];
-        const point = path.getPointAtLength(progress * length);
-        const before = stage.before[q], after = stage.after[q];
-        const blend = Math.max(0, (progress - .35) / .65);
-        const p1 = before.p1 + (after.p1 - before.p1) * blend;
-        const purity = before.purity + (after.purity - before.purity) * blend;
-        dot.setAttribute('transform', `translate(${point.x} ${point.y})`);
-        // Gold intensity encodes local excitation; halo grows with entanglement.
-        dot.style.color = `hsl(${40 + p1 * 8} 85% ${60 + p1 * 17}%)`;
-        dot.querySelector('.qubit-halo')!.setAttribute('r', String(6 + (1 - purity) * 16));
-        dot.querySelector('.qubit-phase')!.setAttribute('transform', `rotate(${p1 * 180})`);
-        dot.style.opacity = String(loopTime > sequence.length * phaseDuration ? Math.max(0, 1 - (loopTime - sequence.length * phaseDuration) / 1000) : Math.min(1, loopTime / 300));
+      // Evaluate partial unitaries, rather than interpolating probabilities.
+      const states = localStates(evolve(stage.input, stage.kind, gateProgress));
+      const fade = loopTime > sequence.length * phaseDuration ? Math.max(0, 1 - (loopTime - sequence.length * phaseDuration) / 1000) : Math.min(1, loopTime / 300);
+      dots.forEach((branches, q) => {
+        const { parts, bypass } = paths[phase][q];
+        const split = !bypass && progress > .3 && progress < .8;
+        const { p1, purity } = states[q];
+        branches.forEach((dot, branch) => {
+          const part = bypass || progress < .3 ? 0 : progress < .8 ? 1 + branch : 3;
+          const fraction = bypass ? progress : part === 0 ? progress / .3 : part === 3 ? (progress - .8) / .2 : gateProgress;
+          const { path, length } = parts[part];
+          const point = path.getPointAtLength(Math.max(0, Math.min(1, fraction)) * length);
+          dot.setAttribute('transform', `translate(${point.x} ${point.y})`);
+          dot.style.color = 'hsl(44 85% 72%)';
+          dot.querySelector('.qubit-halo')!.setAttribute('r', String(6 + (1 - purity) * 16));
+          // A visible floor keeps both decorative paths legible; brightness
+          // above that floor encodes local |0> / |1> probabilities.
+          const weight = branch === 0 ? 1 - p1 : p1;
+          dot.style.opacity = String(fade * (split ? .25 + .75 * weight : branch === 0 ? 1 : 0));
+        });
       });
       requestAnimationFrame(draw);
     }

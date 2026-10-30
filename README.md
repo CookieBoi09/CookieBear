@@ -103,11 +103,15 @@ Run the folder discovery checks with `node --test tests/memes.test.js`.
 ### Homepage circuit animation
 
 The hero uses the Figma circuit geometry with gold markers tracing each gate's
-perimeter. `src/lib/ising-animation.js` evolves a six-qubit Néel state through
+perimeter: one marker approaches the left edge, splits along the upper and lower
+outline, and reunites on the right. `src/lib/ising-animation.js` evolves a six-qubit Néel state through
 five first-order Trotter layers: RX(pi/3) on every qubit, followed by RZZ(pi/4)
 on even and odd nearest-neighbor bonds. This follows the RX/ZZ structure in
 [IBM's transverse-field Ising tutorial](https://quantum.cloud.ibm.com/docs/en/tutorials/time-evolution).
-Gold intensity reflects local excitation probability; halo radius reflects
+Partial RX/RZZ unitaries are evaluated throughout each gate traversal. The upper
+and lower branches encode local |0> and |1> probabilities, with a 25% visibility
+floor; the split geometry is a visual metaphor, not physical particle motion.
+Halo radius reflects
 reduced-state mixedness (entanglement with the other qubits). These are visual
 encodings of a simulated state, not measurements or literal moving qubits.
 The resistor/diode/capacitor divider is a decorative classical schematic,
