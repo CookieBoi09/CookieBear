@@ -3,10 +3,21 @@ import { getCollection, render } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import { PROJECT_STATUS_LABELS } from '../lib/project-status';
 import { SITE_TITLE } from '../consts';
 import '../styles/quantum-home.css';
 import '../styles/project-library.css';
-const projects = (await getCollection('projects')).sort((a, b) => a.data.status !== b.data.status ? (a.data.status === 'ongoing' ? -1 : 1) : b.data.date.valueOf() - a.data.date.valueOf());
+const shelfOrder = ['cookiebear-blog', 'lint', 'sploom'];
+const shelfRank = (id: string) => {
+  const index = shelfOrder.indexOf(id);
+  return index < 0 ? shelfOrder.length : index;
+};
+const projects = (await getCollection('projects')).sort((a, b) => {
+  const order = shelfRank(a.id) - shelfRank(b.id);
+  if (order) return order;
+  const completedOrder = Number(a.data.status === 'past') - Number(b.data.status === 'past');
+  return completedOrder || b.data.date.valueOf() - a.data.date.valueOf();
+});
 const books = await Promise.all(projects.map(async project => ({ project, ...(await render(project)) })));
 ---
 <!doctype html>
@@ -16,7 +27,14 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
     <Header />
     <main id="main-content" class="quantum-main">
       <div class="quantum-container library-content">
-        <h1>Loading<span class="loading-dots">…</span><br /><span>my current projects</span></h1>
+        <section class="library-heading" aria-labelledby="library-title">
+          <div class="binary-field" aria-hidden="true">
+            {Array.from({length: 6}, (_, row) => <div class="binary-row" style={`--row:${row};--duration:${22 + row * 3}s;--delay:-${row * 4}s`}>
+              {[0, 1].map(() => <span>{Array.from({length: 12}, (_, i) => ((i + row) % 3 === 0 ? '01001001' : (i + row) % 3 === 1 ? '10110100' : '00101110')).join('   ')}   </span>)}
+            </div>)}
+          </div>
+          <h1 id="library-title">Loading<span class="loading-dots">…</span><br />my current <span>projects</span></h1>
+        </section>
         <section class="electronic-shelf" aria-label="Project bookshelf">
           <div class="shelf-books">
             {books.map(({project}, index) => <button class="project-book" type="button" data-open-book={`book-${index}`} aria-haspopup="dialog" aria-label={`Open ${project.data.title}`}>
@@ -25,7 +43,7 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
                 <span class="book-index">VOL. {String(index + 1).padStart(2, '0')}</span>
                 <span class="book-circuit" aria-hidden="true"><span></span></span>
                 <span class="book-title">{project.data.title}</span>
-                <span class="book-status">{project.data.status === 'ongoing' ? 'IN PROGRESS' : 'COMPLETED'}</span>
+                <span class="book-status">{PROJECT_STATUS_LABELS[project.data.status]}</span>
                 <span class="book-open">OPEN PROJECT</span>
               </span>
             </button>)}
@@ -45,18 +63,17 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
             <span class="book-status">COOKIEBEAR / PROJECT ARCHIVE</span>
           </div>
           <article class="project-page">
-            <div class="project-meta"><span>{project.data.status === 'ongoing' ? 'IN PROGRESS' : 'COMPLETED'}</span><FormattedDate date={project.data.date} /></div>
+            <div class="project-meta"><span>{PROJECT_STATUS_LABELS[project.data.status]}</span><FormattedDate date={project.data.date} /></div>
             <h2 id={`book-title-${index}`}>{project.data.title}</h2>
             <p class="project-summary">{project.data.description}</p>
             <div class="project-prose"><Content /></div>
             <span class="page-number" aria-hidden="true">01 / PROJECT NOTES</span>
           </article>
-          <div class="turning-cover" aria-hidden="true"><span>{project.data.title}</span></div>
         </div>
       </dialog>)}
       <noscript><div class="quantum-container">{books.map(({project, Content}) => <article><h2>{project.data.title}</h2><p>{project.data.description}</p><Content /></article>)}</div></noscript>
     </main>
-    <footer class="quantum-footer quantum-container"><a class="footer-brand" href="/"><img src="/cookie-icon.png" width="389" height="396" alt="" />{SITE_TITLE}</a><a href="/">BACK TO HOME</a></footer>
+    <footer class="quantum-footer quantum-container"><a class="footer-brand" href="/"><img src="/cookie-icon-transparent.png" width="389" height="396" alt="" />{SITE_TITLE}</a><a href="/">BACK TO HOME</a></footer>
     <script>
       let opener: HTMLButtonElement | null = null;
       let previousOverflow = '';

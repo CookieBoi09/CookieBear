@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="80" viewBox="0 0 1440 80" fill="none">
+  <style>
+    .signal-pulse { stroke-dasharray:48 1552; animation:signal-flow 8s linear infinite; }
+    .feedback-pulse { stroke-dasharray:22 498; animation:feedback-flow 5s linear infinite; }
+    @keyframes signal-flow { from { stroke-dashoffset:48; } to { stroke-dashoffset:-1552; } }
+    @keyframes feedback-flow { from { stroke-dashoffset:22; } to { stroke-dashoffset:-498; } }
+    @media(prefers-reduced-motion:reduce) { .signal-pulse,.feedback-pulse { display:none; } }
+  </style>
+  <g stroke="#64F6D2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Input resistor, inverting amplifier, and output. -->
+    <path d="M0 36H490L496 27L508 45L520 27L532 45L544 27L550 36H690"/>
+    <path d="M690 20L790 48L690 76Z M790 48H1440"/>
+    <!-- Negative feedback, with a second resistor on the upper branch. -->
+    <path d="M660 36V8H724L730 2L742 14L754 2L766 14L778 2L784 8H850V48"/>
+    <!-- Non-inverting reference input and ground. -->
+    <path d="M690 60H650V68 M640 68H660 M644 73H656 M648 78H652" stroke="#398080"/>
+    <path d="M700 36H710 M700 60H710 M705 55V65"/>
+  </g>
+  <g fill="#080F14" stroke="#64F6D2" stroke-width="1.5">
+    <circle cx="660" cy="36" r="3"/>
+    <circle cx="850" cy="48" r="4"/>
+  </g>
+  <!-- Gold traces share the wire geometry and go around the amplifier outline. -->
+  <g stroke="#E6BC68" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+    <path class="signal-pulse" pathLength="1500" d="M0 36H490L496 27L508 45L520 27L532 45L544 27L550 36H657A3 3 0 0 1 663 36H690V20L790 48H846A4 4 0 0 1 854 48H1440"/>
+    <path class="feedback-pulse" pathLength="450" d="M850 44V8H784L778 2L766 14L754 2L742 14L730 2L724 8H660V33"/>
+  </g>
+</svg>

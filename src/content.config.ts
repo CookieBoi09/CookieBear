@@ -25,7 +25,11 @@ const projects = defineCollection({
 		title: z.string(),
 		description: z.string(),
 		date: z.coerce.date(),
-		status: z.enum(['ongoing', 'past']),
+		status: z.preprocess((value) => {
+			if (typeof value !== 'string') return value;
+			const normalized = value.trim().toLowerCase().replace(/[\s_]+/g, '-');
+			return normalized === 'in-progress' ? 'ongoing' : normalized === 'completed' ? 'past' : normalized;
+		}, z.enum(['ongoing', 'in-development', 'beta-testing', 'past'])),
 	}),
 });
 

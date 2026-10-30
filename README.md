@@ -119,3 +119,11 @@ The resistor/diode/capacitor divider is a decorative classical schematic,
 separate from the quantum circuit. Pause motion and reduced-motion preferences
 also stop the gate traversal. Run `node --test tests/*.test.js` to check the
 state evolution and existing repository tests.
+
+### Project statuses
+
+Set `status` in a project’s Markdown frontmatter to `ongoing` (In progress),
+`in-development` (In development), `beta-testing` (Beta testing), or `past`
+(Completed). The same label appears on homepage cards, book covers, and inside
+the project reader. For example: `status: 'beta-testing'`. Display-style values such as
+`IN DEVELOPMENT` and `BETA TESTING` are also accepted and normalized.
