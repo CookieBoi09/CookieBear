@@ -935,3 +935,14 @@ body.quantum-home>header {
   .quantum-home .ising-signals [data-qubit],
   .quantum-home .ising-signals [data-branch-trails] { display: none; }
 }
+
+/* Every project title uses the same terminal treatment as its build line. */
+.quantum-home .oled-card h3.project-terminal {
+  font:clamp(16px,1.7vw,25px)/1.5 var(--font-lora),serif;
+  letter-spacing:normal;
+  color:var(--q-cyan);
+  margin:22px 0 12px;
+}
+@media(max-width:600px) {
+  .quantum-home .oled-card h3.project-terminal { font-size:18px; }
+}
