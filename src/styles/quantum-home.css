@@ -946,3 +946,10 @@ body.quantum-home>header {
 @media(max-width:600px) {
   .quantum-home .oled-card h3.project-terminal { font-size:18px; }
 }
+
+/* Restore the circuit boundary between the hero and project cards. */
+.quantum-home .home-section-divider {
+  position:relative;
+  top:auto;
+  margin-top:-40px;
+}
