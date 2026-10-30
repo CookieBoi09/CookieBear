@@ -2,12 +2,12 @@
 title: 'My Journey of Trying to Not Get Replaced By AI #3'
 description: 'Journal 11'
 category: 'Series #1'
-pubDate: 'Oct 3 2026'
+pubDate: 'Oct 14 2026'
 heroImage: '../../assets/blog-placeholder-life.jpg'
 draft: false
 ---
 
-Sometimes you just gotta larp your way in just to gain traction.(October 14th)
+"Sometimes you just gotta larp your way in just to gain traction."
 
 &emsp;I’ve recently looked back at my early years when I was just 7 years old, and I remember noticing a book called No Nonsense Algebra, which I have no idea how it was on the shelf in the first place. I saw the numbers and pluses and x’s which piqued my curiosity more in figuring out how to solve these problems. I spend hours just simply looking through the pages of math equations and started with the easier problems. I did end up giving up on the systems of equations problems which I had no clue at the time how it works, and I’ve pretty much never did algebra again until 4th grade when I began formally learning it in an online class. With this knowledge, I was able to do some AoPS problems(Art of Problem Solving books, which are a must-read-and-do for those interested in math competition) and pursue my interest in mathematics.
 

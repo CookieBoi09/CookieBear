@@ -2,7 +2,7 @@
 title: 'My Journey of Trying to Not Get Replaced By AI #4'
 description: 'Journal 12'
 category: 'Series #1'
-pubDate: 'Oct 3 2026'
+pubDate: 'Oct 25 2026'
 heroImage: '../../assets/blog-placeholder-life.jpg'
 draft: false
 ---

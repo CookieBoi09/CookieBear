@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import { PROJECT_STATUS_LABELS } from '../lib/project-status';
 import IsingSignals from '../components/IsingSignals.astro';
 import FormattedDate from '../components/FormattedDate.astro';
@@ -171,18 +172,7 @@ const projects = (await getCollection('projects'))
         </div>
       </section>
     </main>
-    <footer class="quantum-footer quantum-container">
-      <a class="footer-brand" href="/"
-        ><img
-          src="/cookie-icon-transparent.png"
-          width="389"
-          height="396"
-          alt=""
-        />{SITE_TITLE}</a
-      >
-      <p><span class="gold">Powered by coffee and fruit teas</span></p>
-      <a href="#top">BACK TO TOP</a>
-    </footer>
+    <Footer />
     <script>
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
       const applyMotion = () =>
