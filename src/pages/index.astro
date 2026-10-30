@@ -36,7 +36,6 @@ const projects = (await getCollection('projects'))
             <a class="q-button primary" href="#projects">Explore projects</a>
           </div>
           <div class="hero-bottom">
-            <button class="motion-toggle" type="button" aria-pressed="false">Pause motion</button>
           </div>
         </div>
       </section>
@@ -66,19 +65,9 @@ const projects = (await getCollection('projects'))
     </footer>
     <script>
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-      const toggle = document.querySelector<HTMLButtonElement>('.motion-toggle');
-      let paused = reducedMotion.matches;
-      const applyMotion = () => {
-        document.body.classList.toggle('motion-paused', paused);
-        toggle?.setAttribute('aria-pressed', String(paused));
-        if (toggle) {
-          toggle.disabled = reducedMotion.matches;
-          toggle.textContent = reducedMotion.matches ? 'Reduced motion' : paused ? 'Resume motion' : 'Pause motion';
-        }
-      };
+      const applyMotion = () => document.body.classList.toggle('motion-paused', reducedMotion.matches);
       applyMotion();
-      toggle?.addEventListener('click', () => { paused = !paused; applyMotion(); });
-      reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; applyMotion(); });
+      reducedMotion.addEventListener('change', applyMotion);
       if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver(entries => {
           for (const entry of entries) if (entry.isIntersecting) {
