@@ -6,7 +6,16 @@ import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
 import '../styles/quantum-home.css';
 import '../styles/project-library.css';
-const projects = (await getCollection('projects')).sort((a, b) => a.data.status !== b.data.status ? (a.data.status === 'ongoing' ? -1 : 1) : b.data.date.valueOf() - a.data.date.valueOf());
+const shelfOrder = ['cookiebear-blog', 'lint', 'sploom'];
+const shelfRank = (id: string) => {
+  const index = shelfOrder.indexOf(id);
+  return index < 0 ? shelfOrder.length : index;
+};
+const projects = (await getCollection('projects')).sort((a, b) => {
+  const order = shelfRank(a.id) - shelfRank(b.id);
+  if (order) return order;
+  return a.data.status !== b.data.status ? (a.data.status === 'ongoing' ? -1 : 1) : b.data.date.valueOf() - a.data.date.valueOf();
+});
 const books = await Promise.all(projects.map(async project => ({ project, ...(await render(project)) })));
 ---
 <!doctype html>
