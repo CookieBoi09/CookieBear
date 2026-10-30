@@ -1,0 +1,54 @@
+---
+import { stages, gatePath, QUBITS } from '../lib/ising-animation.js';
+const sequence = stages();
+---
+<svg class="ising-signals" width="1440" height="700" viewBox="0 0 1440 700" aria-hidden="true" data-state-sequence={JSON.stringify(sequence)}>
+  <defs>
+    {sequence.map((stage, index) => Array.from({length: QUBITS}, (_, q) => <path id={`qubit-path-${index}-${q}`} d={gatePath(stage.layer, stage.kind, q)} />))}
+  </defs>
+  {Array.from({length: QUBITS}, (_, q) => <g data-qubit={q}>
+    <circle class="qubit-halo" r="9" fill="none" stroke="currentColor" stroke-width="1" />
+    <circle class="qubit-core" r="3" fill="currentColor" />
+    <path class="qubit-phase" d="M0 0L6 0" stroke="currentColor" stroke-width="1.5" />
+  </g>)}
+</svg>
+<script>
+  const svg = document.querySelector<SVGSVGElement>('.ising-signals');
+  if (svg) {
+    const sequence = JSON.parse(svg.dataset.stateSequence!);
+    const dots = [...svg.querySelectorAll<SVGGElement>('[data-qubit]')];
+    const paths = sequence.map((_: unknown, index: number) => dots.map((_, q) => {
+      const path = svg.querySelector<SVGPathElement>(`#qubit-path-${index}-${q}`)!;
+      return { path, length: path.getTotalLength() };
+    }));
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let elapsed = 0, previous = 0;
+    const phaseDuration = 2000;
+    const loopDuration = sequence.length * phaseDuration + 1200;
+    function draw(now: number) {
+      const paused = document.body.classList.contains('motion-paused') || reduced.matches || document.hidden;
+      if (previous && !paused) elapsed += Math.min(now - previous, 80);
+      previous = now;
+      const loopTime = elapsed % loopDuration;
+      const phase = Math.min(sequence.length - 1, Math.floor(loopTime / phaseDuration));
+      const progress = Math.min(1, (loopTime - phase * phaseDuration) / phaseDuration);
+      const stage = sequence[phase];
+      dots.forEach((dot, q) => {
+        const {path, length} = paths[phase][q];
+        const point = path.getPointAtLength(progress * length);
+        const before = stage.before[q], after = stage.after[q];
+        const blend = Math.max(0, (progress - .35) / .65);
+        const p1 = before.p1 + (after.p1 - before.p1) * blend;
+        const purity = before.purity + (after.purity - before.purity) * blend;
+        dot.setAttribute('transform', `translate(${point.x} ${point.y})`);
+        // Gold intensity encodes local excitation; halo grows with entanglement.
+        dot.style.color = `hsl(${40 + p1 * 8} 85% ${60 + p1 * 17}%)`;
+        dot.querySelector('.qubit-halo')!.setAttribute('r', String(6 + (1 - purity) * 16));
+        dot.querySelector('.qubit-phase')!.setAttribute('transform', `rotate(${p1 * 180})`);
+        dot.style.opacity = String(loopTime > sequence.length * phaseDuration ? Math.max(0, 1 - (loopTime - sequence.length * phaseDuration) / 1000) : Math.min(1, loopTime / 300));
+      });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  }
+</script>

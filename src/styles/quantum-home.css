@@ -927,3 +927,24 @@ body.quantum-home>header {
   border-radius:0;
 }
 
+
+/* Signals share the exact coordinate system of the Figma Ising artwork. */
+.quantum-home .ising-signals {
+  position: absolute;
+  width: 1440px;
+  height: 700px;
+  max-width: none;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  overflow: visible;
+  filter: drop-shadow(0 0 4px #e6bc6870);
+}
+.quantum-home .qubit-halo { opacity: .5; }
+.quantum-home .hero-bottom { justify-content: flex-end; }
+@media (max-width: 600px) {
+  .quantum-home .ising-signals { left: 35%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quantum-home .ising-signals { display: none; }
+}

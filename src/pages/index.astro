@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
+import IsingSignals from '../components/IsingSignals.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
@@ -26,7 +27,7 @@ const projects = (await getCollection('projects'))
           <img class="ising-art" src="/design/ising-circuit.svg" width="1440" height="700" alt="" fetchpriority="high" />
           <div class="quantum-dots">{Array.from({length: 272}, () => <img src="/design/grid-dot.svg" width="2" height="2" alt="" />)}</div>
           <div class="signal-sweep"></div>
-          {Array.from({length: 6}, (_, i) => <i class="signal-particle" style={`--wire:${i};--delay:${i * -.9}s`}></i>)}
+          <IsingSignals />
         </div>
         <div class="quantum-container hero-content">
           <p class="q-label entrance">01 / HELLO, WORLD<span class="cursor" aria-hidden="true">_</span></p>
@@ -37,13 +38,12 @@ const projects = (await getCollection('projects'))
             <a class="q-button secondary" href="#who-am-i">Meet the human</a>
           </div>
           <div class="hero-bottom">
-            <span class="q-label status"><i aria-hidden="true"></i> ALWAYS EXPLORING</span>
             <button class="motion-toggle" type="button" aria-pressed="false">Pause motion</button>
           </div>
         </div>
       </section>
       <section class="quantum-about" id="who-am-i" aria-labelledby="about-title">
-        <div class="circuit-divider" aria-hidden="true"><img src="/design/circuit-divider.svg" width="1440" height="80" alt="" /><span></span></div>
+        <div class="circuit-divider" aria-hidden="true"><img src="/design/circuit-divider.svg" width="1440" height="80" alt="" /></div>
         <div class="quantum-container about-layout">
           <div class="about-copy reveal">
             <p class="q-label gold">02 / THE HUMAN BEHIND THE HARDWARE</p>
