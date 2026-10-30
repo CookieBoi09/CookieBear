@@ -70,7 +70,6 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
             <div class="project-prose"><Content /></div>
             <span class="page-number" aria-hidden="true">01 / PROJECT NOTES</span>
           </article>
-          <div class="turning-cover" aria-hidden="true"><span>{project.data.title}</span></div>
         </div>
       </dialog>)}
       <noscript><div class="quantum-container">{books.map(({project, Content}) => <article><h2>{project.data.title}</h2><p>{project.data.description}</p><Content /></article>)}</div></noscript>
