@@ -5,7 +5,6 @@ import IsingSignals from '../components/IsingSignals.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
-import OskiImage from '../assets/blog-placeholder-about.jpg';
 import '../styles/quantum-home.css';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -34,31 +33,14 @@ const projects = (await getCollection('projects'))
           <h1 id="hero-title" class="entrance">Welcome to<br />my <span>space</span></h1>
           <div class="q-actions entrance">
             <a class="q-button primary" href="#projects">Explore projects</a>
-            <a class="q-button secondary" href="#who-am-i">About Me</a>
           </div>
           <div class="hero-bottom">
             <button class="motion-toggle" type="button" aria-pressed="false">Pause motion</button>
           </div>
         </div>
       </section>
-      <section class="quantum-about" id="who-am-i" aria-labelledby="about-title">
-        <div class="circuit-divider" aria-hidden="true"><img src="/design/circuit-divider.svg" width="1440" height="80" alt="" /></div>
-        <div class="quantum-container about-layout">
-          <div class="about-copy reveal">
-            <p class="q-label gold">02 / THE HUMAN BEHIND THE HARDWARE</p>
-            <h2 id="about-title">Who am I?</h2>
-            <p class="q-description">I’m Jerry Fan, a first-year UC Berkeley student interested in the intersection of physics and computer science—and someone who loves sharing ideas and thoughts with the internet.</p>
-            <p class="interests">Physics <b>/</b> Software Coding <b>/</b> AI Agents</p>
-            <a class="quiet-link" href="/about">A little more about me</a>
-          </div>
-          <figure class="oski-frame reveal">
-            <div class="portrait-window"><img src={OskiImage.src} width={OskiImage.width} height={OskiImage.height} alt="Oski, the UC Berkeley bear, working at a laptop in the library" loading="lazy" /><span class="portrait-scan" aria-hidden="true"></span></div>
-            <figcaption><span>BERKELEY / CAL</span><span class="gold">GO BEARS.</span></figcaption>
-          </figure>
-        </div>
-      </section>
       <section class="quantum-projects quantum-container" id="projects" aria-labelledby="projects-title">
-        <div class="reveal section-title"><p class="q-label">03 / ON THE WORKBENCH</p><h2 id="projects-title">Currently in development.</h2></div>
+        <div class="reveal section-title"><p class="q-label">02 / ON THE WORKBENCH</p><h2 id="projects-title">Currently in development.</h2></div>
         <div class="quantum-card-row">
           {projects.map((project, i) => <article class="oled-card reveal">
             <div class="card-meta"><span>PROJECT_0{i + 1}</span><span class="gold"><i aria-hidden="true"></i>{project.data.status === 'ongoing' ? 'IN PROGRESS' : 'COMPLETED'}</span></div>
