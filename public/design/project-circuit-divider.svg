@@ -1,10 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="80" viewBox="0 0 1440 80" fill="none">
   <style>
-    .signal-pulse { stroke-dasharray:48 1552; animation:signal-flow 8s linear infinite; }
-    .feedback-pulse { stroke-dasharray:22 498; animation:feedback-flow 5s linear infinite; }
-    @keyframes signal-flow { from { stroke-dashoffset:48; } to { stroke-dashoffset:-1552; } }
-    @keyframes feedback-flow { from { stroke-dashoffset:22; } to { stroke-dashoffset:-498; } }
-    @media(prefers-reduced-motion:reduce) { .signal-pulse,.feedback-pulse { display:none; } }
+    .signal-pulse { stroke-dasharray:48 2052; animation:signal-flow 8s linear infinite; }
+    .output-pulse { stroke-dasharray:30 1370; animation:output-flow 8s linear infinite; }
+    .feedback-pulse { stroke-dasharray:22 978; animation:feedback-flow 8s linear infinite; }
+    @keyframes signal-flow { 0% { stroke-dashoffset:48; } 50% { stroke-dashoffset:-952; } 52.4%,100% { stroke-dashoffset:-1000; } }
+    @keyframes output-flow { 0%,50% { stroke-dashoffset:30; } 87%,100% { stroke-dashoffset:-650; } }
+    @keyframes feedback-flow { 0%,50% { stroke-dashoffset:22; } 76%,100% { stroke-dashoffset:-450; } }
+    @media(prefers-reduced-motion:reduce) { .signal-pulse,.output-pulse,.feedback-pulse { display:none; } }
   </style>
   <g stroke="#64F6D2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <!-- Input resistor, inverting amplifier, and output. -->
@@ -33,9 +35,10 @@
   <g fill="#64F6D2">
     <circle cx="340" cy="36" r="2.3"/><circle cx="1140" cy="48" r="2.3"/><circle cx="1300" cy="48" r="2.3"/>
   </g>
-  <!-- Gold traces share the wire geometry and go around the amplifier outline. -->
+  <!-- At 50% the incoming pulse reaches the output junction; both branches start together. -->
   <g stroke="#E6BC68" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-    <path class="signal-pulse" pathLength="1500" d="M0 36H178L184 28L196 44L208 28L220 44L232 28L238 36H490L496 27L508 45L520 27L532 45L544 27L550 36H657A3 3 0 0 1 663 36H690V20L790 48H846A4 4 0 0 1 854 48H970L976 40L988 56L1000 40L1012 56L1024 40L1030 48H1440"/>
+    <path class="signal-pulse" pathLength="1000" d="M0 36H178L184 28L196 44L208 28L220 44L232 28L238 36H490L496 27L508 45L520 27L532 45L544 27L550 36H657A3 3 0 0 1 663 36H690V20L790 48H846A4 4 0 0 1 850 44"/>
+    <path class="output-pulse" pathLength="650" d="M850 44A4 4 0 0 1 854 48H970L976 40L988 56L1000 40L1012 56L1024 40L1030 48H1440"/>
     <path class="feedback-pulse" pathLength="450" d="M850 44V8H784L778 2L766 14L754 2L742 14L730 2L724 8H660V33"/>
   </g>
 </svg>
