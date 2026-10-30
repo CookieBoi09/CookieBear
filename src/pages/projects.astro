@@ -8,17 +8,9 @@ import { PROJECT_STATUS_LABELS } from '../lib/project-status';
 import { SITE_TITLE } from '../consts';
 import '../styles/quantum-home.css';
 import '../styles/project-library.css';
-const shelfOrder = ['cookiebear-blog', 'lint', 'sploom'];
-const shelfRank = (id: string) => {
-  const index = shelfOrder.indexOf(id);
-  return index < 0 ? shelfOrder.length : index;
-};
-const projects = (await getCollection('projects')).sort((a, b) => {
-  const order = shelfRank(a.id) - shelfRank(b.id);
-  if (order) return order;
-  const completedOrder = Number(a.data.status === 'past') - Number(b.data.status === 'past');
-  return completedOrder || b.data.date.valueOf() - a.data.date.valueOf();
-});
+const projects = (await getCollection('projects'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 const books = await Promise.all(projects.map(async project => ({ project, ...(await render(project)) })));
 ---
 <!doctype html>
