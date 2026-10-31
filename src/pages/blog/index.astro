@@ -106,15 +106,15 @@ const categories = [
                   data-category={post.data.category}
                 >
                   <a href={`/blog/${post.id}/`} class="manuscript-cover">
+                    {post.data.heroImage && (
+                      <Image width={720} height={360} src={post.data.heroImage} alt="" class="cover-image" />
+                    )}
                     <div class="cover-running-head">
                       <span>{documentId}</span><span>{readingMinutes} min read</span>
                     </div>
                     <p class="category">{post.data.category}</p>
                     <h2 class="title">{post.data.title}</h2>
                     <p class="cover-excerpt">{excerpt}</p>
-                    {post.data.heroImage && (
-                      <Image width={160} height={100} src={post.data.heroImage} alt="" />
-                    )}
                     <div class="cover-footer">
                       <p class="date"><FormattedDate date={post.data.pubDate} /></p>
                       <span class="cover-open">Read entry <span aria-hidden="true">↗</span></span>
