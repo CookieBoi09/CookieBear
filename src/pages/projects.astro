@@ -10,6 +10,8 @@ import '../styles/quantum-home.css';
 import '../styles/project-library.css';
 const projects = (await getCollection('projects'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.title.localeCompare(a.data.title, 'en', { numeric: true, sensitivity: 'base' }));
+// Number chronologically, independent of the newest-first shelf order.
+const projectNumbers = new Map([...projects].reverse().map((project, index) => [project.id, index + 1]));
 const books = await Promise.all(projects.map(async project => ({ project, ...(await render(project)) })));
 ---
 <!doctype html>
@@ -32,7 +34,7 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
             {books.map(({project}, index) => <button class="project-book" type="button" data-open-book={`book-${index}`} aria-haspopup="dialog" aria-label={`Open ${project.data.title}`}>
               <span class="book-pages" aria-hidden="true"></span>
               <span class="book-cover">
-                <span class="book-index">VOL. {String(index + 1).padStart(2, '0')}</span>
+                <span class="book-index">VOL. {String(projectNumbers.get(project.id)).padStart(2, '0')}</span>
                 <span class="book-circuit" aria-hidden="true"><span></span></span>
                 <span class="book-title">{project.data.title}</span>
                 <span class="book-status">{PROJECT_STATUS_LABELS[project.data.status]}</span>
@@ -49,7 +51,7 @@ const books = await Promise.all(projects.map(async project => ({ project, ...(aw
         <button type="button" class="close-book" aria-label="Close project book">Close ×</button>
         <div class="open-book">
           <div class="inside-cover" aria-hidden="true">
-            <span class="book-index">VOL. {String(index + 1).padStart(2, '0')}</span>
+            <span class="book-index">VOL. {String(projectNumbers.get(project.id)).padStart(2, '0')}</span>
             <span class="reader-emblem">{'{ }'}</span>
             <span class="inside-title">{project.data.title}</span>
             <span class="book-status">COOKIEBEAR / PROJECT ARCHIVE</span>
