@@ -24,14 +24,14 @@ const { title, description, pubDate, updatedDate, heroImage, category, documentI
     <Header />
     <main id="main-content" class="manuscript-reader">
       <nav class="reader-toolbar" aria-label="Journal navigation">
-        <a href="/blog/">← All journals</a>
-        <span class="reader-mode"><span aria-hidden="true">●</span> Manuscript view</span>
+        <a href="/blog/">← Bounty board</a>
+        <span class="reader-mode"><span aria-hidden="true">●</span> Journal dossier</span>
         <button type="button" class="print-manuscript">Print / PDF <span aria-hidden="true">↗</span></button>
       </nav>
 
       <div class="manuscript-workspace">
         <aside class="document-record" aria-label="Entry details">
-          <p class="record-label">Document record</p>
+          <p class="record-label">File index</p>
           <p class="record-id">{documentId}</p>
           <dl>
             <dt>Filed under</dt><dd>{category}</dd>
@@ -40,18 +40,19 @@ const { title, description, pubDate, updatedDate, heroImage, category, documentI
             {updatedDate && <><dt>Revised</dt><dd><FormattedDate date={updatedDate} /></dd></>}
           </dl>
           <div class="record-rule" aria-hidden="true"></div>
-          <p class="record-note">A thought, put to paper.</p>
+          <p class="record-note">One journal.<br />A different perspective.</p>
         </aside>
 
         <article class="manuscript-sheet" aria-labelledby="manuscript-title">
           <div class="sheet-running-head">
-            <span>CookieBear / Journal</span>
+            <span>CookieBear / Journal division</span>
             <span>{documentId}</span>
           </div>
+          <div class="dossier-banner" aria-hidden="true"><span>Field notes</span><span class="dossier-stamp">Open file</span></div>
           {heroImage && (
             <figure class="manuscript-figure">
-              <Image src={heroImage} alt="" width={960} loading="eager" />
-              <figcaption><span>Fig. 01</span> / {category}</figcaption>
+              <div class="poster-image"><Image src={heroImage} alt="" width={960} loading="eager" /><span class="image-register" aria-hidden="true">+ &nbsp; + &nbsp; +</span></div>
+              <figcaption><span>Image / 01</span><span>{category}</span></figcaption>
             </figure>
           )}
           <header class="manuscript-title-block">
@@ -59,7 +60,7 @@ const { title, description, pubDate, updatedDate, heroImage, category, documentI
             <h1 id="manuscript-title">{title}</h1>
             <p class="manuscript-byline"><FormattedDate date={pubDate} /><span aria-hidden="true"> / </span>{readingMinutes} min read</p>
             {updatedDate && <p class="manuscript-revision">Revised <FormattedDate date={updatedDate} /></p>}
-            <div class="title-divider" aria-hidden="true"><span>✦</span></div>
+            <div class="title-divider" aria-hidden="true"><span>+</span></div>
           </header>
 
           <div class="manuscript-body">
@@ -71,7 +72,7 @@ const { title, description, pubDate, updatedDate, heroImage, category, documentI
           </div>
         </article>
       </div>
-      <div class="reader-end"><a href="/blog/">← Return to the archive</a><a href="#top">Back to top ↑</a></div>
+      <div class="reader-end"><a href="/blog/">← Return to the board</a><a href="#top">Back to top ↑</a></div>
     </main>
     <Footer />
     <script>

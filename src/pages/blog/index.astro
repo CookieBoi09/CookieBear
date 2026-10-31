@@ -7,7 +7,7 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { SITE_TITLE } from '../../consts';
 import { manuscriptDetails } from '../../lib/blog-manuscript';
 import '../../styles/manuscript.css';
 
@@ -31,7 +31,7 @@ const categories = [
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead title={`Journal Bounty Board | ${SITE_TITLE}`} description="Field notes on life, learning, and building. Explore the CookieBear journal board." />
   </head>
 
   <body class="quantum-home quantum-content manuscript-site" id="top">
@@ -39,43 +39,51 @@ const categories = [
 
     <main id="main-content" class="blog-page manuscript-archive">
       <div class="page-intro">
-        <p class="eyebrow">CookieBear / Field notes</p>
-        <h1>Collection of <em>journals.</em></h1>
-        <p>
-          Thoughts on life, learning, and the things worth writing down.
-          Pick a manuscript. Stay for a thought.
-        </p>
-        <span class="archive-count">{String(posts.length).padStart(2, '0')} entries / Open archive</span>
+        <div class="board-masthead">
+          <p class="eyebrow">CookieBear / Independent field notes</p>
+          <span class="board-access"><span aria-hidden="true">●</span> Public archive</span>
+        </div>
+        <div class="board-intro-grid">
+          <div>
+            <h1>Bounty <span>board.</span></h1>
+            <p class="board-description">Wanted: a new perspective.<br />Journals on life, learning, and building something of your own.</p>
+          </div>
+          <aside class="board-register" aria-label="Archive overview">
+            <span class="register-crosshair" aria-hidden="true">⌖</span>
+            <span class="register-label">Posted journals</span>
+            <strong>{String(posts.length).padStart(2, '0')}</strong>
+            <span class="register-footer">Open a file.<br />Follow a thought.</span>
+            <span class="board-barcode" aria-hidden="true"></span>
+          </aside>
+        </div>
       </div>
       <section>
         <div class="filters">
           <div class="catalogue-heading">
             <span class="catalogue-name">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 5v15M12 5C9 3 5 3 2 4v14c3-1 7-1 10 2 3-3 7-3 10-2V4c-3-1-7-1-10 1Z" /></svg>
-              Archive catalogue
+              <span aria-hidden="true">⌕</span> Locate a journal
             </span>
             <output id="search-results-count" aria-live="polite" aria-atomic="true">{posts.length} of {posts.length} journals</output>
           </div>
           <div class="filter-field search">
-            <label for="blog-search">Find your next read</label>
+            <label for="blog-search">Search the board</label>
             <div class="catalogue-search">
               <svg class="catalogue-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg>
               <input
                 id="blog-search"
                 type="search"
-                placeholder="Search the journals…"
+                placeholder="Title, date, or journal number…"
                 autocomplete="off"
                 aria-controls="blog-posts"
               />
               <button class="clear-search" type="button" aria-label="Clear search" hidden>
                 <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" /></svg>
               </button>
-              <span class="search-page-edge" aria-hidden="true"></span>
             </div>
           </div>
 
           <fieldset class="category-filter">
-            <legend>Browse the shelves</legend>
+            <legend>Filter by subject</legend>
             <div class="category-options" aria-controls="blog-posts">
               {
                 [{ label: 'All journals', value: '' }, ...categories.map((category) => ({ label: category, value: category }))].map(({ label, value }) => (
@@ -84,7 +92,7 @@ const categories = [
                     data-filter-category={value}
                     aria-pressed={value === '' ? 'true' : 'false'}
                   >
-                    <svg class="shelf-bookmark" viewBox="0 0 12 18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M1.5 1.5h9v14l-4.5-3-4.5 3z" /><path d="M4 5h4" /></svg>
+                    <span class="filter-marker" aria-hidden="true">+</span>
                     <span>{label}</span>
                     <span class="shelf-count">{value === '' ? posts.length : posts.filter((post) => post.data.category === value).length}</span>
                   </button>
@@ -96,29 +104,34 @@ const categories = [
 
         <p class="no-results" hidden>No posts match your search.</p>
 
+        <div class="board-list-heading"><h2>Posted on the board</h2><span>Most recent first <span aria-hidden="true">↓</span></span></div>
         <ul id="blog-posts">
           {
             posts.map((post) => {
               const { documentId, readingMinutes, excerpt } = manuscriptDetails(post.id, post.body);
               return (
                 <li
-                  data-search={`${post.data.title} ${post.data.description} ${post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}`.toLowerCase()}
+                  data-search={`${documentId} ${post.data.title} ${post.data.description} ${post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}`.toLowerCase()}
                   data-category={post.data.category}
                 >
                   <a href={`/blog/${post.id}/`} class="manuscript-cover">
+                    <div class="poster-heading"><span class="poster-wanted" aria-hidden="true">Wanted</span><span class="poster-number">{documentId}</span></div>
                     {post.data.heroImage && (
-                      <Image width={720} height={360} src={post.data.heroImage} alt="" class="cover-image" />
+                      <div class="poster-image">
+                        <Image width={720} height={360} src={post.data.heroImage} alt="" class="cover-image" />
+                        <span class="image-register" aria-hidden="true">+ &nbsp; + &nbsp; +</span>
+                      </div>
                     )}
                     <div class="cover-running-head">
-                      <span>{documentId}</span><span>{readingMinutes} min read</span>
+                      <span>Journal / {post.data.category}</span><span>{readingMinutes} min read</span>
                     </div>
-                    <p class="category">{post.data.category}</p>
                     <h2 class="title">{post.data.title}</h2>
                     <p class="cover-excerpt">{excerpt}</p>
                     <div class="cover-footer">
                       <p class="date"><FormattedDate date={post.data.pubDate} /></p>
-                      <span class="cover-open">Read entry <span aria-hidden="true">↗</span></span>
+                      <span class="cover-open">Open journal <span aria-hidden="true">↗</span></span>
                     </div>
+                    <div class="poster-tail" aria-hidden="true"><span class="poster-barcode"></span><span>CookieBear / Field notes</span></div>
                   </a>
                 </li>
               );
