@@ -1,5 +1,5 @@
 ---
-title: 'My Journey of Trying to Not Get Replaced By AI #4'
+title: 'My Journey of Trying to Not Get Replaced By AI #5'
 description: 'Journal 12'
 category: 'Series #1'
 pubDate: 'Oct 25 2026'
