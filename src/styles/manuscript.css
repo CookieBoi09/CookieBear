@@ -99,11 +99,9 @@ body.manuscript-site > header { background: var(--q-bg); }
 .manuscript-site .poster-number { padding: 5px 6px; border: 1px solid var(--ms-stamp); color: var(--ms-stamp); transform: rotate(-4deg); font: 700 10px/1.3 var(--ms-mono); white-space: nowrap; }
 .manuscript-site .poster-image { position: relative; border: 1px solid #496575; background: #102026; overflow: hidden; }
 .manuscript-site .poster-image::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, transparent 0 3px, #080d1218 3px 4px); box-shadow: inset 0 0 0 4px #64f6d225; }
-.manuscript-site .image-register { position: absolute; right: 7px; bottom: 6px; z-index: 1; padding: 2px 4px; color: var(--q-cyan); background: #080d12c9; font: 10px/1 var(--ms-mono); }
 .manuscript-site #blog-posts .poster-heading, .manuscript-site #blog-posts .poster-tail { border-color: #62684f; }
 .manuscript-site #blog-posts .poster-image { border-color: #69705a; background: #223125; }
 .manuscript-site #blog-posts .poster-image::after { box-shadow: inset 0 0 0 4px #e9e1ca35; }
-.manuscript-site #blog-posts .image-register { color: #e7efcd; }
 .manuscript-site #blog-posts img.cover-image { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; margin: 0; padding: 0; object-fit: cover; filter: saturate(.55) contrast(1.05); }
 .manuscript-site #blog-posts .cover-running-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 11px 0; margin-bottom: 12px; border-bottom: 1px solid var(--ms-rule); color: var(--ms-muted); font: 8px/1.5 var(--ms-mono); text-transform: uppercase; letter-spacing: .02em; }
 .manuscript-site #blog-posts .title { margin: 0 0 13px; color: var(--ms-ink); font: 400 28px/1.12 var(--ms-display); letter-spacing: .005em; text-transform: uppercase; text-wrap: balance; overflow-wrap: anywhere; }
