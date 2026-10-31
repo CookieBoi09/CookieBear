@@ -49,31 +49,44 @@ const categories = [
       </div>
       <section>
         <div class="filters">
+          <div class="catalogue-heading">
+            <span class="catalogue-name">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 5v15M12 5C9 3 5 3 2 4v14c3-1 7-1 10 2 3-3 7-3 10-2V4c-3-1-7-1-10 1Z" /></svg>
+              Archive catalogue
+            </span>
+            <output id="search-results-count" aria-live="polite" aria-atomic="true">{posts.length} of {posts.length} journals</output>
+          </div>
           <div class="filter-field search">
-            <label for="blog-search">Search posts</label>
-            <input
-              id="blog-search"
-              type="search"
-              placeholder="Search blog posts..."
-              autocomplete="off"
-              aria-controls="blog-posts"
-            />
+            <label for="blog-search">Find your next read</label>
+            <div class="catalogue-search">
+              <svg class="catalogue-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg>
+              <input
+                id="blog-search"
+                type="search"
+                placeholder="Search the journals…"
+                autocomplete="off"
+                aria-controls="blog-posts"
+              />
+              <button class="clear-search" type="button" aria-label="Clear search" hidden>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" /></svg>
+              </button>
+              <span class="search-page-edge" aria-hidden="true"></span>
+            </div>
           </div>
 
           <fieldset class="category-filter">
-            <legend>Category</legend>
+            <legend>Browse the shelves</legend>
             <div class="category-options" aria-controls="blog-posts">
-              <button type="button" data-filter-category="" aria-pressed="true"
-                >All</button
-              >
               {
-                categories.map((category) => (
+                [{ label: 'All journals', value: '' }, ...categories.map((category) => ({ label: category, value: category }))].map(({ label, value }) => (
                   <button
                     type="button"
-                    data-filter-category={category}
-                    aria-pressed="false"
+                    data-filter-category={value}
+                    aria-pressed={value === '' ? 'true' : 'false'}
                   >
-                    {category}
+                    <svg class="shelf-bookmark" viewBox="0 0 12 18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M1.5 1.5h9v14l-4.5-3-4.5 3z" /><path d="M4 5h4" /></svg>
+                    <span>{label}</span>
+                    <span class="shelf-count">{value === '' ? posts.length : posts.filter((post) => post.data.category === value).length}</span>
                   </button>
                 ))
               }
@@ -81,7 +94,7 @@ const categories = [
           </fieldset>
         </div>
 
-        <p class="no-results" role="status" hidden>No posts match your search.</p>
+        <p class="no-results" hidden>No posts match your search.</p>
 
         <ul id="blog-posts">
           {
@@ -126,6 +139,8 @@ const categories = [
       const postItems =
         document.querySelectorAll<HTMLElement>('#blog-posts li');
       const noResults = document.querySelector<HTMLElement>('.no-results');
+      const clearSearch = document.querySelector<HTMLButtonElement>('.clear-search');
+      const resultsCount = document.querySelector<HTMLOutputElement>('#search-results-count');
       const selectedCategories = new Set<string>();
 
       const updateCategoryButtons = () => {
@@ -156,9 +171,17 @@ const categories = [
         });
 
         if (noResults) noResults.hidden = visiblePosts !== 0;
+        if (clearSearch) clearSearch.hidden = !searchInput?.value;
+        if (resultsCount) resultsCount.textContent = `${visiblePosts} of ${postItems.length} journals`;
       };
 
       searchInput?.addEventListener('input', filterPosts);
+      clearSearch?.addEventListener('click', () => {
+        if (!searchInput) return;
+        searchInput.value = '';
+        filterPosts();
+        searchInput.focus();
+      });
       categoryButtons.forEach((button) => {
         button.addEventListener('click', () => {
           const category = button.dataset.filterCategory ?? '';
