@@ -958,6 +958,6 @@ body.quantum-home>header {
 @media (min-width:901px) {
   .quantum-home .hero-content {
     box-sizing:border-box;
-    padding-inline-start:clamp(40px,6vw,100px);
+    padding-inline-start:clamp(24px,4vw,64px);
   }
 }
