@@ -9,8 +9,7 @@ import { SITE_TITLE } from '../consts';
 import '../styles/quantum-home.css';
 import '../styles/project-library.css';
 const projects = (await getCollection('projects'))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.title.localeCompare(a.data.title, 'en', { numeric: true, sensitivity: 'base' }))
-  .slice(0, 3);
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.title.localeCompare(a.data.title, 'en', { numeric: true, sensitivity: 'base' }));
 const books = await Promise.all(projects.map(async project => ({ project, ...(await render(project)) })));
 ---
 <!doctype html>
