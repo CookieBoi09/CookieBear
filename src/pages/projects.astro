@@ -10,8 +10,9 @@ import '../styles/quantum-home.css';
 import '../styles/project-library.css';
 const projects = (await getCollection('projects'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.title.localeCompare(a.data.title, 'en', { numeric: true, sensitivity: 'base' }));
-// Number chronologically, independent of the newest-first shelf order.
+// Assign chronological numbers, then arrange the shelf from No. 1 upward.
 const projectNumbers = new Map([...projects].reverse().map((project, index) => [project.id, index + 1]));
+projects.sort((a, b) => projectNumbers.get(a.id)! - projectNumbers.get(b.id)!);
 const books = await Promise.all(projects.map(async project => ({ project, ...(await render(project)) })));
 ---
 <!doctype html>
