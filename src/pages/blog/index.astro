@@ -8,6 +8,8 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { manuscriptDetails } from '../../lib/blog-manuscript';
+import '../../styles/manuscript.css';
 
 const posts = (
   await getCollection('blog', ({ data }) => {
@@ -32,17 +34,18 @@ const categories = [
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
 
-  <body class="quantum-home quantum-content" id="top">
+  <body class="quantum-home quantum-content manuscript-site" id="top">
     <Header />
 
-    <main id="main-content" class="blog-page">
+    <main id="main-content" class="blog-page manuscript-archive">
       <div class="page-intro">
-        <p class="eyebrow">My journal / Extensions of My Thoughts</p><h1>
-          Collection of Journals
-        </h1><p>
-          Here are flushed out journals inspired by my "shower thoughts". Feel
-          free to read through the articles that pique your interest.
+        <p class="eyebrow">CookieBear / Field notes</p>
+        <h1>Collection of <em>journals.</em></h1>
+        <p>
+          Thoughts on life, learning, and the things worth writing down.
+          Pick a manuscript. Stay for a thought.
         </p>
+        <span class="archive-count">{String(posts.length).padStart(2, '0')} entries / Open archive</span>
       </div>
       <section>
         <div class="filters">
@@ -78,35 +81,35 @@ const categories = [
           </fieldset>
         </div>
 
-        <p class="no-results" hidden>No posts match your search.</p>
+        <p class="no-results" role="status" hidden>No posts match your search.</p>
 
         <ul id="blog-posts">
           {
-            posts.map((post) => (
-              <li
-                data-search={`${post.data.title} ${post.data.description} ${post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}`.toLowerCase()}
-                data-category={post.data.category}
-              >
-                <a href={`/blog/${post.id}/`}>
-                  {post.data.heroImage && (
-                    <Image
-                      width={720}
-                      height={405}
-                      src={post.data.heroImage}
-                      alt=""
-                    />
-                  )}
-
-                  <p class="category">{post.data.category}</p>
-
-                  <h4 class="title">{post.data.title}</h4>
-
-                  <p class="date">
-                    <FormattedDate date={post.data.pubDate} />
-                  </p>
-                </a>
-              </li>
-            ))
+            posts.map((post) => {
+              const { documentId, readingMinutes, excerpt } = manuscriptDetails(post.id, post.body);
+              return (
+                <li
+                  data-search={`${post.data.title} ${post.data.description} ${post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}`.toLowerCase()}
+                  data-category={post.data.category}
+                >
+                  <a href={`/blog/${post.id}/`} class="manuscript-cover">
+                    <div class="cover-running-head">
+                      <span>{documentId}</span><span>{readingMinutes} min read</span>
+                    </div>
+                    <p class="category">{post.data.category}</p>
+                    <h2 class="title">{post.data.title}</h2>
+                    <p class="cover-excerpt">{excerpt}</p>
+                    {post.data.heroImage && (
+                      <Image width={160} height={100} src={post.data.heroImage} alt="" />
+                    )}
+                    <div class="cover-footer">
+                      <p class="date"><FormattedDate date={post.data.pubDate} /></p>
+                      <span class="cover-open">Read entry <span aria-hidden="true">↗</span></span>
+                    </div>
+                  </a>
+                </li>
+              );
+            })
           }
         </ul>
       </section>

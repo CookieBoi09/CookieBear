@@ -1,111 +1,82 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import '../styles/manuscript.css';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & {
+  documentId: string;
+  readingMinutes: number;
+};
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, category, documentId, readingMinutes } = Astro.props;
 ---
 
+<!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} image={heroImage} />
   </head>
-
-  <body class="quantum-home quantum-content" id="top">
+  <body class="quantum-home quantum-content manuscript-site" id="top">
     <Header />
+    <main id="main-content" class="manuscript-reader">
+      <nav class="reader-toolbar" aria-label="Journal navigation">
+        <a href="/blog/">← All journals</a>
+        <span class="reader-mode"><span aria-hidden="true">●</span> Manuscript view</span>
+        <button type="button" class="print-manuscript">Print / PDF <span aria-hidden="true">↗</span></button>
+      </nav>
 
-    <main id="main-content" class="article-page">
-      <article>
-        {
-          heroImage && (
-            <div class="hero-image">
-              <Image src={heroImage} alt={title} />
-            </div>
-          )
-        }
+      <div class="manuscript-workspace">
+        <aside class="document-record" aria-label="Entry details">
+          <p class="record-label">Document record</p>
+          <p class="record-id">{documentId}</p>
+          <dl>
+            <dt>Filed under</dt><dd>{category}</dd>
+            <dt>Published</dt><dd><FormattedDate date={pubDate} /></dd>
+            <dt>Reading time</dt><dd>{readingMinutes} min read</dd>
+            {updatedDate && <><dt>Revised</dt><dd><FormattedDate date={updatedDate} /></dd></>}
+          </dl>
+          <div class="record-rule" aria-hidden="true"></div>
+          <p class="record-note">A thought, put to paper.</p>
+        </aside>
 
-        <div class="prose">
-          <div class="title">
-            <div class="date">
-              <FormattedDate date={pubDate} />
+        <article class="manuscript-sheet" aria-labelledby="manuscript-title">
+          <div class="sheet-running-head">
+            <span>CookieBear / Journal</span>
+            <span>{documentId}</span>
+          </div>
+          <header class="manuscript-title-block">
+            <p class="manuscript-category">{category}</p>
+            <h1 id="manuscript-title">{title}</h1>
+            <p class="manuscript-byline"><FormattedDate date={pubDate} /><span aria-hidden="true"> / </span>{readingMinutes} min read</p>
+            {updatedDate && <p class="manuscript-revision">Revised <FormattedDate date={updatedDate} /></p>}
+            <div class="title-divider" aria-hidden="true"><span>✦</span></div>
+          </header>
 
-              {
-                updatedDate && (
-                  <div class="last-updated-on">
-                    Last updated on <FormattedDate date={updatedDate} />
-                  </div>
-                )
-              }
-            </div>
-
-            <h1>{title}</h1>
-
-            <hr />
+          <div class="manuscript-body">
+            <slot />
           </div>
 
-          <slot />
-        </div>
-      </article>
-    </main>
+          {heroImage && (
+            <figure class="manuscript-figure">
+              <Image src={heroImage} alt="" width={720} loading="lazy" />
+              <figcaption><span>Fig. 01</span> / {category}</figcaption>
+            </figure>
+          )}
 
+          <div class="sheet-colophon">
+            <span>{documentId}</span><span>End of entry <span aria-hidden="true">∎</span></span>
+          </div>
+        </article>
+      </div>
+      <div class="reader-end"><a href="/blog/">← Return to the archive</a><a href="#top">Back to top ↑</a></div>
+    </main>
     <Footer />
+    <script>
+      document.querySelector('.print-manuscript')?.addEventListener('click', () => window.print());
+    </script>
   </body>
 </html>
-
-<style>
-  @layer original {
-  main {
-    width: 100%;
-    margin: 0;
-  }
-
-  .hero-image {
-    width: 250px;
-    max-width: calc(100% - 2em);
-    margin: 0.01em auto;
-  }
-
-  .hero-image img {
-    display: block;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 10px;
-    box-shadow: var(--box-shadow);
-  }
-
-  .prose {
-    width: 720px;
-    max-width: calc(100% - 2em);
-    margin: auto;
-    padding: 1em;
-    color: rgb(var(--gray-dark));
-  }
-
-  .title {
-    margin-bottom: 1em;
-    padding: 1em 0;
-    text-align: center;
-    line-height: 1;
-  }
-
-  .title h1 {
-    margin: 0 0 0.5em 0;
-  }
-
-  .date {
-    margin-bottom: 0.5em;
-    color: rgb(var(--gray));
-  }
-
-  .last-updated-on {
-    font-style: italic;
-  }
-  }
-</style>
