@@ -7,7 +7,9 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { SITE_TITLE } from '../../consts';
+import { manuscriptDetails } from '../../lib/blog-manuscript';
+import '../../styles/manuscript.css';
 
 const posts = (
   await getCollection('blog', ({ data }) => {
@@ -29,48 +31,69 @@ const categories = [
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead title={`Journal Bounty Board | ${SITE_TITLE}`} description="Bounty notes on life, learning, and building. Explore the CookieBear journal board." />
   </head>
 
-  <body class="quantum-home quantum-content" id="top">
+  <body class="quantum-home quantum-content manuscript-site" id="top">
     <Header />
 
-    <main id="main-content" class="blog-page">
+    <main id="main-content" class="blog-page manuscript-archive">
       <div class="page-intro">
-        <p class="eyebrow">My journal / Extensions of My Thoughts</p><h1>
-          Collection of Journals
-        </h1><p>
-          Here are flushed out journals inspired by my "shower thoughts". Feel
-          free to read through the articles that pique your interest.
-        </p>
+        <div class="board-masthead">
+          <p class="eyebrow">CookieBear / Bounty notes</p>
+          <span class="board-access"><span aria-hidden="true">●</span> Public archive</span>
+        </div>
+        <div class="board-intro-grid">
+          <div>
+            <h1>Bounty Board</h1>
+            <p class="board-description">Go on traveler . . . pick any article you so please to read.</p>
+          </div>
+          <aside class="board-register" aria-label="Archive overview">
+            <span class="register-crosshair" aria-hidden="true">⌖</span>
+            <span class="register-label">Posted journals</span>
+            <strong>{String(posts.length).padStart(2, '0')}</strong>
+            <span class="board-barcode" aria-hidden="true"></span>
+          </aside>
+        </div>
       </div>
       <section>
         <div class="filters">
+          <div class="catalogue-heading">
+            <span class="catalogue-name">
+              <span aria-hidden="true">⌕</span> Locate a journal
+            </span>
+            <output id="search-results-count" aria-live="polite" aria-atomic="true">{posts.length} of {posts.length} journals</output>
+          </div>
           <div class="filter-field search">
-            <label for="blog-search">Search posts</label>
-            <input
-              id="blog-search"
-              type="search"
-              placeholder="Search blog posts..."
-              autocomplete="off"
-              aria-controls="blog-posts"
-            />
+            <label for="blog-search">Search the board</label>
+            <div class="catalogue-search">
+              <svg class="catalogue-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg>
+              <input
+                id="blog-search"
+                type="search"
+                placeholder="Title, date, or journal number…"
+                autocomplete="off"
+                aria-controls="blog-posts"
+              />
+              <button class="clear-search" type="button" aria-label="Clear search" hidden>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" /></svg>
+              </button>
+            </div>
           </div>
 
           <fieldset class="category-filter">
-            <legend>Category</legend>
+            <legend>Filter by subject</legend>
             <div class="category-options" aria-controls="blog-posts">
-              <button type="button" data-filter-category="" aria-pressed="true"
-                >All</button
-              >
               {
-                categories.map((category) => (
+                [{ label: 'All journals', value: '' }, ...categories.map((category) => ({ label: category, value: category }))].map(({ label, value }) => (
                   <button
                     type="button"
-                    data-filter-category={category}
-                    aria-pressed="false"
+                    data-filter-category={value}
+                    aria-pressed={value === '' ? 'true' : 'false'}
                   >
-                    {category}
+                    <span class="filter-marker" aria-hidden="true">+</span>
+                    <span>{label}</span>
+                    <span class="shelf-count">{value === '' ? posts.length : posts.filter((post) => post.data.category === value).length}</span>
                   </button>
                 ))
               }
@@ -80,33 +103,37 @@ const categories = [
 
         <p class="no-results" hidden>No posts match your search.</p>
 
+        <div class="board-list-heading"><h2>Posted on the board</h2><span>Most recent first <span aria-hidden="true">↓</span></span></div>
         <ul id="blog-posts">
           {
-            posts.map((post) => (
-              <li
-                data-search={`${post.data.title} ${post.data.description} ${post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}`.toLowerCase()}
-                data-category={post.data.category}
-              >
-                <a href={`/blog/${post.id}/`}>
-                  {post.data.heroImage && (
-                    <Image
-                      width={720}
-                      height={405}
-                      src={post.data.heroImage}
-                      alt=""
-                    />
-                  )}
-
-                  <p class="category">{post.data.category}</p>
-
-                  <h4 class="title">{post.data.title}</h4>
-
-                  <p class="date">
-                    <FormattedDate date={post.data.pubDate} />
-                  </p>
-                </a>
-              </li>
-            ))
+            posts.map((post) => {
+              const { documentId, excerpt } = manuscriptDetails(post.id, post.body);
+              return (
+                <li
+                  data-search={`${documentId} ${post.data.title} ${post.data.description} ${post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}`.toLowerCase()}
+                  data-category={post.data.category}
+                >
+                  <a href={`/blog/${post.id}/`} class="manuscript-cover">
+                    <div class="poster-heading"><span class="poster-wanted" aria-hidden="true">Wanted</span><span class="poster-number">{documentId}</span></div>
+                    {post.data.heroImage && (
+                      <div class="poster-image">
+                        <Image width={720} height={360} src={post.data.heroImage} alt="" class="cover-image" />
+                      </div>
+                    )}
+                    <div class="cover-running-head">
+                      <span>Journal / {post.data.category}</span>
+                    </div>
+                    <h2 class="title">{post.data.title}</h2>
+                    <p class="cover-excerpt">{excerpt}</p>
+                    <div class="cover-footer">
+                      <p class="date"><FormattedDate date={post.data.pubDate} /></p>
+                      <span class="cover-open">Open journal <span aria-hidden="true">↗</span></span>
+                    </div>
+                    <div class="poster-tail" aria-hidden="true"><span class="poster-barcode"></span><span>CookieBear / Bounty notes</span></div>
+                  </a>
+                </li>
+              );
+            })
           }
         </ul>
       </section>
@@ -123,6 +150,8 @@ const categories = [
       const postItems =
         document.querySelectorAll<HTMLElement>('#blog-posts li');
       const noResults = document.querySelector<HTMLElement>('.no-results');
+      const clearSearch = document.querySelector<HTMLButtonElement>('.clear-search');
+      const resultsCount = document.querySelector<HTMLOutputElement>('#search-results-count');
       const selectedCategories = new Set<string>();
 
       const updateCategoryButtons = () => {
@@ -153,9 +182,17 @@ const categories = [
         });
 
         if (noResults) noResults.hidden = visiblePosts !== 0;
+        if (clearSearch) clearSearch.hidden = !searchInput?.value;
+        if (resultsCount) resultsCount.textContent = `${visiblePosts} of ${postItems.length} journals`;
       };
 
       searchInput?.addEventListener('input', filterPosts);
+      clearSearch?.addEventListener('click', () => {
+        if (!searchInput) return;
+        searchInput.value = '';
+        filterPosts();
+        searchInput.focus();
+      });
       categoryButtons.forEach((button) => {
         button.addEventListener('click', () => {
           const category = button.dataset.filterCategory ?? '';

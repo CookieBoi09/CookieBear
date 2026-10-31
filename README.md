@@ -127,3 +127,30 @@ Set `status` in a project’s Markdown frontmatter to `ongoing` (In progress),
 (Completed). The same label appears on homepage cards, book covers, and inside
 the project reader. For example: `status: 'beta-testing'`. Display-style values such as
 `IN DEVELOPMENT` and `BETA TESTING` are also accepted and normalized.
+
+### Blog manuscripts
+
+All published blog posts share a paper manuscript layout on the dark technical
+background. The archive uses matching paper covers; search and category filters
+still work. Write paragraphs normally in Markdown: the layout supplies the
+first-line indent, so leading `&emsp;` entities are unnecessary. Document labels
+come from the post slug; reading times are estimates at 220 words per minute.
+The **Print / PDF** button uses a paper-only print layout.
+
+For a local HTTPS preview (Node 22.12+ and OpenSSL required):
+
+```sh
+npm ci
+npm run dev:https
+```
+
+Open **https://localhost:4443/blog/**. This starts Astro in background mode and
+creates a 30-day self-signed localhost certificate in the ignored `.local/https/`
+directory. Your browser may show a certificate warning; accept it for this local
+preview. The script does not install a trusted certificate or change system trust.
+Certificates and private keys must never be committed. Ordinary `npm run dev`
+and production builds do not enable HTTPS through this configuration.
+
+Manage the preview with `npm run astro -- dev status`, `npm run astro -- dev logs`,
+and `npm run astro -- dev stop`. Stop any existing dev server before switching
+between HTTP and HTTPS. Delete `.local/https/` to regenerate the local certificate.
