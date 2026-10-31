@@ -18,7 +18,7 @@ const posts = (
 
   if (dateDifference !== 0) return dateDifference;
 
-  return a.data.title.localeCompare(b.data.title, 'en', { numeric: true, sensitivity: 'base' });
+  return b.data.title.localeCompare(a.data.title, 'en', { numeric: true, sensitivity: 'base' });
 });
 
 const categories = [

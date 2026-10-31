@@ -11,10 +11,10 @@ import OskiImage from '../assets/blog-placeholder-about.jpg';
 import '../styles/quantum-home.css';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || a.data.title.localeCompare(b.data.title, 'en', { numeric: true, sensitivity: 'base' }))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || b.data.title.localeCompare(a.data.title, 'en', { numeric: true, sensitivity: 'base' }))
   .slice(0, 3);
 const projects = (await getCollection('projects'))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title, 'en', { numeric: true, sensitivity: 'base' }))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.title.localeCompare(a.data.title, 'en', { numeric: true, sensitivity: 'base' }))
   .slice(0, 3);
 ---
 
