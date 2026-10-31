@@ -9,11 +9,6 @@ import Header from '../../components/Header.astro';
 
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
-const getJournalNumber = (description: string) => {
-  const match = description.match(/\bJournal\s+(\d+)\b/i);
-  return match ? Number(match[1]) : -1;
-};
-
 const posts = (
   await getCollection('blog', ({ data }) => {
     return data.draft !== true;
@@ -23,9 +18,7 @@ const posts = (
 
   if (dateDifference !== 0) return dateDifference;
 
-  return (
-    getJournalNumber(b.data.description) - getJournalNumber(a.data.description)
-  );
+  return a.data.title.localeCompare(b.data.title, 'en', { numeric: true, sensitivity: 'base' });
 });
 
 const categories = [
