@@ -9,10 +9,9 @@ import '../styles/manuscript.css';
 
 type Props = CollectionEntry<'blog'>['data'] & {
   documentId: string;
-  readingMinutes: number;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, category, documentId, readingMinutes } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, category, documentId } = Astro.props;
 ---
 
 <!doctype html>
@@ -36,7 +35,6 @@ const { title, description, pubDate, updatedDate, heroImage, category, documentI
           <dl>
             <dt>Filed under</dt><dd>{category}</dd>
             <dt>Published</dt><dd><FormattedDate date={pubDate} /></dd>
-            <dt>Reading time</dt><dd>{readingMinutes} min read</dd>
             {updatedDate && <><dt>Revised</dt><dd><FormattedDate date={updatedDate} /></dd></>}
           </dl>
           <div class="record-rule" aria-hidden="true"></div>
@@ -58,7 +56,7 @@ const { title, description, pubDate, updatedDate, heroImage, category, documentI
           <header class="manuscript-title-block">
             <p class="manuscript-category">{category}</p>
             <h1 id="manuscript-title">{title}</h1>
-            <p class="manuscript-byline"><FormattedDate date={pubDate} /><span aria-hidden="true"> / </span>{readingMinutes} min read</p>
+            <p class="manuscript-byline"><FormattedDate date={pubDate} /></p>
             {updatedDate && <p class="manuscript-revision">Revised <FormattedDate date={updatedDate} /></p>}
             <div class="title-divider" aria-hidden="true"><span>+</span></div>
           </header>

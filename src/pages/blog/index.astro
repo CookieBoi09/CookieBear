@@ -107,7 +107,7 @@ const categories = [
         <ul id="blog-posts">
           {
             posts.map((post) => {
-              const { documentId, readingMinutes, excerpt } = manuscriptDetails(post.id, post.body);
+              const { documentId, excerpt } = manuscriptDetails(post.id, post.body);
               return (
                 <li
                   data-search={`${documentId} ${post.data.title} ${post.data.description} ${post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}`.toLowerCase()}
@@ -122,7 +122,7 @@ const categories = [
                       </div>
                     )}
                     <div class="cover-running-head">
-                      <span>Journal / {post.data.category}</span><span>{readingMinutes} min read</span>
+                      <span>Journal / {post.data.category}</span>
                     </div>
                     <h2 class="title">{post.data.title}</h2>
                     <p class="cover-excerpt">{excerpt}</p>

@@ -135,7 +135,6 @@ body.manuscript-site > header { background: var(--q-bg); }
 .manuscript-site .manuscript-category { color: var(--ms-teal); text-transform: uppercase; font-size: 10px; letter-spacing: .12em; margin: 0 0 16px; }
 .manuscript-site .manuscript-title-block h1 { max-width: 650px; margin: 0 auto 24px; font: 400 clamp(32px, 3.5vw, 48px)/1.15 var(--ms-display); letter-spacing: .005em; text-transform: uppercase; text-wrap: balance; color: var(--ms-ink); }
 .manuscript-site .manuscript-byline { color: var(--ms-muted); font-size: 10px; }
-.manuscript-site .manuscript-byline > span { margin-inline: 9px; color: var(--q-muted); }
 .manuscript-site .manuscript-revision { color: var(--ms-muted); font-size: 9px; margin-top: 8px; }
 .manuscript-site .title-divider { display: flex; align-items: center; justify-content: center; gap: 18px; color: var(--ms-teal); margin: 30px 0 36px; font: 16px var(--ms-mono); }
 .manuscript-site .title-divider::before, .manuscript-site .title-divider::after { content: ''; height: 1px; width: 64px; background: var(--ms-rule); }

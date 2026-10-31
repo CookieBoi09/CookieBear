@@ -11,7 +11,6 @@ export function manuscriptDetails(id: string, body = '') {
     .replace(/[#*_`]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
-  const readingMinutes = Math.max(1, Math.ceil(text.split(/\s+/).filter(Boolean).length / 220));
   const excerpt = text.length > 220 ? `${text.slice(0, 220).replace(/\s+\S*$/, '')}…` : text;
-  return { documentId, readingMinutes, excerpt };
+  return { documentId, excerpt };
 }
