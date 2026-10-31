@@ -1,7 +1,7 @@
 /** Shared document labels and plain-text previews for Markdown and MDX entries. */
 export function manuscriptDetails(id: string, body = '') {
   const number = /^journal-(\d+)$/.exec(id)?.[1];
-  const documentId = number ? number.padStart(3, '0') : id.toUpperCase();
+  const documentId = number ? `No. ${number.padStart(3, '0')}` : id.toUpperCase();
   const text = body
     .replace(/```[\s\S]*?```/g, '')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
