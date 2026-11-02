@@ -11,10 +11,24 @@ import OskiImage from '../assets/blog-placeholder-about.jpg';
 import '../styles/quantum-home.css';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || b.data.title.localeCompare(a.data.title, 'en', { numeric: true, sensitivity: 'base' }))
+  .sort(
+    (a, b) =>
+      b.data.pubDate.valueOf() - a.data.pubDate.valueOf() ||
+      b.data.title.localeCompare(a.data.title, 'en', {
+        numeric: true,
+        sensitivity: 'base',
+      }),
+  )
   .slice(0, 3);
 const projects = (await getCollection('projects'))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || b.data.title.localeCompare(a.data.title, 'en', { numeric: true, sensitivity: 'base' }))
+  .sort(
+    (a, b) =>
+      b.data.date.valueOf() - a.data.date.valueOf() ||
+      b.data.title.localeCompare(a.data.title, 'en', {
+        numeric: true,
+        sensitivity: 'base',
+      }),
+  )
   .slice(0, 3);
 ---
 
@@ -76,12 +90,13 @@ const projects = (await getCollection('projects'))
           <div class="about-copy reveal">
             <h2 id="about-title">About Me</h2>
             <p class="q-description">
-              I’m Jerry Fan, a first-year UC Berkeley student interested in the
-              intersection of physics and computer science—and someone who loves
-              sharing ideas and thoughts with the internet.
+              I’m Jerry Fan, a first-year UC Berkeley student interested in
+              anything related to physics and computer science and someone who
+              loves to build things with Codex.
             </p>
             <p class="interests">
-              Physics <b>/</b> Software Coding <b>/</b> AI Agents
+              Physics <b>/</b> Software Coding <b>/</b> Machine Learning <b>/</b
+              > Data Analysis <b>/</b> AI Agents
             </p>
           </div>
           <figure class="oski-frame reveal">
@@ -153,9 +168,15 @@ const projects = (await getCollection('projects'))
           <article class="oled-card journal-card reveal">
             <div class="card-meta">
               <span>THE JOURNAL</span><a href="/blog" class="gold"
-                >ALL ENTRIES</a>
+                >ALL ENTRIES</a
+              >
             </div>
-            <h3 class="terminal project-terminal"><span aria-hidden="true">&gt; </span>Recent Blog Posts<span class="cursor" aria-hidden="true">_</span></h3>
+            <h3 class="terminal project-terminal">
+              <span aria-hidden="true">&gt; </span>Recent Blog Posts<span
+                class="cursor"
+                aria-hidden="true">_</span
+              >
+            </h3>
             <ul>
               {
                 posts.map((post) => (
